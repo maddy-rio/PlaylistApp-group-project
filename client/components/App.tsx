@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <div className="app">
-        <h1>Playlist THEMES</h1>
+        <h1>VIBESVAULT</h1>
       </div>
     </>
   )
