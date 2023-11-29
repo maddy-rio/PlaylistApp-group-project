@@ -1,66 +1,91 @@
 import React from 'react'
+import Profile from './Profile'
 
-require('dotenv').config()
+export default function UserProfile() {
+  const clientId = '453c32bfdcdb45f9a05a140d5069f66d'
+  const params = new URLSearchParams(window.location.search)
+  const code = params.get('code')
 
-const clientId = process.env.SPOTIFY_ID
-const code = undefined
+  if (!code) {
+    redirectToAuthCodeFlow(clientId)
+  } else {
+    ;(async () => {
+      const accessToken = await getAccessToken(clientId, code)
+      const profile = await getProfile(accessToken)
+      populateUI(profile)
+    })()
+  }
 
-if (!code) {
-  redirectToAuthCodeFlow(clientId)
-} else {
-  const accessToken = getAccessToken(code)
-  const profile = getProfile(accessToken)
-  populateUI(profile)
-}
+  async function redirectToAuthCodeFlow(clientId: string) {
+    //TODO: redirect to spotify authorization page
+    {
+      const verifier = generateCodeVerifier(128)
+      const challenge = await generateCodeChallenge(verifier)
 
-export async function redirectToAuthCodeFlow(clientId: string) {
-  //TODO: redirect to spotify authorization page
-  {
-    const verifier = generateCodeVerifier(128)
-    const challenge = await generateCodeChallenge(verifier)
+      localStorage.setItem('verifier', verifier)
 
-    localStorage.setItem('verifier', verifier)
+      const params = new URLSearchParams()
+      params.append('client_id', clientId)
+      params.append('response_type', 'code')
+      params.append('redirect_uri', 'http://localhost:5173/callback')
+      params.append('scope', 'user-read-private user-read-email')
+      params.append('code_challenge_method', 'S256')
+      params.append('code_challenge', challenge)
+
+      document.location = `https://accounts.spotify.com/authorize?${params.toString()}`
+    }
+
+    function generateCodeVerifier(length: number) {
+      let text = ''
+      const possible =
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
+      for (let i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length))
+      }
+      return text
+    }
+
+    async function generateCodeChallenge(codeVerifier: string) {
+      const data = new TextEncoder().encode(codeVerifier)
+      const digest = await window.crypto.subtle.digest('SHA-256', data)
+      return btoa(String.fromCharCode.apply(null, [...new Uint8Array(digest)]))
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/, '')
+    }
+  }
+
+  async function getAccessToken(
+    clientId: string,
+    code: string,
+  ): Promise<string> {
+    const verifier = localStorage.getItem('verifier')
 
     const params = new URLSearchParams()
     params.append('client_id', clientId)
-    params.append('response_type', 'code')
+    params.append('grant_type', 'authorization_code')
+    params.append('code', code)
     params.append('redirect_uri', 'http://localhost:5173/callback')
-    params.append('scope', 'user-read-private user-read-email')
-    params.append('code_challenge_method', 'S256')
-    params.append('code_challenge', challenge)
+    params.append('code_verifier', verifier!)
 
-    document.location = `https://accounts.spotify.com/authorize?${params.toString()}`
+    const result = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params,
+    })
+
+    const { access_token } = await result.json()
+    return access_token
   }
 
-  function generateCodeVerifier(length: number) {
-    let text = ''
-    const possible =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-
-    for (let i = 0; i < length; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length))
-    }
-    return text
+  async function getProfile(token: string) {
+    //TODO: call web api
   }
 
-  async function generateCodeChallenge(codeVerifier: string) {
-    const data = new TextEncoder().encode(codeVerifier)
-    const digest = await window.crypto.subtle.digest('SHA-256', data)
-    return btoa(String.fromCharCode.apply(null, [...new Uint8Array(digest)]))
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '')
+  function populateUI(profile: any) {
+    //TODO: populate UI
   }
-}
 
-async function getAccessToken(clientId: string) {
-  //TODO: get access token
-}
-
-async function getProfile(token: string) {
-  //TODO: call web api
-}
-
-function populateUI(profile: any) {
-  //TODO: populate UI
+  return <Profile />
 }
