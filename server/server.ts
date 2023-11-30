@@ -1,11 +1,19 @@
 import express from 'express'
 import * as Path from 'node:path'
+import bodyParser from 'body-parser'
 
 // import playlistRoutes from './routes/playlist.ts'
 
 const server = express()
 
 server.use(express.json())
+
+server.use(bodyParser.urlencoded({ extended: true }))
+server.use(bodyParser.json())
+
+// Include your Spotify routes
+import spotifyRoutes from './routes/auth'
+server.use('/api/spotify', spotifyRoutes)
 
 // server.use('/api/v1/playlist', playlistRoutes)
 
