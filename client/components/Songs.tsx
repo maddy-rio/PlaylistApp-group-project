@@ -60,7 +60,7 @@ const Songs = ({ token }: Props) => {
     }
 
     const artistId = await fetch(
-      `https://api.spotify.com/v1/search?q=${searchInput}&type=track`,
+      `https://api.spotify.com/v1/search?q=${searchInput}&type=playlist`,
       artistParameters,
     ).then((response) => response.json())
     // .then((data) => data.artists.items[0].id)
