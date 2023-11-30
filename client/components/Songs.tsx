@@ -60,11 +60,10 @@ const Songs = ({ token }: Props) => {
     }
 
     const artistId = await fetch(
-      `https://api.spotify.com/v1/search?q=${searchInput}&type=artist`,
+      `https://api.spotify.com/v1/search?q=${searchInput}&type=track`,
       artistParameters,
-    )
-      .then((response) => response.json())
-      .then((data) => data.artists.items[0].id)
+    ).then((response) => response.json())
+    // .then((data) => data.artists.items[0].id)
 
     console.log(artistId)
 
@@ -90,7 +89,11 @@ const Songs = ({ token }: Props) => {
             <p>{album.name}</p>
 
             {album.is_playable && (
-              <a href={album.external_urls.spotify} target="_blank" rel="noopener noreferrer">
+              <a
+                href={album.external_urls.spotify}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <button>Play</button>
               </a>
             )}
