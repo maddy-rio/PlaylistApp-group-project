@@ -1,4 +1,5 @@
 import {User, Playlists} from '../../models/playlist'
+import CreatePlaylist from './CreatePlaylist'
 
 
 
@@ -11,6 +12,7 @@ const PlaylistPage = ({Playlists, User})  => {
           {Playlists.map((Playlist) => (
             <div key={Playlist.id}>
               <h3>{Playlist.playlistName}</h3>
+              <CreatePlaylist />
             </div>
           ))}
         </div>
@@ -22,6 +24,7 @@ const PlaylistPage = ({Playlists, User})  => {
           <br></br>
           Get started by adding a playlist.
           </h2>
+          <CreatePlaylist />
         </div>
       )
     }

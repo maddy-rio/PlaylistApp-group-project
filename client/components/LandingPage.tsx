@@ -11,10 +11,10 @@ const LandingPage = () => {
         Collective Tunes
       </h1>
       <p>Collaborate with your friends, family, or workmates to build a memorable playlist, one song per day!</p>
-      <button>Sign in with Spotify</button>
+      <a href="/auth/spotify">Sign in with Spotify</a>
     </div>
     </>
   )
 }
 
-export default LandingPage()
+export default LandingPage
