@@ -1,16 +1,20 @@
-// import { Router } from 'express'
+import { Router } from 'express'
+import { requestPlaylist } from '../functions/requestPlaylist'
 
+const router = Router()
 
+// /api/v1/playlists
 
-// const router = Router()
+router.get('/:playlistName', async (req, res) => {
+  try {
+    const { playlistName } = req.params
+    const data = await requestPlaylist(playlistName)
+    res.json({
+      message: data,
+    })
+  } catch (error) {
+    res.json(error.message)
+  }
+})
 
-// router.get('/', async (req, res) => {
-//   try {
- 
-//   } catch (error) {
-//     console.log(error)
-//     res.status(500).json({ message: 'Something went wrong' })
-//   }
-// })
-
-// export default router
+export default router
