@@ -1,5 +1,7 @@
 import {User, Playlists} from '../../models/playlist'
 
+
+
 const PlaylistPage = ({Playlists, User})  => {
   const renderPlaylists = () => {
     if (Playlists.length > 0) {
