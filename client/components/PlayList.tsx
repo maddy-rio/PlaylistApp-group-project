@@ -25,13 +25,20 @@ const PlaylistPage = () => {
   if (error) {
     return <div>Error</div>
   }
-  console.log(playlists?.map(p => p.description), 'playlists')
+  console.log(playlists?.map((p) => p.description), 'playlists')
   // const renderPlaylists = () => {
   return (
-    
     <>
       {playlists?.map((Playlist) => (
-        <div key={Playlist.id}>{Playlist.description}</div>
+        <div key={Playlist.id}>
+          {Playlist.name} <br></br>
+          
+          {Playlist.description}
+          <br></br>
+          total tracks: {Playlist.tracks.total} <br></br>
+
+          <img src={Playlist.images[1].url} />
+        </div>
       ))}
     </>
   )
