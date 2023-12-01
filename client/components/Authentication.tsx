@@ -4,6 +4,11 @@ function Authentication() {
   const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } =
     useAuth0()
 
+  if (user) {
+    console.log(user);
+  }
+
+
   if (isLoading) {
     return <div>Loading...</div>
   }
@@ -15,6 +20,7 @@ function Authentication() {
     return (
       <div>
         Hello {user.name}{' '}
+        {user?.id}
         <button
           onClick={() =>
             logout({ logoutParams: { returnTo: window.location.origin } })
@@ -36,3 +42,6 @@ function Authentication() {
 }
 
 export default Authentication
+function getSpotifyAccessToken() {
+  throw new Error('Function not implemented.')
+}
