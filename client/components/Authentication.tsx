@@ -33,9 +33,9 @@ function Authentication() {
   } else {
     return (
       <>
-        <button onClick={() => loginWithRedirect()}>Log in</button>
         <h1>Authentication page</h1>
         <h3>User not logged in yet</h3>
+        <button className="btn btn-primary" onClick={() => loginWithRedirect()}>Log in</button>
       </>
     )
   }
