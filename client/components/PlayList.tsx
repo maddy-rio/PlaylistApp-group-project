@@ -32,12 +32,10 @@ const PlaylistPage = () => {
       {playlists?.map((Playlist) => (
         <div key={Playlist.id}>
           {Playlist.name} <br></br>
-          
           {Playlist.description}
           <br></br>
           total tracks: {Playlist.tracks.total} <br></br>
-
-          <img src={Playlist.images[1].url} />
+          <img src={Playlist.images[0].url} />
         </div>
       ))}
     </>

@@ -6,6 +6,6 @@ import { Welcome } from '../../models/temp'
 
 export async function getPlaylist(): Promise<Welcome[]> {
   // const response = temp
-  console.log(temp)
+  
   return temp as unknown as Welcome[]
 }
