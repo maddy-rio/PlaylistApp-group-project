@@ -1,13 +1,13 @@
 import express from 'express'
 import * as Path from 'node:path'
 
-// import playlistRoutes from './routes/playlist.ts'
+import playlistRoutes from './routes/playlist.ts'
 
 const server = express()
 
 server.use(express.json())
 
-// server.use('/api/v1/playlist', playlistRoutes)
+server.use('/api/v1/playlist', playlistRoutes)
 
 if (process.env.NODE_ENV === 'production') {
   server.use(express.static(Path.resolve('public')))
