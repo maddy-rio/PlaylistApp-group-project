@@ -1,6 +1,11 @@
 import express from 'express'
 import * as Path from 'node:path'
+<<<<<<< HEAD
 import bodyParser from 'body-parser'
+=======
+import login from './routes/songs.ts'
+
+>>>>>>> Bonnie
 
 // import playlistRoutes from './routes/playlist.ts'
 
@@ -16,6 +21,7 @@ import spotifyRoutes from './routes/auth'
 server.use('/api/spotify', spotifyRoutes)
 
 // server.use('/api/v1/playlist', playlistRoutes)
+server.use('/api/v1/login',login)
 
 if (process.env.NODE_ENV === 'production') {
   server.use(express.static(Path.resolve('public')))
