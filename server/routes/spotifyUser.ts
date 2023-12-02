@@ -36,7 +36,7 @@ router.get('/playlists/:token', async (req, res) => {
 })
 
 // user add to playlist
-router.post('/playlist/:playlistId', async (req, res) => {
+router.post('/playlist/add-track/:playlistId', async (req, res) => {
   try {
     const { playlistId } = req.params
     const { trackId, token } = req.body
@@ -52,6 +52,23 @@ router.post('/playlist/:playlistId', async (req, res) => {
     return res.json({ data })
   } catch (error) {
     console.error('Error adding tracks to playlist:', error.response.body)
+  }
+})
+
+//  user create a new playlist
+router.post('/playlist/add-playlist/:name', async (req, res) => {
+  try {
+    const { name } = req.params
+    const { description, token, isPublic, user_id } = req.body
+    const data = await request
+      .post(`https://api.spotify.com/v1/users/${user_id}/playlists`)
+      .set({
+        Authorization: `Bearer ${token}`,
+      })
+      .send({ name, description, public: isPublic })
+    res.json({ data })
+  } catch (error) {
+    console.error(error.message)
   }
 })
 
