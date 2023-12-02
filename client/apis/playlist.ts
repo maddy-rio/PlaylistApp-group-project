@@ -1,5 +1,6 @@
 import request from 'superagent'
 import { getSession } from '../functions/startSession'
+import { Playlists } from '../../models/Playlist'
 
 export async function getUserDetails() {
   const token = await getSession()
@@ -8,7 +9,7 @@ export async function getUserDetails() {
   })
 }
 
-export function getUsersPlaylists() {
+export function getUsersPlaylists(): Promise<Playlists> {
   const token = getSession()
   return request.get(`/api/v1/user/playlists/${token}`)
 }
@@ -40,4 +41,11 @@ export function createNewPlaylist(data: NewPlaylist) {
     isPublic,
     token,
   })
+}
+
+export function getPlaylistItems(playlistId: string) {
+  const token = getSession()
+  return request
+    .get(`/api/v1/user/playlist/playlist-items`)
+    .query({ playlistId, token })
 }
