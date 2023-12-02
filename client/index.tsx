@@ -3,7 +3,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import App from './components/App.tsx'
-
+import ReactDOM from 'react-dom'
+import React from 'react'
 const queryClient = new QueryClient()
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,6 +12,15 @@ document.addEventListener('DOMContentLoaded', () => {
     <QueryClientProvider client={queryClient}>
       <App />
       <ReactQueryDevtools />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   )
 })
+
+
+
+// ReactDOM.createRoot(document.getElementById('root')).render(
+//   <React.StrictMode>
+//     <App />
+//   </React.StrictMode>,
+//   document.getElementById('root')
+// );
