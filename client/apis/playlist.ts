@@ -20,6 +20,24 @@ interface AddTrackToPlaylist {
 export function addTrackToPlaylist(data: AddTrackToPlaylist) {
   const token = getSession()
   return request
-    .post(`/api/v1/user/playlist/${data.playlistId}`)
+    .post(`/api/v1/user/playlist/add-track/${data.playlistId}`)
     .send({ trackId: data.trackId, token })
+}
+
+interface NewPlaylist {
+  user_id: string
+  name: string
+  description: string
+  isPublic: boolean
+}
+
+export function createNewPlaylist(data: NewPlaylist) {
+  const { user_id, name, description, isPublic } = data
+  const token = getSession()
+  return request.post(`/api/v1/user/playlist/add-playlist/${name}`).send({
+    description,
+    user_id,
+    isPublic,
+    token,
+  })
 }
