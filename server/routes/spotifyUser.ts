@@ -72,6 +72,21 @@ router.post('/playlist/add-playlist/:name', async (req, res) => {
   }
 })
 
+router.get(`/playlist/playlist-items`, async (req, res) => {
+  try {
+    const { playlistId, token } = req.query
+    const data = await request
+      .get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`)
+      .set({
+        Authorization: `Bearer ${token}`,
+      })
+    const dressedData = JSON.parse(data.text)
+    return res.json({ data: dressedData })
+  } catch (error) {
+    console.error(error)
+  }
+})
+
 // remove items in playlist
 // view user tracks in playlist
 
