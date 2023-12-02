@@ -1,12 +1,29 @@
-import e from 'express'
 import React, { useState } from 'react'
+import { createNewPlaylist, getUserDetails } from '../apis/playlist'
 
 function NewPlaylist() {
   const [playlistName, setPlaylistName] = useState('')
+  const [description, setDescription] = useState('a test description')
+  const [isPublic, setIsPublic] = useState(false)
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    console.log(playlistName)
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    try {
+      e.preventDefault()
+      // get the current users id later through query
+      const user = await getUserDetails()
+      const userId = user?.body.id
+
+      await createNewPlaylist({
+        name: playlistName,
+        description,
+        isPublic,
+        user_id: userId,
+      })
+
+      alert('playlist created')
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
