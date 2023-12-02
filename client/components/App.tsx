@@ -1,6 +1,6 @@
 // import { useFruits } from '../hooks/useFruits.ts'
 
-import Login from './Login'
+import Login from './LoginWithSpotify'
 import Songs from './Songs'
 
 import { useEffect, useState } from 'react'
