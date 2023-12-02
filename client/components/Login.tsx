@@ -2,8 +2,9 @@ import { codeVerifier } from '../functions/generateRandomString'
 import { base64encode } from '../functions/base64encode'
 import { sha256 } from '../functions/sha'
 import { gatherUserTokenFromSpotify } from '../functions/getToken'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { getSession, startSession } from '../functions/startSession'
+import { getUserDetails } from '../apis/playlist'
 
 const SPOTIFY_CLIENT_ID = 'e6902475a4424e50813fb15d818401c6'
 const redirectUri = 'http://localhost:5173/login'
@@ -56,7 +57,43 @@ const fetchToken = async () => {
   }
 }
 
+export interface Pokedex {
+  country: string
+  display_name: string
+  email: string
+  explicit_content: ExplicitContent
+  external_urls: ExternalUrls
+  followers: Followers
+  href: string
+  id: string
+  images: Image[]
+  product: string
+  type: string
+  uri: string
+}
+
+export interface ExplicitContent {
+  filter_enabled: boolean
+  filter_locked: boolean
+}
+
+export interface ExternalUrls {
+  spotify: string
+}
+
+export interface Followers {
+  href: string
+  total: number
+}
+
+export interface Image {
+  url: string
+  height: number
+  width: number
+}
+
 function Login() {
+  const [userDetails, setUserDetails] = useState<Pokedex | null>()
   const urlParams = new URLSearchParams(window.location.search)
   const code = urlParams.get('code')
 
@@ -66,13 +103,32 @@ function Login() {
       fetchToken()
     } else if (getSession()) {
       // already in session
-      return
+      const fecthUserDetails = async () => {
+        const data = await getUserDetails()
+        setUserDetails(data.body)
+      }
+      fecthUserDetails()
     } else {
       initiateSpotifyAuthentication()
     }
   })
-
-  return <div>Login</div>
+  if (!userDetails) {
+    return <div>Login</div>
+  }
+  return (
+    <div>
+      <>
+        <h1>logged in with {userDetails.display_name}</h1>
+        <p>{userDetails.country}</p>
+        <p>{userDetails.email}</p>
+        <p>{userDetails.href}</p>
+        <p>{userDetails.id}</p>
+        <p>{userDetails.product}</p>
+        <p>{userDetails.type}</p>
+        <p>{userDetails.uri}</p>
+      </>
+    </div>
+  )
 }
 
 export default Login
