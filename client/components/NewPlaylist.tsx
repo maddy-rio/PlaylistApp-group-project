@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { createNewPlaylist, getUserDetails } from '../apis/playlist'
 
 function NewPlaylist() {
+  // refactor this into useForm custom hook
   const [playlistName, setPlaylistName] = useState('')
   const [description, setDescription] = useState('a test description')
   const [isPublic, setIsPublic] = useState(false)
