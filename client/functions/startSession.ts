@@ -3,9 +3,5 @@ export function startSession(token: string) {
 }
 
 export function getSession() {
-  const test = sessionStorage.getItem('accessToken')
-  console.log(test);
-  
-
   return sessionStorage.getItem('accessToken')
 }
