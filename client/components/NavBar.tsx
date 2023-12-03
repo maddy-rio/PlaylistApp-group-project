@@ -1,8 +1,10 @@
+import { Text } from "@radix-ui/themes"
+
 const NavBar = () => {
   return (
-    <div>
-      <h1>VibesVault</h1>
-    </div>
+      <Text size="7" weight="bold">
+        VIBESVAULT
+      </Text>
   )
 }
 
