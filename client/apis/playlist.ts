@@ -13,9 +13,11 @@ export async function getPlaylist(): Promise<Welcome[]> {
 }
 export async function getUserDetails() {
   const token = await getSession()
-  return await request.get(`https://api.spotify.com/v1/me`).set({
-    Authorization: `Bearer ${token}`,
+  const response = await request.get(`https://api.spotify.com/v1/me`).set({
+    Authorization: `Bearer ${token}`
   })
+
+  return response.body
 }
 
 export async function getUsersPlaylists(): Promise<Playlists> {

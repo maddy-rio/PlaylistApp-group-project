@@ -34,17 +34,19 @@ const PlaylistPage = () => {
 
   return (
     <>
-      <h2>Hi, {userInfo?.body?.display_name}</h2>
-
+      <div>
+        <img src={userInfo.images[0].url} />
+        <h2>Hi, {userInfo?.display_name}</h2>
+      </div>
       {playlists?.map((playlist) => (
         <Link to={`/playList/${playlist.id}`} key={playlist.id}>
           <div key={playlist.id}>
             <h3>{playlist.name}</h3> <br></br>
+            {playlist.images.length !== 0? <img src={playlist?.images[0]?.url} alt={playlist?.name}  style={{ height: '64px', width: '64px' }} /> : null}
             <p>{playlist.description}</p>
             <br></br>
             <p>Total tracks: {playlist.tracks.total} </p>
             <br></br>
-            <img src={playlist?.images[0]?.url} alt={playlist?.name} />
           </div>
         </Link>
       ))}

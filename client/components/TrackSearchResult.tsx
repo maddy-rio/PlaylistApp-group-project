@@ -41,7 +41,7 @@ export default function TrackSearchResult({
   
   return (
     <>
-      
+      <Player track={track} token={token} playingTrack={playingTrack} chooseTrack={chooseTrack} />
         <div className="d-flex m-2 align-items-center">
           <img
             src={track.album.images[2].url}
