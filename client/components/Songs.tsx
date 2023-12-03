@@ -2,21 +2,20 @@ import React, { FormEvent, useEffect, useState } from 'react'
 
 import SpotifyWebApi from 'spotify-web-api-node'
 import SpotifyPlayer from 'react-spotify-web-playback'
-import useAuth from './useAuth'
+
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { searchSongs } from '../apis/searchSongs'
 import TrackSearchResult from './TrackSearchResult'
 import Player from './Player'
+import {getSession} from '../functions/startSession'
 
-interface Props {
-  token: string
-}
 
-const Songs = ({ code }) => {
-  const accessToken = useAuth(code)
+
+const Songs = () => {
+  const accessToken =getSession()
 
   const [searchInput, setSearchInput] = useState('')
-  const [albums, setAlbums] = useState([])
+  
   const [searchResults, setSearchResults] = useState([])
   const [playingTrack, setPlayingTrack] = useState('')
 

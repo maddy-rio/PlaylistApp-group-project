@@ -31,7 +31,7 @@ export interface Item {
   is_local: boolean
 }
 
-export interface Album {
+export interface Album extends Item {
   album_type: string
   total_tracks: number
   available_markets: string[]
@@ -45,7 +45,7 @@ export interface Album {
   restrictions: Restrictions
   type: string
   uri: string
-  artists: AlbumArtist[]
+  // artists: AlbumArtist[]
 }
 
 export interface AlbumArtist {
