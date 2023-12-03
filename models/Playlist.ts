@@ -8,6 +8,11 @@ export interface Playlists {
   items: Item[]
 }
 
+export interface UserPlaylist {
+  playlist_id: number
+  user_id: number
+}
+
 export interface Item {
   collaborative: boolean
   description: string
