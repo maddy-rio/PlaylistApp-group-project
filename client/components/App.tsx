@@ -1,11 +1,15 @@
 // import { useFruits } from '../hooks/useFruits.ts'
 
-function App() {
+import LandingPage from './LandingPage'
+import NavBar from './NavBar'
+import PlaylistPage from './PlayList'
 
+function App() {
   return (
     <>
       <div className="app">
-        <h1>VIBESVAULT</h1>
+        <NavBar />
+        <PlaylistPage />
       </div>
     </>
   )

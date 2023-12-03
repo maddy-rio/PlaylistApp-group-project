@@ -1,5 +1,7 @@
 import express from 'express'
 import * as Path from 'node:path'
+
+import playlistRoutes from './routes/playlist.ts'
 import login from './routes/songs.ts'
 import spotifyUser from './routes/spotifyUser.ts'
 
@@ -7,6 +9,7 @@ const server = express()
 
 server.use(express.json())
 
+server.use('/api/v1/playlist', playlistRoutes)
 server.use('/api/v1/login', login)
 server.use('/api/v1/user', spotifyUser)
 
