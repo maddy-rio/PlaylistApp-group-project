@@ -18,9 +18,10 @@ export async function getUserDetails() {
   })
 }
 
-export function getUsersPlaylists(): Promise<Playlists> {
+export async function getUsersPlaylists(): Promise<Playlists> {
   const token = getSession()
-  return request.get(`/api/v1/user/playlists/${token}`)
+  const response = await request.get(`/api/v1/user/playlists/${token}`)
+return response.body.items
 }
 
 interface AddTrackToPlaylist {
