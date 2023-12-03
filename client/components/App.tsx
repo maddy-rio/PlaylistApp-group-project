@@ -1,20 +1,13 @@
 import '@radix-ui/themes/styles.css'
 import '../styles/theme-config.css'
 import { Theme } from '@radix-ui/themes'
-import ThemeTest from './ThemeTest'
-
-
-import LandingPage from './LandingPage'
-import NavBar from './NavBar'
-import PlaylistPage from './PlayList'
+import CurrentPlaylist from './CurrentPlaylist'
 
 function App() {
   return (
     <>
     <Theme appearance="dark">
-        {/* <NavBar />
-        <PlaylistPage /> */}
-        <ThemeTest />
+        <CurrentPlaylist />
     </Theme>
     </>
   )
