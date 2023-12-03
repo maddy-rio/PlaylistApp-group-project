@@ -11,6 +11,7 @@ const redirectUri = 'http://localhost:5173/login'
 
 async function initiateSpotifyAuthentication() {
   const scope = `
+  streaming
   user-read-playback-state 
   user-modify-playback-state 
   user-read-currently-playing 

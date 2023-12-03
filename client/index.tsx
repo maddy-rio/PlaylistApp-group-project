@@ -1,5 +1,8 @@
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+
+
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { routes } from './routes'
 import { Auth0Provider } from '@auth0/auth0-react'

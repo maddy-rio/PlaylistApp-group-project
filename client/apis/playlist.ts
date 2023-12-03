@@ -10,7 +10,7 @@ export async function getPlaylist(): Promise<Welcome[]> {
   // const response = temp
   
   return temp as unknown as Welcome[]
-
+}
 export async function getUserDetails() {
   const token = await getSession()
   return await request.get(`https://api.spotify.com/v1/me`).set({

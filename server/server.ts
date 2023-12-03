@@ -1,17 +1,26 @@
 import express from 'express'
 import * as Path from 'node:path'
 
-import playlistRoutes from './routes/playlist.ts'
-import login from './routes/songs.ts'
+import cors from 'cors'
+import 'dotenv/config'
+
 import spotifyUser from './routes/spotifyUser.ts'
+import playlistRoutes from './routes/playlist.ts'
+
+
 
 const server = express()
 
 server.use(express.json())
+server.use(cors())
+
+
+
 
 server.use('/api/v1/playlist', playlistRoutes)
-server.use('/api/v1/login', login)
+
 server.use('/api/v1/user', spotifyUser)
+
 
 if (process.env.NODE_ENV === 'production') {
   server.use(express.static(Path.resolve('public')))
