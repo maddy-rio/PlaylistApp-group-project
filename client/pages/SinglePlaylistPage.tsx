@@ -32,39 +32,14 @@ function SinglePlaylistPage() {
   // INCLUDES INLINE CSS !! CHANGE LATER
   return (
     <div>
-      <h4 className="m-5">
-        Playlist: <strong>{playlistDetails?.name}</strong>
-      </h4>
+      <h4 className="">Playlist</h4>
+      <h2>{playlistDetails?.name}</h2>
+      <div className="">
+        <h2 className="inline">Added today</h2>
+        <h2 className="inline">All songs</h2>
+      </div>
 
-      {playlistTracks?.map((item) => (
-        <Track key={item.track.id} item={item} />
-        // <Link
-        //   key={item.track.id}
-        //   to={`/track/${item.track.id}`}
-        //   style={{ textDecoration: 'none', color: 'black' }}
-        //   className="d-flex border border-dark w-50 m-1"
-        // >
-        //   <div
-        //     key={item.track.id}
-        //     className="p-1 d-flex justify-content-between w-100"
-        //   >
-        //     <div className="">
-        //       <p className="m-0">added on: {item.added_at}</p>
-        //       {item.added_by.display_name && (
-        //         <p className="m-0">added by: {item.added_by.display_name}</p>
-        //       )}
-        //       <p className="m-0">artist: {item.track.artists[0].name}</p>
-        //       <p className="m-0">name: {item.track.name}</p>
-        //     </div>
-        //     <img
-        //       src={item.track.album.images[0].url}
-        //       alt={item.track.name}
-        //       className="height-50"
-        //       style={{ height: '5rem', width: '5rem' }}
-        //     />
-        //   </div>
-        // </Link>
-      ))}
+      {playlistTracks?.map((item) => <Track key={item.track.id} item={item} />)}
     </div>
   )
 }
