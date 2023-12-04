@@ -5,10 +5,12 @@ import Login from '../components/Login'
 import App from '../components/App'
 import SinglePlaylistPage from '../pages/SinglePlaylistPage'
 import PlayList from '../components/PlayList'
+import SpotifyCreatePlaylistButton from '../components/SpotifyCreatePlaylistButton'
 
 export const routes = createRoutesFromElements(
   <>
-    <Route path="/" element={<Layout />}>
+    <Route path="/" element={<SpotifyCreatePlaylistButton />}>
+      {/* <Route path="/" element={<Layout />}> */}
       <Route path="login" element={<Login />} />
       <Route path="login/callback" element={<App />} />
 
