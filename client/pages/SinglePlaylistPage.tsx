@@ -7,7 +7,7 @@ import Player from '../components/Player'
 import { useQuery } from '@tanstack/react-query'
 
 function SinglePlaylistPage() {
-  const { playlistId } = useParams()
+  const { playlistId } = useParams() 
 
   const { data: playlistTracks } = useQuery({
     queryKey: ['single-playlist'],

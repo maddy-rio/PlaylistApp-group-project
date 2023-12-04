@@ -15,9 +15,9 @@ function Track({ playlists }) {
 
   return (
     <div>
-      {playlists.map((item) => (
+      {playlists.map((item, index) => (
         <div
-          key={item.track.uri}
+          key={index}
           className="track-single d-flex justify-content-between p-2 m-1 rounded container-sm"
           onClick={() => handleClick(item)}
         >

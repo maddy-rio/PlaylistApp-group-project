@@ -36,7 +36,7 @@ export async function addTrackToPlaylist(playlistId, trackId: string) {
  const response = await request
     .post(`/api/v1/user/playlist/add-track/${playlistId.playlistId}`)
     .send({ trackId: trackId, token })
-    console.log(response.body.data)
+    
     return response.body
 }
 
@@ -63,17 +63,18 @@ export async function getPlaylistItems(playlistId: string) {
   const response = await request
     .get(`/api/v1/user/playlist/playlist-items`)
     .query({ playlistId, token })
-    console.log(response.body)
-    return response.body
+    
+    return response.body.data.items
 }
 
 export async function getPlaylistInfo(playlistId:string){
   const token = getSession()
+  console.log(token)
     const response = await request
       .get(`https://api.spotify.com/v1/playlists/${playlistId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
-      console.log(response.body)
+    
       return response.body
 }
