@@ -4,3 +4,17 @@ export interface PlaylistTracks {
   users_id: number
   date: string
 }
+
+export interface PlaylistTrackIds {
+  trackId: number
+}
+
+export interface UserPlaylists {
+  playlists_id: number
+  name: string
+  token: string
+}
+
+export interface UserName {
+  name: number
+}

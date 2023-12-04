@@ -1,12 +1,12 @@
 import express from 'express'
-import { getAllTracks } from '../db/functions/getInfo'
+import { getPlaylistTrackIds } from '../db/functions/getInfo'
 
 const router = express.Router()
 
 router.get('/:playlistId', async (req, res) => {
   try {
     const playlistId = Number(req.params.playlistId)
-    const tracks = await getAllTracks(playlistId)
+    const tracks = await getPlaylistTrackIds(playlistId)
     res.json(tracks)
   } catch (err) {
     console.log(err)
