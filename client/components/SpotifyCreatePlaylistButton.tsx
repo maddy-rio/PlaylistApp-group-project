@@ -18,6 +18,11 @@ const defaultOwner = {
   ownerId: '',
 }
 
+/**
+ *
+ * generates a playlist ID and owner ID to send into the database that reflects a new playlist added to the spotify client
+ *
+ */
 function SpotifyCreatePlaylistButton() {
   //  move playlistDetails to the parent component and refactor the functionality of this to be included in the pipeline of the creating a user playlist __ add this id to the playlist id field,
 
