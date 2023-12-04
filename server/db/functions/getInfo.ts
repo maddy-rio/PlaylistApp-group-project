@@ -21,7 +21,7 @@ export async function getUserPlaylists(
   const playlists = await db('playlists_users')
     .where('users_id', userId)
     .join('playlists', 'playlists_users.playlists_id', 'playlists.id')
-    .select('playlists_id', 'name', 'token')
+    .select('playlists_id', 'name', 'token', 'owner_id')
   console.log(`from db function:`, playlists)
   return playlists
 }

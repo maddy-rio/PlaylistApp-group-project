@@ -7,6 +7,7 @@ export async function up(knex) {
       table.increments('id')
       table.string('name')
       table.string('token')
+      table.string('owner_id')
       table.unique('token')
     })
 }
