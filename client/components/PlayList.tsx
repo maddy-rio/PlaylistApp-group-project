@@ -34,14 +34,15 @@ const PlaylistPage = () => {
 
   return (
     <>
-      <div>
-        <img src={userInfo.images[0].url} />
-        <h2>Hi, {userInfo?.display_name}</h2>
+      <div className='flex-d'>
+        {/* <img src={userInfo.images[0].url} /> */}
+        <h3>Hi {userInfo?.display_name}! Here's all the playlists you are collaborating on:</h3>
       </div>
+      <div className='flex'>
       {playlists?.map((playlist) => (
           <Link to={`/playlist/${playlist.id}`} key={playlist.id}>
           <div key={playlist.id}>
-            <h3>{playlist.name}</h3> <br></br>
+            <h4>{playlist.name}</h4> <br></br>
             {playlist.images.length !== 0? <img src={playlist?.images[0]?.url} alt={playlist?.name}  style={{ height: '64px', width: '64px' }} /> : null}
             <p>{playlist.description}</p>
             <br></br>
@@ -50,6 +51,7 @@ const PlaylistPage = () => {
           </div>
           </Link>
       ))}
+      </div>
     </>
   )
 }

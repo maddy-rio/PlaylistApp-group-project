@@ -1,48 +1,44 @@
-import React, { useState } from 'react'
-import Player from './Player'
-import { Link } from 'react-router-dom'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { addTrackToPlaylist } from '../apis/playlist'
-import {Album} from '../../models/song'
+import { useState } from 'react'
 
-interface Props{
-  track: Album
-  token: string
-  playingTrack: string
-  chooseTrack: (track: Album) => void
+import { Link } from 'react-router-dom'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { addTrackToPlaylist, getPlaylistItems } from '../apis/playlist'
+import { Album } from '../../models/song'
+import Track from './Track'
+
+interface Props {
+  tracks: Album[]
+
+  playlistId: string
 }
 
-export default function TrackSearchResult({
-  track,
-  chooseTrack,
-  token,
-  playingTrack,
-}: Props) {
-  
-  
-  // const addPlayListMutation = useMutation({
-  //   mutationFn: async (id) => addTrackToPlaylist(id),
-  //   onSuccess: () => {
-  //   },
+export default function TrackSearchResult({ tracks, playlistId }: Props) {
+  const [showSearchResult, setShowSearchResult] = useState(true)
+  const queryClient = useQueryClient()
+  const addPlayListMutation = useMutation({
+    mutationFn: async (trackId) => addTrackToPlaylist(playlistId, trackId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['single-playlist'] })
+    },
+  })
+
+  // const { data: trackList } = useQuery({
+  //   queryKey: ['trackList'],
+
+  //   queryFn: ()=>getPlaylistItems(playlistId),
   // })
-  
-  // function handleClick(){
-  //   addTrackToPlaylist(id)
-  // }
 
-  async function handleClick(track_id:string) {
-    const trackId = track_id
-    console.log(trackId)
-    const playlistId = '1Gyu0Nea6xlTNfA33qlxhO'
-    const data = await addTrackToPlaylist({ trackId, playlistId })
-    console.log(data.body)
+  function handleClick(id) {
+    addPlayListMutation.mutate(id)
+    setShowSearchResult(!showSearchResult)
   }
-
-  
+// console.log(trackList)
   return (
     <>
-      <Player track={track} token={token} playingTrack={playingTrack} chooseTrack={chooseTrack} />
-        <div className="d-flex m-2 align-items-center">
+      {/* <Player track={track} token={token} playingTrack={playingTrack} chooseTrack={chooseTrack} /> */}
+      
+      {showSearchResult ? (tracks.map((track) => (
+        <div key={track.id} className="d-flex m-2 align-items-center">
           <img
             src={track.album.images[2].url}
             alt={track.album.name}
@@ -50,12 +46,23 @@ export default function TrackSearchResult({
           />
 
           <div className="ml-3">
-            <button style={{ cursor: 'pointer', border: 'none' }} onClick={()=>handleClick(track.id)}>
+            <button
+              style={{ cursor: 'pointer', border: 'none' }}
+              onClick={() => handleClick(track.id)}
+            >
               {track.name}
             </button>
             <p>{track.artists[0].name}</p>
           </div>
         </div>
+      ))): (
+        <Link
+          to={`/playlist/${playlistId}`}
+          className="text-decoration-none"
+        ></Link>
+        // <Track playlists={trackList} />
+      )}
+
       
     </>
   )
