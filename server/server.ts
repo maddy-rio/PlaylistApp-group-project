@@ -1,7 +1,7 @@
 import express from 'express'
 import * as Path from 'node:path'
 import bodyParser from 'body-parser'
-import login from './routes/songs.ts'
+// import login from './routes/songs.ts'
 import cors from 'cors'
 import 'dotenv/config'
 import spotifyUser from './routes/spotifyUser.ts'

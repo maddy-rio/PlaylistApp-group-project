@@ -1,13 +1,11 @@
-import { Route } from 'react-router'
-import { SuperAgentRequest } from 'superagent'
 import express from 'express'
 import { getAllTracks } from '../db/functions/getInfo'
 
 const router = express.Router()
 
-router.get('/', async (req, res) => {
+router.get('/:playlistId', async (req, res) => {
   try {
-    const playlistId = Number(req.params)
+    const playlistId = Number(req.params.playlistId)
     const tracks = await getAllTracks(playlistId)
     res.json(tracks)
   } catch (err) {
