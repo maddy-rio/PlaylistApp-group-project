@@ -4,3 +4,29 @@ html,
 body {
   font-family: 'Montserrat', sans-serif;
 }
+
+
+.track-image-profile {
+  background-color: rgb(56, 54, 54);
+}
+
+.track-play-pause {
+  height: 2rem;
+}
+
+.track-single {
+  background-color: rgb(25, 25, 25);
+  color: white;
+}
+
+.track-play-pause {
+  color: white;
+}
+
+.track-image {
+  height: 3rem;
+}
+
+.track-single p {
+  margin: 0;
+}
