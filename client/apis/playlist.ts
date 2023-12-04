@@ -3,7 +3,7 @@ import { UserPlaylist } from '../../models/playlist'
 import {temp} from '../temp-json/getPlaylist.js'
 import { Welcome } from '../../models/temp'
 import { getSession } from '../functions/startSession'
-import { Playlists } from '../../models/Playlist'
+import { Playlists, Item } from '../../models/Playlist'
 // const rootUrl = '/api/v1'
 
 export async function getPlaylist(): Promise<Welcome[]> {
@@ -13,12 +13,14 @@ export async function getPlaylist(): Promise<Welcome[]> {
 }
 export async function getUserDetails() {
   const token = await getSession()
-  return await request.get(`https://api.spotify.com/v1/me`).set({
-    Authorization: `Bearer ${token}`,
+  const response = await request.get(`https://api.spotify.com/v1/me`).set({
+    Authorization: `Bearer ${token}`
   })
+
+  return response.body
 }
 
-export async function getUsersPlaylists(): Promise<Playlists> {
+export async function getUsersPlaylists(): Promise<Item[]> {
   const token = getSession()
   const response = await request.get(`/api/v1/user/playlists/${token}`)
 return response.body.items
@@ -28,11 +30,14 @@ interface AddTrackToPlaylist {
   playlistId: string
   trackId: string
 }
-export function addTrackToPlaylist(data: AddTrackToPlaylist) {
+export async function addTrackToPlaylist(playlistId, trackId: string) {
+  console.log(playlistId.playlistId, trackId)
   const token = getSession()
-  return request
-    .post(`/api/v1/user/playlist/add-track/${data.playlistId}`)
-    .send({ trackId: data.trackId, token })
+ const response = await request
+    .post(`/api/v1/user/playlist/add-track/${playlistId.playlistId}`)
+    .send({ trackId: trackId, token })
+    console.log(response.body.data)
+    return response.body
 }
 
 interface NewPlaylist {
@@ -53,9 +58,22 @@ export function createNewPlaylist(data: NewPlaylist) {
   })
 }
 
-export function getPlaylistItems(playlistId: string) {
+export async function getPlaylistItems(playlistId: string) {
   const token = getSession()
-  return request
+  const response = await request
     .get(`/api/v1/user/playlist/playlist-items`)
     .query({ playlistId, token })
+    console.log(response.body)
+    return response.body
+}
+
+export async function getPlaylistInfo(playlistId:string){
+  const token = getSession()
+    const response = await request
+      .get(`https://api.spotify.com/v1/playlists/${playlistId}`)
+      .set({
+        Authorization: `Bearer ${token}`,
+      })
+      console.log(response.body)
+      return response.body
 }
