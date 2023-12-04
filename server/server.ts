@@ -14,7 +14,7 @@ server.use(express.json())
 server.use(cors())
 
 server.use('/api/v1/tracks', tracksRoutes)
-
+server.use('/api/v1/playlist', PlaylistRoutes)
 server.use('/api/v1/user', spotifyUser)
 
 server.use(bodyParser.urlencoded({ extended: true }))
@@ -23,11 +23,6 @@ server.use(bodyParser.json())
 // Include your Spotify routes
 // import spotifyRoutes from './routes/auth'
 // server.use('/api/spotify', spotifyRoutes)
-
-// server.use('/api/v1/playlist', playlistRoutes)
-// server.use('/api/v1/login', login)
-
-server.use('/api/v1/playlist', PlaylistRoutes)
 // server.use('/api/v1/login', login)
 
 
