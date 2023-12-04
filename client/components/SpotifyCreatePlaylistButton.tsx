@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-
 // imports that need to refactored into another location
 import request from 'superagent'
 import { getSession } from '../functions/startSession'
@@ -17,20 +16,23 @@ const defaultOwner = {
   ownerId: '',
 }
 
+// interface Props {
+//   setPlaylistDetails: () => void
+//   setOwnerDetails: () => void
+// }
+// function SpotifyCreatePlaylistButton(props: Props) {
+
 /**
  *
  * generates a playlist ID and owner ID to send into the database that reflects a new playlist added to the spotify client
  *
  */
 function SpotifyCreatePlaylistButton() {
-  //  move playlistDetails to the parent component and refactor the functionality of this to be included in the pipeline of the creating a user playlist __ add this id to the playlist id field,
-
-  // Do the same thing with the ownerDetails,
-
-  // add conditional to the if they are the owner of this playlist,
+  //  ownersDetails, playlistDetails to the parent component and refactor results in the pipeline of the creating a user playlist __ add this id to the playlist id field, do the same thing with the ownerDetails,
 
   const [playlistDetails, setPlaylistDetails] = useState(defaultFormData)
   const [ownerDetails, setOwnerDetails] = useState(defaultOwner)
+
   const [active, isActive] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,10 +42,9 @@ function SpotifyCreatePlaylistButton() {
 
   const handleNewPlaylist = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // get the current user id
+    // current user id
     const user_id = await getUserDetails().then((data) => data.id)
-
-    // add a playlist to the current users spotify account
+    // playlist id of new new playlist
     const new_playlist = await request
       .post(
         `https://api.spotify.com/v1/users/${user_id}/playlists
