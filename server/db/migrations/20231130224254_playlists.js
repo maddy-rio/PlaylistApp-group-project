@@ -5,7 +5,9 @@
 export async function up(knex) {
     return knex.schema.createTable('playlists', table => {
       table.increments('id')
-      table.string('playlist_id')
+      table.string('name')
+      table.string('token')
+      table.unique('token')
     })
 }
 
