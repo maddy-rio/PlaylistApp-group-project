@@ -5,6 +5,7 @@ import Login from '../components/Login'
 import App from '../components/App'
 import SinglePlaylistPage from '../pages/SinglePlaylistPage'
 import PlayList from '../components/PlayList'
+import Songlist from '../components/Songlist'
 
 export const routes = createRoutesFromElements(
   <>
@@ -12,7 +13,7 @@ export const routes = createRoutesFromElements(
       <Route path="login" element={<Login />} />
       <Route path="login/callback" element={<App />} />
 
-      <Route path="playlist/:playlistId" element={<SinglePlaylistPage />} />
+      <Route path="playlist/:playlistId" element={<Songlist />} />
       <Route path="*" element={<Placeholder />} />
     </Route>
   </>,

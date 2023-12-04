@@ -1,12 +1,15 @@
 import connection from '../connection'
 import { UserPlaylist } from '../../../models/playlist'
 
+const  db = connection
 export async function getAllPlaylists(
-  db = connection,
+ 
 ): Promise<UserPlaylist[]> {
   const playlists = await db<UserPlaylist>('playlists_users').select('*')
   return playlists
 }
+
+
 
 // TODO: get all playlist ids associated with a user id (for the playlist cards we display to the user)
 // export async function getUserPlaylists(

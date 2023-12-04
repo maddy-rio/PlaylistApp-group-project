@@ -3,8 +3,11 @@ import React, { useState } from 'react'
 import { songList } from '../apis/songList'
 import Player from './Player'
 import { getSession } from '../functions/startSession'
+import { useParams } from 'react-router-dom'
 
 const Songlist = () => {
+  const playListId = useParams()
+  console.log(playListId)
   const token = getSession()
   const [playingTracks, setPlayingTracks] = useState({})
   const {
@@ -13,7 +16,7 @@ const Songlist = () => {
     isLoading,
   } = useQuery({
     queryKey: ['songs'],
-    queryFn: songList,
+    queryFn: ()=>songList(playListId, token),
   })
 
   if (isError) {
