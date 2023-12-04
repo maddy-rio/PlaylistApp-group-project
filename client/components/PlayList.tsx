@@ -37,7 +37,7 @@ const PlaylistPage = () => {
       <h2>Hi, {userInfo?.body?.display_name}</h2>
 
       {playlists?.map((playlist) => (
-        <Link to={`/playList/${playlist.id}`} key={playlist.id}>
+          <Link to={`/playlist/${playlist.id}`} key={playlist.id}>
           <div key={playlist.id}>
             <h3>{playlist.name}</h3> <br></br>
             <p>{playlist.description}</p>
@@ -46,7 +46,7 @@ const PlaylistPage = () => {
             <br></br>
             <img src={playlist?.images[0]?.url} alt={playlist?.name} />
           </div>
-        </Link>
+          </Link>
       ))}
     </>
   )
