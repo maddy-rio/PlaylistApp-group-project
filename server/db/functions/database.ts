@@ -9,6 +9,18 @@ export async function getAllPlaylists(
   return playlists
 }
 
+export async function getUserPlaylists(
+ spotifyId:string,
+){
+  const playlists = await db('playlists_users')
+  .join('users','playlists_users.users_id','users.id' )
+    .where('user_id', spotifyId)
+    .join('playlists', 'playlists_users.playlists_id', 'playlists.id')
+    .select('playlists_id as playlistsId', 'playlists.name', 'token')
+  console.log(`from db function:`, playlists)
+  return playlists
+}
+
 
 
 // TODO: get all playlist ids associated with a user id (for the playlist cards we display to the user)

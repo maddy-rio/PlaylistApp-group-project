@@ -5,7 +5,9 @@ const router = express.Router()
 
 router.get('/:playlistId', async (req, res) => {
   try {
+   
     const playlistId = Number(req.params.playlistId)
+   
     const tracks = await getPlaylistTrackIds(playlistId)
     res.json(tracks)
   } catch (err) {

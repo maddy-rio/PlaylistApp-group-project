@@ -1,9 +1,9 @@
 import request from 'superagent'
 import { getSession } from '../functions/startSession'
 
-export const songList = async (playlistId: string, token: string) => {
-  console.log(playlistId)
-  const responseArr = await request.get(`/api/v1/playlist/${playlistId.playlistId}`)
+export const songList = async (playlistId, token: string) => {
+  console.log(playlistId.playlistId)
+  const responseArr = await request.get(`/api/v1/tracks/${playlistId.playlistId}`)
   const resultWithIds = responseArr.body.map((item) => item.trackId)
 
   console.log(resultWithIds)
