@@ -7,15 +7,13 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { searchSongs } from '../apis/searchSongs'
 import TrackSearchResult from './TrackSearchResult'
 import Player from './Player'
-import {getSession} from '../functions/startSession'
+import { getSession } from '../functions/startSession'
 
-
-
-const Songs = () => {
-  const accessToken =getSession()
+const Songs = (playlistId: string) => {
+  const accessToken = getSession()
 
   const [searchInput, setSearchInput] = useState('')
-  
+
   const [searchResults, setSearchResults] = useState([])
   const [playingTrack, setPlayingTrack] = useState('')
 
@@ -31,10 +29,10 @@ const Songs = () => {
     searchMutation.mutate()
   }
 
-  function chooseTrack(track) {
-    setPlayingTrack(track)
-    setSearchInput('')
-  }
+  // function chooseTrack(track) {
+  //   setPlayingTrack(track)
+  //   setSearchInput('')
+  // }
 
   console.log(searchResults)
   return (
@@ -44,22 +42,21 @@ const Songs = () => {
         <input
           type="text"
           value={searchInput}
-          placeholder='Start typing a song name...'
+          placeholder="Start typing a song name..."
           onChange={(e) => setSearchInput(e.target.value)}
         />
         <button type="submit">Search</button>
       </form>
 
       <div className="flex-grow-1 my-2" style={{ overflowY: 'auto' }}>
-        {searchResults.map((track) => (
+        {/* {searchResults.map((track) => ( */}
           <TrackSearchResult
-            track={track}
-            key={track.id}
-            chooseTrack={chooseTrack}
-            token={accessToken}
-            playingTrack={playingTrack}
+            // 
+            tracks={searchResults}
+           
+            playlistId={playlistId}
           />
-        ))}
+        {/* ))} */}
       </div>
     </div>
   )

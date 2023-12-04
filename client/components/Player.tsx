@@ -3,7 +3,7 @@ import SpotifyPlayer from 'react-spotify-web-playback'
 
 export default function Player({ token, trackUri }:any) {
   const [play, setPlay] = useState(false)
-
+console.log(trackUri)
   useEffect(() => setPlay(true), [trackUri])
 
   if (!token) return null
