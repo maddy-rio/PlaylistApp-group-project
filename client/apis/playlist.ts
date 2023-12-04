@@ -77,3 +77,8 @@ export async function getPlaylistInfo(playlistId: string) {
   console.log(response.body)
   return response.body
 }
+
+// PLAYLIST TO THE DATABASE
+export function addPlaylistToDatabase(playlist: dbPlaylist) {
+  return request.post('/api/v1/playlist/add-playlist').send({playlist})
+}
