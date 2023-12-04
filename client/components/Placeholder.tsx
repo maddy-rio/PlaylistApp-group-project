@@ -16,7 +16,7 @@ function Placeholder() {
   async function handleAddToPlaylist() {
     const trackId = '7ggnbOaIL5u5unRbcL31ke'
     const playlistId = '59qlzhGMmajrcKowRl1GN1'
-    const data = await addTrackToPlaylist({ trackId, playlistId })
+    const data = await addTrackToPlaylist( trackId, playlistId )
     console.log(data.body)
   }
 
