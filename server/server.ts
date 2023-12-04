@@ -6,6 +6,7 @@ import cors from 'cors'
 import 'dotenv/config'
 import spotifyUser from './routes/spotifyUser.ts'
 import tracksRoutes from './routes/tracks.ts'
+import PlaylistRoutes from './routes/playlist.ts'
 
 const server = express()
 
@@ -20,11 +21,15 @@ server.use(bodyParser.urlencoded({ extended: true }))
 server.use(bodyParser.json())
 
 // Include your Spotify routes
-import spotifyRoutes from './routes/auth'
-server.use('/api/spotify', spotifyRoutes)
+// import spotifyRoutes from './routes/auth'
+// server.use('/api/spotify', spotifyRoutes)
 
 // server.use('/api/v1/playlist', playlistRoutes)
-server.use('/api/v1/login', login)
+// server.use('/api/v1/login', login)
+
+server.use('/api/v1/playlist', PlaylistRoutes)
+// server.use('/api/v1/login', login)
+
 
 if (process.env.NODE_ENV === 'production') {
   server.use(express.static(Path.resolve('public')))
