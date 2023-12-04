@@ -126,6 +126,35 @@
   line-height: 44px;
 }
 
+.username {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 24px;
+  width: 100%;
+}
+
+.username-box {
+  width: 100%;
+}
+
+.username-label {
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 36px;
+}
+
+.username-field {
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 36px;
+  text-align: center;
+  height: 64px;
+  margin: 0px 16px;
+}
+
 .playlist-card {
   width: 200px;
 }
@@ -175,4 +204,9 @@
   border-radius: 24px;
   background-color: #1DB954;
   color: #111113;
+}
+
+.submit-username {
+  height: 64px;
+  width: 64px;
 }
