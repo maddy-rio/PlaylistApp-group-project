@@ -2,6 +2,7 @@
 
 
 import PlaylistPage from './PlayList'
+import Songlist from './Songlist'
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
         <h1>VIBESVAULT</h1>
         
         <PlaylistPage />
+        <Songlist />
       </div>
     </>
   )
