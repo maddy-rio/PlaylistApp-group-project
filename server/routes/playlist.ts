@@ -1,19 +1,23 @@
 import { Router } from 'express'
-import * as db from '../db/functions/database'
-import { UserPlaylist } from '../../models/playlist'
+import { createPlaylist } from '../db/functions/addInfo'
+import { Playlists } from '../../models/dbPlaylist'
 
 const router = Router()
 
-router.get('/', async (req, res) => {
+
+router.post('/add-playlist', async (req, res) => {
   try {
-    const playData: UserPlaylist[] = await db.getAllPlaylists()
-    console.log(playData, ' routes')
-    res.json({ playData })
+    const data: Playlists = req.body.playlist
+    console.log(data);
+    
+    const newPlaylist = await createPlaylist(data)
+    res.json({
+      message: 'successfully added playlist to database' + newPlaylist,
+    })
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: 'Something went wrong' })
   }
 })
-
 
 export default router
