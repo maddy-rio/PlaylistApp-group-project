@@ -8,6 +8,7 @@ export async function up(knex) {
       table.string('name')
       table.string('token')
       table.string('owner_id')
+      table.string('spotify_playlist_id')
       table.unique('token')
     })
 }
