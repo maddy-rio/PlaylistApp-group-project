@@ -4,10 +4,9 @@
  */
 export async function seed(knex) {
   // Deletes ALL existing entries
-  await knex('playlists').del()
   await knex('playlists').insert([
-    { id: 1, playlist_id: '44A5th7x5wlXxSwcnO7T9E' }, // Karl's playlist
-    { id: 2, playlist_id: '2spviMMQXcRtrxDlcIPJta' }, // Maddy's playlist
-    { id: 3, playlist_id: '1Gyu0Nea6xlTNfA33qlxhO' }, // Courtney's playlist
+    { id: 1, name: 'Glitch Hop Happy Hour', token: 'ABC123' }, // Karl's playlist
+    { id: 2, name: 'K Pop Jams', token: 'CDE456' }, // Maddy's playlist
+    { id: 3, name: 'Aussie Hip Hop House', token: 'FGH789'}, // Courtney's playlist
   ])
 }
