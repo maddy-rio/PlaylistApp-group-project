@@ -1,4 +1,4 @@
-import { addTrackToPlaylist, getUsersPlaylists } from '../apis/playlist'
+import { addTrackToPlaylist, getPlaylistItems, getUsersPlaylists } from '../apis/playlist'
 import NewPlaylist from './NewPlaylist'
 
 function Placeholder() {
@@ -9,8 +9,9 @@ function Placeholder() {
   //  Access current session -- call getSession() for token
 
   async function handlePlaylists() {
-    const data = await getUsersPlaylists()
-    console.log(data.body)
+    // const data = await getUsersPlaylists()
+    const data = await getPlaylistItems('59qlzhGMmajrcKowRl1GN1')
+    console.log(data)
   }
 
   async function handleAddToPlaylist() {

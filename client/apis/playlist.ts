@@ -1,6 +1,6 @@
 import request from 'superagent'
 import { UserPlaylist } from '../../models/playlist'
-import {temp} from '../temp-json/getPlaylist.js'
+import { temp } from '../temp-json/getPlaylist.js'
 import { Welcome } from '../../models/temp'
 import { getSession } from '../functions/startSession'
 import { Playlists } from '../../models/Playlist'
@@ -8,7 +8,7 @@ import { Playlists } from '../../models/Playlist'
 
 export async function getPlaylist(): Promise<Welcome[]> {
   // const response = temp
-  
+
   return temp as unknown as Welcome[]
 }
 export async function getUserDetails() {
@@ -21,7 +21,7 @@ export async function getUserDetails() {
 export async function getUsersPlaylists(): Promise<Playlists> {
   const token = getSession()
   const response = await request.get(`/api/v1/user/playlists/${token}`)
-return response.body.items
+  return response.body.items
 }
 
 interface AddTrackToPlaylist {
@@ -53,9 +53,10 @@ export function createNewPlaylist(data: NewPlaylist) {
   })
 }
 
-export function getPlaylistItems(playlistId: string) {
+export async function getPlaylistItems(playlistId: string) {
   const token = getSession()
-  return request
+  const response = await request
     .get(`/api/v1/user/playlist/playlist-items`)
     .query({ playlistId, token })
+  return response.body.data.items
 }
