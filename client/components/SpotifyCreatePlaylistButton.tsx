@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 // imports that need to refactored into another location
 import request from 'superagent'
 import { getSession } from '../functions/startSession'
-import { getUserDetails } from '../apis/playlist'
+import { addPlaylistToDatabase, getUserDetails } from '../apis/playlist'
+import { Playlists } from '../../models/dbPlaylist'
 
 const defaultFormData = {
   playlistName: '',
@@ -61,10 +62,18 @@ function SpotifyCreatePlaylistButton() {
       .then((data) => data.body)
 
     // send this playlist id to the database on creation of a users new playlist
-    setOwnerDetails({
-      playlistId: new_playlist.id,
-      ownerId: user_id,
+    // setOwnerDetails({
+    //   playlistId: new_playlist.id,
+    //   ownerId: user_id,
+    // })
+
+    //TEMPORARY, FIX THIS UP
+    const dbCreatePlaylist = await addPlaylistToDatabase({
+      name: playlistDetails.playlistName,
+      owner_id: user_id,
+      spotify_playlist_id: new_playlist.id,
     })
+    console.log(dbCreatePlaylist)
   }
 
   return (
