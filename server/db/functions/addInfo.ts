@@ -6,13 +6,13 @@ interface Playlists {
   name: string
   token: string
   owner_id: string
+  spotify_playlist_id: string
 }
 
 // create a new playlist
 export function createPlaylist(data: Playlists) {
   return db.table('playlists').insert({ ...data })
 }
-
 
 /////////////////////////////
 
