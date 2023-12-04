@@ -1,13 +1,27 @@
 import connection from '../connection'
-import { PlaylistTracks } from '../../../models/getInfo'
+import { PlaylistTrackIds } from '../../../models/getInfo'
 
 const db = connection
 
-export async function getAllTracks(
+// TODO: return array of track ids from playlist id
+export async function getPlaylistTrackIds(
   playlistId: number,
-): Promise<PlaylistTracks[]> {
+): Promise<PlaylistTrackIds[]> {
   const tracks = await db('playlists_tracks')
     .where('playlists_id', playlistId)
-    .select('*')
+    .join('tracks', 'playlists_tracks.tracks_id', 'tracks.id')
+    .select('tracks.track_id as trackId')
+  console.log(`from db function:`, tracks)
   return tracks
 }
+
+// [
+//   { trackId: '1Cj2vqUwlJVG27gJrun92y' },
+//   { trackId: '1Cj2vqUwlJVG27gJrun92y' }
+// ]
+
+// [
+//   '1Cj2vqUwlJVG27gJrun92y',
+//   '1Cj2vqUwlJVG27gJrun92y'
+// ]
+

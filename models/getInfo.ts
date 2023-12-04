@@ -4,3 +4,7 @@ export interface PlaylistTracks {
   users_id: number
   date: string
 }
+
+export interface PlaylistTrackIds {
+  trackId: number
+}
