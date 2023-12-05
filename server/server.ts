@@ -6,11 +6,8 @@ import cors from 'cors'
 import 'dotenv/config'
 import spotifyUser from './routes/spotifyUser.ts'
 import tracksRoutes from './routes/tracks.ts'
-<<<<<<< HEAD
 import addUserRouter from './routes/addFunctions.ts'
-=======
 import userPlaylist from './routes/userPlayList.ts'
->>>>>>> main
 
 const server = express()
 

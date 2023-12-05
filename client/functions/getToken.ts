@@ -1,7 +1,7 @@
 import request from 'superagent'
 
-const SPOTIFY_CLIENT_ID = 'e6902475a4424e50813fb15d818401c6'
-const SPOTIFY_CLIENT_SECRET_ID = '88f21bdbd3424f3b8a7a489fc332dbaa'
+const SPOTIFY_CLIENT_ID = 'edcdc478bd3b486dbd641b390065c0cf'
+const SPOTIFY_CLIENT_SECRET_ID = '8a5c13bc700040758a29b4175847c84a'
 
 export const gatherUserTokenFromSpotify = async (
   code: any,

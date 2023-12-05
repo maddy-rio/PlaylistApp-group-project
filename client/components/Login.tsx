@@ -9,7 +9,7 @@ import PlaylistPage from './PlayList'
 import { useOutletContext } from 'react-router-dom'
 import { ContextType } from '../../models/contextType'
 
-const SPOTIFY_CLIENT_ID = 'e6902475a4424e50813fb15d818401c6'
+const SPOTIFY_CLIENT_ID = 'edcdc478bd3b486dbd641b390065c0cf'
 const redirectUri = 'http://localhost:5173/login'
 
 async function initiateSpotifyAuthentication() {
@@ -54,7 +54,9 @@ const fetchToken = async () => {
   try {
     const urlParams = new URLSearchParams(window.location.search)
     const code = urlParams.get('code')
+    console.log(code)
     const user_token = await gatherUserTokenFromSpotify(code, redirectUri)
+    console.log(user_token)
     startSession(user_token.access_token)
   } catch (err) {
     console.error(err)
@@ -67,26 +69,26 @@ function Login() {
   const code = urlParams.get('code')
 
   useEffect(() => {
-    if (code) {
-      // true if redirected from spotify auth
-      fetchToken()
-    } else if (getSession()) {
-      // already in session
-      const fecthUserDetails = async () => {
-        const data = await getUserDetails()
-        console.log(data)
-        changeUserDetails(data)
+    // already in session
+    const fecthUserDetails = async () => {
+      if (code) {
+        // true if redirected from spotify auth
+        await fetchToken()
+      } else if (!getSession()) {
+        await initiateSpotifyAuthentication()
       }
-      fecthUserDetails()
-    } else {
-      initiateSpotifyAuthentication()
+      const data = await getUserDetails()
+
+      changeUserDetails(data)
     }
+    fecthUserDetails()
   }, [code])
 
   console.log(userDetails)
   if (!userDetails) {
-    return <div>Login</div>
+    return <div>Loading user Info...</div>
   }
+
   return (
     <div>
       <>
