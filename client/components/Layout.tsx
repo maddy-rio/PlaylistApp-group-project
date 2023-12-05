@@ -5,6 +5,7 @@ import LandingPage from './LandingPage'
 import { useState } from 'react'
 
 import { ContextType } from '../../models/contextType'
+import Navbar from './Navbar'
 
 function Layout() {
   const location = useLocation()
