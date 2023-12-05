@@ -4,10 +4,9 @@
  */
 export async function seed(knex) {
   // Deletes ALL existing entries
-  await knex('playlists_users').del()
   await knex('playlists_users').insert([
-    {  user_id: 1, playlist_id: 1 },
-    {  user_id: 2, playlist_id: 2 },
-    {  user_id: 3, playlist_id: 3 },
+    {  users_id: 1, playlists_id: 1 },
+    {  users_id: 2, playlists_id: 2 },
+    {  users_id: 3, playlists_id: 3 },
   ])
 }

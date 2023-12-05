@@ -1,76 +1,56 @@
 // import CreatePlaylist from './CreatePlaylist'
-import { getPlaylist } from '../apis/playlist'
+import { getUsersPlaylists, getUserDetails } from '../apis/playlist'
 import { useQuery } from '@tanstack/react-query'
-import { UserPlaylist } from '../../models/playlist'
-import { Welcome } from '../../models/temp'
 
-const initialData = {
-  playlist_id: '',
-  user_id: '',
+import { Link, useOutletContext } from 'react-router-dom'
+import { ContextType } from '../../models/contextType'
+
+interface playlistProps {
+  playlistsId: string
+  name: string
+  id: string
 }
 
 const PlaylistPage = () => {
+  const { userDetails } = useOutletContext<ContextType>()
   const {
     data: playlists,
-    isLoading,
     error,
-  } = useQuery<Welcome[]>({
+    isLoading,
+  } = useQuery({
     queryKey: ['playlists'],
-    queryFn: getPlaylist,
+    queryFn: () => getUsersPlaylists(userDetails?.id),
   })
 
+  console.log(playlists)
   if (isLoading) {
     return <div>Loading...</div>
   }
   if (error) {
     return <div>Error</div>
   }
-  console.log(playlists?.map((p) => p.description), 'playlists')
-  // const renderPlaylists = () => {
+
   return (
     <>
-      {playlists?.map((Playlist) => (
-        <div key={Playlist.id}>
-          {Playlist.name} <br></br>
-          
-          {Playlist.description}
-          <br></br>
-          total tracks: {Playlist.tracks.total} <br></br>
-
-          <img src={Playlist.images[1].url} />
-        </div>
-      ))}
+      <div>
+        {/* <div className="flex-d">
+        {/* <img src={userInfo.images[0].url} /> */}
+        <h3>
+          Hi {userDetails?.display_name}! Here&apos;s all the playlists you are
+          collaborating on:
+        </h3>
+      </div>
+      <div className="flex">
+        {playlists?.map((playlist: playlistProps, index: number) => (
+          <Link to={`/playlist/${playlist.playlistsId}`} key={index}>
+            <div key={playlist.id}>
+              <h4>{playlist.name}</h4> <br></br>
+            </div>
+          </Link>
+        ))}
+      </div>
     </>
   )
-  //   if (playlists.length > 0) {
-  //     return (
-  //       <div>
-
-  //         {/* <h2>Hi {User.id}! Here&apos;s all the playlists your&apos;re collaborating on: </h2> */}
-  //         {/* {playlists?.map((Playlist) => (
-  //           // <div key={Playlist.id}>
-  //           //   <h3>{Playlist.}</h3>
-  //           //   <CreatePlaylist />
-  //           // </div>
-  //         ))} */}
-  //       </div>
-  //     )
-  //   } else {
-  //     return (
-  //       <div>
-  //         <h2>Hi {User.id}!
-  //         <br></br>
-  //         Get started by adding a playlist.
-  //         </h2>
-  //         <CreatePlaylist />
-  //       </div>
-  //     )
-  //   }
-
-  // }
-  // return (<>
-
-  // </>)
 }
 
 export default PlaylistPage

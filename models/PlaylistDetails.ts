@@ -1,4 +1,47 @@
-export interface Song {
+export interface PlaylistDetails {
+  collaborative: boolean
+  description: string
+  external_urls: ExternalUrls
+  followers: Followers
+  href: string
+  id: string
+  images: Image[]
+  name: string
+  owner: Owner
+  public: boolean
+  snapshot_id: string
+  tracks: Tracks
+  type: string
+  uri: string
+}
+
+export interface ExternalUrls {
+  spotify: string
+}
+
+export interface Followers {
+  href: string
+  total: number
+}
+
+export interface Image {
+  url: string
+  height: number
+  width: number
+}
+
+export interface Owner {
+  external_urls: ExternalUrls
+  followers?: Followers
+  href: string
+  id: string
+  type: string
+  uri: string
+  display_name?: string
+  name?: string
+}
+
+export interface Tracks {
   href: string
   limit: number
   next: string
@@ -9,8 +52,15 @@ export interface Song {
 }
 
 export interface Item {
+  added_at: string
+  added_by: Owner
+  is_local: boolean
+  track: Track
+}
+
+export interface Track {
   album: Album
-  artists: ItemArtist[]
+  artists: Artist[]
   available_markets: string[]
   disc_number: number
   duration_ms: number
@@ -31,7 +81,7 @@ export interface Item {
   is_local: boolean
 }
 
-export interface Album extends Item {
+export interface Album {
   album_type: string
   total_tracks: number
   available_markets: string[]
@@ -45,33 +95,14 @@ export interface Album extends Item {
   restrictions: Restrictions
   type: string
   uri: string
-  // artists: AlbumArtist[]
-}
-
-export interface AlbumArtist {
-  external_urls: ExternalUrls
-  href: string
-  id: string
-  name: string
-  type: string
-  uri: string
-}
-
-export interface ExternalUrls {
-  spotify: string
-}
-
-export interface Image {
-  url: string
-  height: number
-  width: number
+  artists: Owner[]
 }
 
 export interface Restrictions {
   reason: string
 }
 
-export interface ItemArtist {
+export interface Artist {
   external_urls: ExternalUrls
   followers: Followers
   genres: string[]
@@ -82,11 +113,6 @@ export interface ItemArtist {
   popularity: number
   type: string
   uri: string
-}
-
-export interface Followers {
-  href: string
-  total: number
 }
 
 export interface ExternalIDS {
