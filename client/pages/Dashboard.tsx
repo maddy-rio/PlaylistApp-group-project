@@ -8,6 +8,8 @@ import { useQuery } from '@tanstack/react-query'
 
 import { Link, useOutletContext } from 'react-router-dom'
 import { ContextType } from '../../models/contextType'
+import Canvas from '../components/Canvas'
+
 
 interface playlistProps {
   playlistsId: string
