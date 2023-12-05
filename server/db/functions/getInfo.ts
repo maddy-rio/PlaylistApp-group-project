@@ -1,5 +1,9 @@
 import connection from '../connection'
-import { PlaylistTrackIds, UserPlaylists, UserName } from '../../../models/getInfo'
+import {
+  PlaylistTrackIds,
+  UserPlaylists,
+  UserName,
+} from '../../../models/getInfo'
 
 const db = connection
 
@@ -26,13 +30,16 @@ export async function getUserPlaylists(
   return playlists
 }
 
-export  async function getUserName( userId: number ): Promise<UserName[]> {
-  const name = await db('users')
-    .where('users.id', userId)
-    .select('name')
-    console.log(`from db function:`, name)
-    return name
+export async function getUserName(userId: number): Promise<UserName[]> {
+  const name = await db('users').where('users.id', userId).select('name')
+  console.log(`from db function:`, name)
+  return name
 }
 
-
-
+// need to actual spotify playlist id from db id
+export async function getSpotifyPlaylistID(playlistId: number) {
+  const spotifyPlaylistID = await db('playlists')
+    .where('id', playlistId)
+    .select('spotify_playlist_id')
+  return spotifyPlaylistID
+}
