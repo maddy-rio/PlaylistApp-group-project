@@ -20,7 +20,7 @@ function Layout() {
         <LandingPage />
       ) : (
         <>
-          <Navbar /> <Outlet context={{userDetails, changeUserDetails} satisfies ContextType} />
+          <Navbar /> <Outlet  context={{userDetails, changeUserDetails} satisfies ContextType} />
         </>
       )}
       {/* <Navbar /> */}

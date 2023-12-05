@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { getSession, startSession } from '../functions/startSession'
 import { getUserDetails } from '../apis/playlist'
 import PlaylistPage from './PlayList'
-import { useOutletContext } from 'react-router-dom'
+import { useNavigate, useOutletContext } from 'react-router-dom'
 import { ContextType } from '../../models/contextType'
 
 const SPOTIFY_CLIENT_ID = 'e6902475a4424e50813fb15d818401c6'
@@ -50,11 +50,12 @@ async function initiateSpotifyAuthentication() {
   window.location.href = authUrl.toString()
 }
 
-const fetchToken = async () => {
+const getToken = async () => {
   try {
     const urlParams = new URLSearchParams(window.location.search)
     const code = urlParams.get('code')
     const user_token = await gatherUserTokenFromSpotify(code, redirectUri)
+    console.log(user_token)
     startSession(user_token.access_token)
   } catch (err) {
     console.error(err)
@@ -65,22 +66,26 @@ function Login() {
   const { userDetails, changeUserDetails } = useOutletContext<ContextType>()
   const urlParams = new URLSearchParams(window.location.search)
   const code = urlParams.get('code')
+  const navigate = useNavigate()
 
   useEffect(() => {
-    if (code) {
-      // true if redirected from spotify auth
-      fetchToken()
-    } else if (getSession()) {
-      // already in session
-      const fecthUserDetails = async () => {
-        const data = await getUserDetails()
-        console.log(data)
-        changeUserDetails(data)
+    // async function fetchToken() {
+    //   await getToken()
+    // }
+
+    // already in session
+    const fecthUserDetails = async () => {
+      if (code) {
+        // true if redirected from spotify auth
+        await getToken()
+      } else if (!getSession()) {
+        await initiateSpotifyAuthentication()
       }
-      fecthUserDetails()
-    } else {
-      initiateSpotifyAuthentication()
+      const data = await getUserDetails()
+      console.log(data)
+      changeUserDetails(data)
     }
+    fecthUserDetails()
   }, [code])
 
   console.log(userDetails)

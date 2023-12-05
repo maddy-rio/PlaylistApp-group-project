@@ -33,13 +33,13 @@ export async function getUsersPlaylists(userId: string) {
 export async function addTrackToPlaylist(
   playlistId: string,
   trackId: string,
-  // userId: string,
+  userId: string,
 ) {
-  console.log(playlistId, trackId)
+  console.log(playlistId, trackId, userId)
   // const token = getSession()
   const response = await request
-    .post(`'/api/v1/user/playlists/${playlistId}`)
-    .send({ trackId})
+    .post(`/api/v1/user/playlists/${playlistId}`)
+    .send({ trackId, userId})
 
   return response.body
 }

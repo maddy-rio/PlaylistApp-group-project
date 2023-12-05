@@ -13,7 +13,6 @@ export function createPlaylist(data: Playlists) {
   return db.table('playlists').insert({ ...data })
 }
 
-
 /////////////////////////////
 
 interface UserID {
@@ -59,12 +58,47 @@ export function newTrack(data: Track) {
 }
 
 interface PlaylistTracks {
-  tracksId: number
-  usersId: number
-  playlistsId: number
+  tracks_id: string
+  users_id: string
+  playlists_id: number
 }
 
 // add song to playlist
-export function addSongToPlaylist(data: PlaylistTracks) {
-  return db.table('playlists_tracks').insert({ ...data })
+
+export async function createTrackId(track_id: string) {
+  const track = await db.table('tracks').select('*').where({ track_id }).first()
+  console.log(track)
+  if (track !== undefined) {
+    return track.id
+  }
+  const [newTrack] = await db.table('tracks').insert({ track_id })
+  return newTrack
+}
+
+export async function createUserId(user_id: string) {
+  const user = await db.table('users').select('*').where({ user_id }).first()
+  if (user!== undefined) {
+    return user.id
+  }
+  const [newUser] = await db.table('users').insert({ user_id })
+  return newUser
+}
+
+export async function addSongToPlaylist(
+  track_id: string,
+  users_id: string,
+  playlists_id: number,
+) {
+  const newTrackId = await createTrackId(track_id)
+  const newUserId = await createUserId(users_id)
+
+  const newSong = await db
+    .table('playlists_tracks')
+    .insert({
+      tracks_id: newTrackId,
+      users_id: newUserId,
+      playlists_id,
+    })
+  console.log(newSong)
+  return newSong
 }

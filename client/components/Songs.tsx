@@ -45,7 +45,7 @@ const Songs = ({playlistId}:Props) => {
       </form>
 
       <div className="flex-grow-1 my-2" style={{ overflowY: 'auto' }}>
-        <TrackSearchResult tracks={searchResults} playlistId={playlistId} />
+        <TrackSearchResult tracks={searchResults} playlistId={playlistId} setTracks={()=>setSearchResults([])} />
       </div>
     </div>
   )
