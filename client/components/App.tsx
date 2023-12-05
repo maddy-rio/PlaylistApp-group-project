@@ -1,7 +1,5 @@
 import Layout from './Layout'
-import Login from './Login'
-import PlaylistPage from './PlayList'
-import Songlist from './Songlist'
+
 
 function App() {
   return (
