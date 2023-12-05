@@ -1,8 +1,16 @@
 import { Flex, Heading, Text, Button } from '@radix-ui/themes'
 import Navigation from "../components/Navigation"
+import { getUserDetails } from '../apis/playlist'
 
 
 const LandingPage = () => {
+
+  // please remove me at the end Courtney**
+  async function initiateSpotifyAuthentication() {
+    const data = await getUserDetails()
+    console.log('data', data);
+  }
+  initiateSpotifyAuthentication()
 
   return (
     <Flex width="100%" height="100%" className='app'>
