@@ -1,29 +1,27 @@
 // import CreatePlaylist from './CreatePlaylist'
 import { getUsersPlaylists, getUserDetails } from '../apis/playlist'
 import { useQuery } from '@tanstack/react-query'
-import { UserPlaylist } from '../../models/playlist'
-import { Welcome } from '../../models/temp'
-import { Link } from 'react-router-dom'
 
-const initialData = {
-  playlist_id: '',
-  user_id: '',
+import { Link, useOutletContext } from 'react-router-dom'
+import { ContextType } from '../../models/contextType'
+
+interface playlistProps {
+  playlistsId: string
+  name: string
+  id: string
 }
 
 const PlaylistPage = () => {
-  const { data: playlists } = useQuery({
+  const { userDetails } = useOutletContext<ContextType>()
+  const {
+    data: playlists,
+    error,
+    isLoading,
+  } = useQuery({
     queryKey: ['playlists'],
-    queryFn: getUsersPlaylists,
+    queryFn: () => getUsersPlaylists(userDetails?.id),
   })
 
-  const {
-    data: userInfo,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ['userInfo'],
-    queryFn: getUserDetails,
-  })
   console.log(playlists)
   if (isLoading) {
     return <div>Loading...</div>
@@ -34,23 +32,22 @@ const PlaylistPage = () => {
 
   return (
     <>
-      <div className='flex-d'>
+      <div>
+        {/* <div className="flex-d">
         {/* <img src={userInfo.images[0].url} /> */}
-        <h3>Hi {userInfo?.display_name}! Here's all the playlists you are collaborating on:</h3>
+        <h3>
+          Hi {userDetails?.display_name}! Here&apos;s all the playlists you are
+          collaborating on:
+        </h3>
       </div>
-      <div className='flex'>
-      {playlists?.map((playlist) => (
-          <Link to={`/playlist/${playlist.id}`} key={playlist.id}>
-          <div key={playlist.id}>
-            <h4>{playlist.name}</h4> <br></br>
-            {playlist.images.length !== 0? <img src={playlist?.images[0]?.url} alt={playlist?.name}  style={{ height: '64px', width: '64px' }} /> : null}
-            <p>{playlist.description}</p>
-            <br></br>
-            <p>Total tracks: {playlist.tracks.total} </p>
-            <br></br>
-          </div>
+      <div className="flex">
+        {playlists?.map((playlist: playlistProps, index: number) => (
+          <Link to={`/playlist/${playlist.playlistsId}`} key={index}>
+            <div key={playlist.id}>
+              <h4>{playlist.name}</h4> <br></br>
+            </div>
           </Link>
-      ))}
+        ))}
       </div>
     </>
   )

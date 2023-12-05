@@ -5,6 +5,9 @@ import { gatherUserTokenFromSpotify } from '../functions/getToken'
 import { useEffect, useState } from 'react'
 import { getSession, startSession } from '../functions/startSession'
 import { getUserDetails } from '../apis/playlist'
+import PlaylistPage from './PlayList'
+import { useOutletContext } from 'react-router-dom'
+import { ContextType } from '../../models/contextType'
 
 const SPOTIFY_CLIENT_ID = 'e6902475a4424e50813fb15d818401c6'
 const redirectUri = 'http://localhost:5173/login'
@@ -58,43 +61,8 @@ const fetchToken = async () => {
   }
 }
 
-export interface Pokedex {
-  country: string
-  display_name: string
-  email: string
-  explicit_content: ExplicitContent
-  external_urls: ExternalUrls
-  followers: Followers
-  href: string
-  id: string
-  images: Image[]
-  product: string
-  type: string
-  uri: string
-}
-
-export interface ExplicitContent {
-  filter_enabled: boolean
-  filter_locked: boolean
-}
-
-export interface ExternalUrls {
-  spotify: string
-}
-
-export interface Followers {
-  href: string
-  total: number
-}
-
-export interface Image {
-  url: string
-  height: number
-  width: number
-}
-
 function Login() {
-  const [userDetails, setUserDetails] = useState<Pokedex | null>()
+  const { userDetails, changeUserDetails } = useOutletContext<ContextType>()
   const urlParams = new URLSearchParams(window.location.search)
   const code = urlParams.get('code')
 
@@ -106,13 +74,16 @@ function Login() {
       // already in session
       const fecthUserDetails = async () => {
         const data = await getUserDetails()
-        setUserDetails(data.body)
+        console.log(data)
+        changeUserDetails(data)
       }
       fecthUserDetails()
     } else {
       initiateSpotifyAuthentication()
     }
-  })
+  }, [code])
+
+  console.log(userDetails)
   if (!userDetails) {
     return <div>Login</div>
   }
@@ -127,6 +98,7 @@ function Login() {
         <p>{userDetails.product}</p>
         <p>{userDetails.type}</p>
         <p>{userDetails.uri}</p>
+        {userDetails && <PlaylistPage />}
       </>
     </div>
   )
