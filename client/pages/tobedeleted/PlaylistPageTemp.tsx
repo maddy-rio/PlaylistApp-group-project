@@ -1,55 +1,45 @@
 import { Flex, Button, Heading, Text } from '@radix-ui/themes'
 import { ArrowLeftIcon } from '@radix-ui/react-icons'
-
-import Navigation from '../components/Navigation'
-import Canvas from '../components/Canvas'
-
-import { useParams } from 'react-router-dom'
-import { getPlaylistInfo } from '../apis/playlist'
-import { useQuery } from '@tanstack/react-query'
-
-import Track from '../components/Track'
-import Songs from '../components/Songs'
-import Player from '../components/Player'
+import Navigation from '../../components/Navigation'
+import Canvas from '../../components/Canvas'
 
 
-      
 const CurrentPlaylist = () => {
   const todaysTheme = 'A song that tells a story'
-  const { playlistId } = useParams() 
-
-  const { data: playlistTracks } = useQuery({
-    queryKey: ['single-playlist'],
-    queryFn: () => getPlaylistInfo(playlistId),
-  })
-
 
   return (
     <>
 
-    <Flex width="100%" height="100%" className='app'>
+    {/* old */}
+    <Flex width="100%" height="100%" mb="0" className='app'>
       <Flex direction="column" width="100%" mx="3" my="2">
         <Navigation />
-        <Flex direction="column" justify="end" height="100%" m="7">
-          <Heading as="h1" align="left" className="theme-h1">
-            Today's Theme:
-          </Heading>
-          <Heading as="h2" className="theme-h2 gradient-theme">
-            <em>{todaysTheme}</em>
-          </Heading>
-          <div className='player-box'>
-            <Heading as="h3" className='player-h3'>Currently Playing</Heading>
-            <div className='player'></div>
-          </div>
+        <Flex>
+          <Button variant="ghost" size="3" style={{color: 'white'}}>
+            <ArrowLeftIcon width="20" height="20"/>
+            Back to Playlists
+          </Button>
         </Flex>
-        <div className='background'>
-          <Canvas />
-        </div>
+        <Flex direction="column" justify="end" height="100%" m="7">
+            <Heading as="h1" align="left" className="theme-h1">
+              Today's Theme:
+            </Heading>
+            <Heading as="h2" className="theme-h2 gradient-theme">
+              <em>{todaysTheme}</em>
+            </Heading>
+            <div className='player-box'>
+              <Heading as="h3" className='player-h3'>Currently Playing</Heading>
+              <div className='player'></div>
+            </div>
+
+        </Flex>
+          <div className='background'>
+            <Canvas />
+          </div>
       </Flex>
 
       <Flex direction="column" width="100%" mt="2" mr="2" mb="-3">
         <div className='gradient-box'>
-
           <Flex align="center" justify="end" m="3">
             <Button size="2" className="green-button">
               <svg height="20" width="20" viewBox="0 0 24 24">
@@ -58,17 +48,16 @@ const CurrentPlaylist = () => {
               Play on Spotify
             </Button>
           </Flex>
-
           <Flex direction="column" m="7">
-            <Heading as="h1" align="left" className="theme-h1">
+            <Heading as="h1" align="left" className="playlist-h1" >
               Playlist
             </Heading>
           </Flex>
-
         </div>
-
       </Flex>
     </Flex>
+    {/* end old */}
+
 
     </>
   )

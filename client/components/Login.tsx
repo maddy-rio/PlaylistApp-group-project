@@ -5,12 +5,15 @@ import { gatherUserTokenFromSpotify } from '../functions/getToken'
 import { useEffect } from 'react'
 import { getSession, startSession } from '../functions/startSession'
 import { getUserDetails } from '../apis/playlist'
-import PlaylistPage from '../pages/PlayList'
+import Dashboard from '../pages/Dashboard'
 import { useOutletContext } from 'react-router-dom'
 import { ContextType } from '../../models/contextType'
 
 const SPOTIFY_CLIENT_ID = 'e6902475a4424e50813fb15d818401c6'
 const redirectUri = 'http://localhost:5173/login'
+
+// TypeError: Cannot destructure property 'userDetails' of 'useOutletContext(...)' as it is null.
+//     at Login (http://localhost:5173/client/components/Login.tsx?t=1701759555829:77:11)
 
 async function initiateSpotifyAuthentication() {
   const scope = `
@@ -69,7 +72,7 @@ function Login() {
 
   useEffect(() => {
     // already in session
-    const fecthUserDetails = async () => {
+    const fetchUserDetails = async () => {
       if (code) {
         // true if redirected from spotify auth
         await getToken()
@@ -80,7 +83,7 @@ function Login() {
 
       changeUserDetails(data)
     }
-    fecthUserDetails()
+    fetchUserDetails()
   }, [code])
 
   console.log(userDetails)
@@ -96,7 +99,7 @@ function Login() {
 
         <p>{userDetails.type}</p>
 
-        {userDetails && <PlaylistPage />}
+        {userDetails && <Dashboard />}
       </>
     </div>
   )
