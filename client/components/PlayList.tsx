@@ -2,36 +2,25 @@
 import { getUsersPlaylists, getUserDetails } from '../apis/playlist'
 import { useQuery } from '@tanstack/react-query'
 
-import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { Link, useOutletContext } from 'react-router-dom'
+import { ContextType } from '../../models/contextType'
 
-const initialData = {
-  playlist_id: '',
-  user_id: '',
+interface playlistProps {
+  playlistsId: string
+  name: string
+  id: string
 }
 
 const PlaylistPage = () => {
-  const [userId, setUserId] = useState('')
-  //get user details
+  const { userDetails } = useOutletContext<ContextType>()
   const {
-    data: userInfo,
-    isLoading,
+    data: playlists,
     error,
+    isLoading,
   } = useQuery({
-    queryKey: ['userInfo'],
-    queryFn: getUserDetails,
-  })
-  //get user playlists
-  const { data: playlists } = useQuery({
     queryKey: ['playlists'],
-    queryFn: () => getUsersPlaylists(userInfo?.id),
+    queryFn: () => getUsersPlaylists(userDetails?.id),
   })
-
-  useEffect(() => {
-    if (userInfo) {
-      setUserId(userInfo.id)
-    }
-  }, [userInfo])
 
   console.log(playlists)
   if (isLoading) {
@@ -47,13 +36,13 @@ const PlaylistPage = () => {
         {/* <div className="flex-d">
         {/* <img src={userInfo.images[0].url} /> */}
         <h3>
-          Hi {userInfo?.display_name}! Here&apos;s all the playlists you are
+          Hi {userDetails?.display_name}! Here&apos;s all the playlists you are
           collaborating on:
         </h3>
       </div>
       <div className="flex">
-        {playlists?.map((playlist:any) => (
-          <Link to={`/playlist/${playlist.playlistsId}`} key={playlist.id}>
+        {playlists?.map((playlist: playlistProps, index: number) => (
+          <Link to={`/playlist/${playlist.playlistsId}`} key={index}>
             <div key={playlist.id}>
               <h4>{playlist.name}</h4> <br></br>
             </div>

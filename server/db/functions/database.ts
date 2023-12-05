@@ -1,11 +1,17 @@
 import connection from '../connection'
-import { UserPlaylist } from '../../../models/playlist'
+
 
 const  db = connection
+
+export interface UserPlaylists {
+  playlists_id: number
+  name: string
+  token: string
+}
 export async function getAllPlaylists(
  
-): Promise<UserPlaylist[]> {
-  const playlists = await db<UserPlaylist>('playlists_users').select('*')
+): Promise<UserPlaylists[]> {
+  const playlists = await db<UserPlaylists>('playlists_users').select('*')
   return playlists
 }
 

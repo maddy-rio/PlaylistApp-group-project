@@ -1,9 +1,9 @@
 import request from 'superagent'
-import { UserPlaylist } from '../../models/playlist'
+
 import { temp } from '../temp-json/getPlaylist.js'
 import { Welcome } from '../../models/temp'
 import { getSession } from '../functions/startSession'
-import { Playlists, Item } from '../../models/Playlist'
+
 // const rootUrl = '/api/v1'
 
 export async function getPlaylist(): Promise<Welcome[]> {
@@ -30,16 +30,16 @@ export async function getUsersPlaylists(userId: string) {
   return responseArr.body
 }
 
-interface AddTrackToPlaylist {
-  playlistId: string
-  trackId: string
-}
-export async function addTrackToPlaylist(playlistId, trackId: string) {
-  // console.log(playlistId.playlistId, trackId)
-  const token = getSession()
+export async function addTrackToPlaylist(
+  playlistId: string,
+  trackId: string,
+  // userId: string,
+) {
+  console.log(playlistId, trackId)
+  // const token = getSession()
   const response = await request
-    .post(`/api/v1/user/playlist/add-track/${playlistId.playlistId}`)
-    .send({ trackId: trackId, token })
+    .post(`'/api/v1/user/playlists/${playlistId}`)
+    .send({ trackId})
 
   return response.body
 }
@@ -73,7 +73,7 @@ export async function getPlaylistItems(playlistId: string) {
 
 export async function getPlaylistInfo(playlistId: string) {
   const token = getSession()
-  console.log(token)
+
   const response = await request
     .get(`https://api.spotify.com/v1/playlists/${playlistId}`)
     .set({

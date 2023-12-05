@@ -5,9 +5,14 @@ import { searchSongs } from '../apis/searchSongs'
 import TrackSearchResult from './TrackSearchResult'
 
 import { getSession } from '../functions/startSession'
+interface Props {
+  playlistId: string
+}
 
-const Songs = (playlistId: string) => {
-  const accessToken = getSession()
+const Songs = ({playlistId}:Props) => {
+  const accessToken = getSession() as string
+ 
+  console.log(playlistId)
 
   const [searchInput, setSearchInput] = useState('')
 

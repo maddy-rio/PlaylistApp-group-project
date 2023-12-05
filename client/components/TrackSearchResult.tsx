@@ -1,9 +1,10 @@
 import { useState } from 'react'
 
-import { Link } from 'react-router-dom'
+import { Link, useOutletContext } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { addTrackToPlaylist, getPlaylistItems } from '../apis/playlist'
 import { Album } from '../../models/song'
+import {ContextType} from '../../models/contextType'
 
 interface Props {
   tracks: Album[]
@@ -11,7 +12,10 @@ interface Props {
   playlistId: string
 }
 
-export default function TrackSearchResult({ tracks, playlistId }: Props) {
+export default function TrackSearchResult({ tracks, playlistId }:Props) {
+  const {userDetails} = useOutletContext<ContextType>()
+  const userId=userDetails?.id
+  console.log(userId)
   const [showSearchResult, setShowSearchResult] = useState(true)
   const queryClient = useQueryClient()
   const addPlayListMutation = useMutation({
@@ -21,15 +25,13 @@ export default function TrackSearchResult({ tracks, playlistId }: Props) {
     },
   })
 
-  function handleClick(id) {
+  function handleClick(id:string) {
     addPlayListMutation.mutate(id)
     setShowSearchResult(!showSearchResult)
   }
 
   return (
     <>
-      {/* <Player track={track} token={token} playingTrack={playingTrack} chooseTrack={chooseTrack} /> */}
-
       {showSearchResult ? (
         tracks.map((track) => (
           <div key={track.id} className="d-flex m-2 align-items-center">
@@ -55,7 +57,6 @@ export default function TrackSearchResult({ tracks, playlistId }: Props) {
           to={`/playlist/${playlistId}`}
           className="text-decoration-none"
         ></Link>
-        // <Track playlists={trackList} />
       )}
     </>
   )

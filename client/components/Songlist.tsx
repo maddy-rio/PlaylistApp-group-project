@@ -4,10 +4,11 @@ import { songList } from '../apis/songList'
 import Player from './Player'
 import { getSession } from '../functions/startSession'
 import { useParams } from 'react-router-dom'
+import Songs from './Songs'
 
 const Songlist = () => {
-  const playListId = useParams()
-  console.log(playListId)
+  const playListId = useParams().playlistId
+  
   const token = getSession()
   const [playingTracks, setPlayingTracks] = useState({})
   const {
@@ -29,10 +30,11 @@ const Songlist = () => {
   function handleClick(item) {
     setPlayingTracks(item.uri)
   }
-  console.log(songs)
+ 
 
   return <div>
-    <h4>Today's recommend PlayList</h4>
+    <h4>Today&apos;s recommend PlayList</h4>
+    <Songs playlistId={playListId} />
 
     {songs.map((item, index) => (
         <div

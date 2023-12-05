@@ -1,3 +1,4 @@
+import Login from './Login'
 import PlaylistPage from './PlayList'
 import Songlist from './Songlist'
 
@@ -6,7 +7,7 @@ function App() {
     <>
       <div className="app">
         <h1>VIBESVAULT</h1>
-
+        <Login />
         <PlaylistPage />
         <Songlist />
       </div>
