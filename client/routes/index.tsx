@@ -18,10 +18,11 @@ import PlaylistPage from '../components/PlayList'
 
 export const routes = createRoutesFromElements(
   <>
-    <Route path="/">
+    <Route path="/" element={<Layout />}>
       <Route index element={<LandingPage />} />
       <Route path="/newuser" element={<AddUserName />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/dashboard/:playlistId" element={<CurrentPlaylist />} />
 
       {/* <Route path="/login" element={<Login />} />
