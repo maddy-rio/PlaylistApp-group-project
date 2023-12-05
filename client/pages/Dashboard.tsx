@@ -9,19 +9,17 @@ import { getSession } from '../functions/startSession'
 
 const Dashboard = () => {
   const user = 'Joe'
-  const cards = [
-    'card1', 'card2', 'card3'
-  ]
-  // const [cards, setCards] = useState<Album[] | []>([])
+  // const cards = ['card1', 'card2', 'card3']
+  const [cards, setCards] = useState<Album[] | []>([])
 
-  // const handleCards = async () => {
-  //   const playlists = await api.getUsersPlaylists('2')
-  //   setCards(playlists)
-  // }
+  const handleCards = async () => {
+    const playlists = await api.getUsersPlaylists('2')
+    setCards(playlists)
+  }
   
-  // useEffect(() => {
-  //   handleCards()
-  // }, [])
+  useEffect(() => {
+    handleCards()
+  }, [])
 
   return (
     <Flex width="100%" height="100%" className='app'>
