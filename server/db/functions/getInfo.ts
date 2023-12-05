@@ -1,5 +1,5 @@
 import connection from '../connection'
-import { PlaylistTrackIds } from '../../../models/getInfo'
+import { PlaylistTrackIds, UserPlaylists, UserName } from '../../../models/getInfo'
 
 const db = connection
 
@@ -15,13 +15,24 @@ export async function getPlaylistTrackIds(
   return tracks
 }
 
-// [
-//   { trackId: '1Cj2vqUwlJVG27gJrun92y' },
-//   { trackId: '1Cj2vqUwlJVG27gJrun92y' }
-// ]
+export async function getUserPlaylists(
+  userId: number,
+): Promise<UserPlaylists[]> {
+  const playlists = await db('playlists_users')
+    .where('users_id', userId)
+    .join('playlists', 'playlists_users.playlists_id', 'playlists.id')
+    .select('playlists_id', 'name', 'token', 'owner_id')
+  console.log(`from db function:`, playlists)
+  return playlists
+}
 
-// [
-//   '1Cj2vqUwlJVG27gJrun92y',
-//   '1Cj2vqUwlJVG27gJrun92y'
-// ]
+export  async function getUserName( userId: number ): Promise<UserName[]> {
+  const name = await db('users')
+    .where('users.id', userId)
+    .select('name')
+    console.log(`from db function:`, name)
+    return name
+}
+
+
 

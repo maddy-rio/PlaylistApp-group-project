@@ -13,7 +13,7 @@ beforeEach(async () => {
 
 describe('getAllTasks', () => {
   it('gets all song ids connected to a playlist id', async () => {
-    const allWins = await db.getPlaylistTrackIds(3)
+    const allWins = await db.getUserPlaylists(1)
     expect(allWins).toHaveLength(1)
   })
 })
