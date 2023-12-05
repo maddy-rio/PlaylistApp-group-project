@@ -1,21 +1,42 @@
+import { useQuery } from '@tanstack/react-query'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { songList } from '../apis/songList'
 import Player from './Player'
 import { getSession } from '../functions/startSession'
-import { Item } from '../../models/Playlist'
+import { useParams } from 'react-router-dom'
+import Songs from './Songs'
 
-function Track({ playlists }) {
-  console.log(playlists)
-  const accessToken = getSession()
+const Songlist = () => {
+  const playListId = useParams().playlistId
+  
+  const token = getSession()
   const [playingTracks, setPlayingTracks] = useState({})
+  const {
+    data: songs,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: ['songs'],
+    queryFn: ()=>songList(playListId, token),
+  })
 
-  function handleClick(item) {
-    setPlayingTracks(item.track.uri)
+  if (isError) {
+    return <p>Error</p>
+  }
+  if (isLoading) {
+    return <p>Loading...</p>
   }
 
-  return (
-    <div>
-      {playlists.map((item, index) => (
+  function handleClick(item) {
+    setPlayingTracks(item.uri)
+  }
+ 
+
+  return <div>
+    <h4>Today&apos;s recommend PlayList</h4>
+    <Songs playlistId={playListId} />
+
+    {songs.map((item, index) => (
         <div
           key={index}
           className="track-single d-flex justify-content-between p-2 m-1 rounded container-sm"
@@ -23,31 +44,24 @@ function Track({ playlists }) {
         >
           <div className="track-single-details d-flex">
             <img
-              src={item.track?.album?.images[0]?.url}
-              alt={item.track?.name}
+              src={item?.album.images[0]?.url}
+              alt={item.name}
               className="track-image rounded"
             />
             <div className="track-artist ml-3">
               <p>
-                <b>{item.track?.name}</b>
+                <b>{item.name}</b>
               </p>
               <div className="">
                 <p className="inline">
-                  {item.track?.explicit && '🅴 '}
-                  {item.track?.artists[0].name}
+                  {item.explicit && '🅴 '}
+                  {item?.artists[0].name}
                 </p>
               </div>
             </div>
           </div>
           <div className="track-single-user d-flex align-items-center">
-            <div>
-              <p className="font-weight-light">ADDED BY</p>
-              <p>
-                <b className="text-capitalize">
-                  {item.added_by?.id ? item.added_by?.id : 'Backson'}
-                </b>
-              </p>
-            </div>
+           
             <img
               className="track-image track-image-profile rounded-circle mx-2"
               src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"
@@ -61,12 +75,12 @@ function Track({ playlists }) {
           </div>
         </div>
       ))}
-      {playingTracks && 
+     
+     {playingTracks && 
       <div>
-      <Player trackUri={playingTracks} token={accessToken} />
+      <Player trackUri={playingTracks} token={token} />
       </div>}
-    </div>
-  )
+  </div>
 }
 
-export default Track
+export default Songlist

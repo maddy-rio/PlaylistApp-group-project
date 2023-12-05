@@ -1,14 +1,15 @@
+import Login from './Login'
 import PlaylistPage from './PlayList'
-import TestingDB from './TestingDBRequests'
+import Songlist from './Songlist'
 
 function App() {
   return (
     <>
       <div className="app">
         <h1>VIBESVAULT</h1>
-
+        <Login />
         <PlaylistPage />
-        <TestingDB />
+        <Songlist />
       </div>
     </>
   )
