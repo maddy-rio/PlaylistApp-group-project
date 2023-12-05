@@ -18,15 +18,11 @@ function Layout() {
 
   return (
     <div>
-      {location.pathname === '/' ? (
-        <LandingPage />
-      ) : (
         <>
           <Outlet
             context={{ userDetails, changeUserDetails } satisfies ContextType}
           />
         </>
-      )}
     </div>
   )
 }
