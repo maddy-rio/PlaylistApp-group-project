@@ -34,5 +34,14 @@ export  async function getUserName( userId: number ): Promise<UserName[]> {
     return name
 }
 
+export  async function getPlaylistCollaborators( playlistId: number ): Promise<UserName[]> {
+  const users = await db('users')
+  .join('playlists_users', 'users.id', 'playlists_users.users_id')
+  .where('playlists_users.playlists_id', playlistId)
+  .select('users.name');
+  console.log(`from db function:`, users)
+  return users
+}
+
 
 
