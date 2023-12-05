@@ -18,3 +18,7 @@ export interface UserPlaylists {
 export interface UserName {
   name: number
 }
+
+export interface PlaylistCollaborators {
+  name: string
+}
