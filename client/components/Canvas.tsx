@@ -112,7 +112,7 @@ const Canvas = () => {
       window.removeEventListener('DOMContentLoaded', resizeCanvas)
       window.removeEventListener('resize', resizeCanvas)
     }
-  }, [])
+  }, []) // Dont add any dependencies as that brakes stuff 
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -128,7 +128,7 @@ const Canvas = () => {
     }
 
     animate()
-  }, [])
+  }, []) // Dont add any dependencies as that brakes stuff 
 
   return <canvas id="canvas" ref={canvasRef} />
 }
