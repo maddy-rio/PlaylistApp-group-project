@@ -1,6 +1,7 @@
 import { Flex, Heading, Text, Button } from '@radix-ui/themes'
 import Navigation from "../components/Navigation"
 import { getUserDetails } from '../apis/playlist'
+import { getSession } from '../functions/startSession'
 
 
 const LandingPage = () => {
@@ -9,6 +10,8 @@ const LandingPage = () => {
   async function initiateSpotifyAuthentication() {
     const data = await getUserDetails()
     console.log('data', data);
+    // IMPORTANT
+    const token = getSession() // use this with all api bearer token authentication!!!
   }
   initiateSpotifyAuthentication()
 
