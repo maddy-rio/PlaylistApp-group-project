@@ -58,12 +58,13 @@ export function createNewPlaylist(data: NewPlaylist) {
   })
 }
 
+
+// GET spotify playlist tracks
 export async function getPlaylistItems(playlistId: string) {
   const token = getSession()
   const response = await request
     .get(`/api/v1/user/playlist/playlist-items`)
     .query({ playlistId, token })
-  console.log(response.body)
   return response.body
 }
 
@@ -78,7 +79,25 @@ export async function getPlaylistInfo(playlistId: string) {
   return response.body
 }
 
-// PLAYLIST TO THE DATABASE
+// DATABASE PLAYLIST
 export function addPlaylistToDatabase(playlist: dbPlaylist) {
-  return request.post('/api/v1/playlist/add-playlist').send({playlist})
+  return request.post('/api/v1/playlist/add-playlist').send({ playlist })
+}
+
+// DATABASE PLAYLIST FIND TRACKS IN THE CURRENT PLAYLIST
+export function findPlaylistTracks(playlistId: number) {
+  return request
+    .get('/api/v1/playlist/find-playlist-tracks')
+    .query({ playlistId })
+}
+
+
+// DATABASE GET TRACK IDs FROM PLAYLIST
+export function dbFetchTrackIds(playlistId: number) {
+  return request.get(`/api/v1/playlist/get-tracks-playlist/${playlistId}`)
+}
+
+//  DATABASE FETCH SPOTIFY PLAYLIST ID 
+export function dbFetchSpotifyPlaylistId(dbId:number) {
+  return request.get('')
 }
