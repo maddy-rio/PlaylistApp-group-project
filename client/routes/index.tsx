@@ -1,24 +1,25 @@
 import { Route, createRoutesFromElements } from 'react-router-dom'
-import Placeholder from '../components/Placeholder'
-import Layout from '../components/Layout'
-import Login from '../components/Login'
-import App from '../components/App'
-import SinglePlaylistPage from '../pages/SinglePlaylistPage'
-import PlayList from '../components/PlayList'
-import Songlist from '../components/Songlist'
-import PlaylistPage from '../components/PlayList'
+import LandingPage from '../pages/LandingPage'
+import Dashboard from '../pages/Dashboard'
+import CurrentPlaylist from '../pages/CurrentPlaylist'
+
+import AddUserName from '../pages/AddUserName'
+import '@radix-ui/themes/styles.css'
+
 
 export const routes = createRoutesFromElements(
   <>
-    <Route path="/" element={<Layout />}>
-      <Route path="/login" element={<Login />} />
+    <Route path="/">
+      <Route index element={<LandingPage />} />
+      <Route path="/newuser" element={<AddUserName />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/dashboard/:playlistId" element={<CurrentPlaylist />} />
+
+      {/* <Route path="/login" element={<Login />} />
       <Route path="/auth/spotify" element={<Login />} />
       <Route path="login/callback" element={<App />} />
-      <Route path="/playlist" element={<PlaylistPage />} />
-      
-      <Route path="playlist/:playlistId" element={<Songlist />} />
+      <Route path="/playlist" element={<CurrentPlaylist />} /> */}
       {/* <Route path="*" element={<Placeholder />} /> */}
     </Route>
-    
-  </>
+  </>,
 )

@@ -1,6 +1,6 @@
 import { Flex, Text, Button, Heading, Card, AspectRatio, Dialog, TextField } from '@radix-ui/themes'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
-import NavBar from './NavBar'
+import Navigation from '../components/Navigation'
 import gradient from '@privjs/gradients'
 
 const Dashboard = () => {
@@ -12,7 +12,7 @@ const Dashboard = () => {
   return (
     <Flex width="100%" height="100%" className='app'>
       <Flex direction="column" width="100%" mx="3" my="2" className='fill-height'>
-        <NavBar />
+        <Navigation />
         <Flex height="100%" m="7">
           <div className="dashboard">
             <Heading as="h1" className="dashboard-h1 gradient-text">Hi {user}! Here’s all the playlists you’re collaborating on:</Heading>

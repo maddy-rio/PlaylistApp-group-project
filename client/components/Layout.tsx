@@ -1,8 +1,11 @@
 import { Outlet } from 'react-router-dom'
 import { useLocation, useOutletContext } from 'react-router-dom'
 import Login from './Login'
-import LandingPage from './LandingPage'
+import LandingPage from '../pages/LandingPage'
 import { useState } from 'react'
+import '@radix-ui/themes/styles.css';
+import { Theme, Button } from '@radix-ui/themes'
+
 
 import { ContextType } from '../../models/contextType'
 
@@ -15,20 +18,20 @@ function Layout() {
   }
 
   return (
-    <div>
-      {location.pathname === '/' ? (
-        <LandingPage />
-      ) : (
-        <>
-          <Navbar />{' '}
-          <Outlet
-            context={{ userDetails, changeUserDetails } satisfies ContextType}
-          />
-        </>
-      )}
-      {/* <Navbar /> */}
-      {/* <Outlet /> */}
-    </div>
+    <Theme>
+      <div>
+        {location.pathname === '/' ? (
+          <LandingPage />
+        ) : (
+          <>
+          <Button>
+            <Outlet
+              context={{ userDetails, changeUserDetails } satisfies ContextType}
+            />
+          </>
+        )}
+      </div>
+    </Theme>
   )
 }
 

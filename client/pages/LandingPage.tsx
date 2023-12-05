@@ -1,12 +1,13 @@
 import { Flex, Heading, Text, Button } from '@radix-ui/themes'
-import NavBar from "./NavBar"
+import Navigation from "../components/Navigation"
+
 
 const LandingPage = () => {
 
   return (
     <Flex width="100%" height="100%" className='app'>
       <Flex direction="column" width="100%" mx="3" my="2" className='fill-height'>
-        <NavBar />
+        <Navigation />
         <Flex height="100%" m="7">
           <div className="landing">
             <Heading as="h1" className="landing-h1 gradient-text">

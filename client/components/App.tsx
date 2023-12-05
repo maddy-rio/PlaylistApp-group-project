@@ -1,10 +1,10 @@
-import '@radix-ui/themes/styles.css'
+
 import '../styles/theme-config.css'
 import { Theme } from '@radix-ui/themes'
-import CurrentPlaylist from './CurrentPlaylist'
-import AddUserName from './AddUserName'
+import CurrentPlaylist from '../pages/CurrentPlaylist'
+import AddUserName from '../pages/AddUserName'
 import Login from './Login'
-import PlaylistPage from './PlayList'
+import PlaylistPage from '../pages/PlayList'
 import Songlist from './Songlist'
 
 function App() {

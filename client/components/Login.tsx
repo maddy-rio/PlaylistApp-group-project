@@ -5,7 +5,7 @@ import { gatherUserTokenFromSpotify } from '../functions/getToken'
 import { useEffect, useState } from 'react'
 import { getSession, startSession } from '../functions/startSession'
 import { getUserDetails } from '../apis/playlist'
-import PlaylistPage from './PlayList'
+import PlaylistPage from '../pages/PlayList'
 import { useOutletContext } from 'react-router-dom'
 import { ContextType } from '../../models/contextType'
 

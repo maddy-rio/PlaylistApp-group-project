@@ -1,6 +1,6 @@
 import { Flex, Button, Heading, Text } from '@radix-ui/themes'
 import { ArrowLeftIcon } from '@radix-ui/react-icons'
-import NavBar from './NavBar'
+import Navigation from '../components/Navigation'
         <Flex>
           <Button variant="ghost" size="3" style={{color: 'white'}}>
             <ArrowLeftIcon width="20" height="20"/>
@@ -14,7 +14,7 @@ const CurrentPlaylist = () => {
   return (
     <Flex width="100%" height="100%" className='app'>
       <Flex direction="column" width="100%" mx="3" my="2">
-        <NavBar />
+        <Navigation />
         <Flex direction="column" justify="end" height="100%" m="7">
             <Heading as="h1" align="left" className="theme-h1">
               Today's Theme:

@@ -8,7 +8,7 @@ import Songs from './Songs'
 
 const Songlist = () => {
   const playListId = useParams().playlistId
-  
+
   const token = getSession()
   const [playingTracks, setPlayingTracks] = useState({})
   const {
@@ -17,7 +17,7 @@ const Songlist = () => {
     isLoading,
   } = useQuery({
     queryKey: ['songs'],
-    queryFn: ()=>songList(playListId, token),
+    queryFn: () => songList(playListId, token),
   })
 
   if (isError) {
@@ -30,13 +30,13 @@ const Songlist = () => {
   function handleClick(item) {
     setPlayingTracks(item.uri)
   }
- 
 
-  return <div>
-    <h4>Today&apos;s recommend PlayList</h4>
-    <Songs playlistId={playListId} />
+  return (
+    <div>
+      <h4>Today&apos;s recommend PlayList</h4>
+      <Songs playlistId={playListId} />
 
-    {songs.map((item, index) => (
+      {songs.map((item, index) => (
         <div
           key={index}
           className="track-single d-flex justify-content-between p-2 m-1 rounded container-sm"
@@ -61,7 +61,6 @@ const Songlist = () => {
             </div>
           </div>
           <div className="track-single-user d-flex align-items-center">
-           
             <img
               className="track-image track-image-profile rounded-circle mx-2"
               src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"
@@ -75,12 +74,14 @@ const Songlist = () => {
           </div>
         </div>
       ))}
-     
-     {playingTracks && 
-      <div>
-      <Player trackUri={playingTracks} token={token} />
-      </div>}
-  </div>
+
+      {playingTracks && (
+        <div>
+          <Player trackUri={playingTracks} token={token} />
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default Songlist
