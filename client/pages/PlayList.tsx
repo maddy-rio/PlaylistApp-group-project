@@ -1,5 +1,5 @@
 // import CreatePlaylist from './CreatePlaylist'
-import { getUsersPlaylists, getUserDetails } from '../apis/playlist'
+import { getUsersPlaylists } from '../apis/playlist'
 import { useQuery } from '@tanstack/react-query'
 
 import { Link, useOutletContext } from 'react-router-dom'

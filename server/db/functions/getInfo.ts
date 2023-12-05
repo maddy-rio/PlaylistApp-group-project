@@ -11,7 +11,7 @@ export async function getPlaylistTrackIds(
     .where('playlists_id', playlistId)
     .join('tracks', 'playlists_tracks.tracks_id', 'tracks.id')
     .select('tracks.track_id as trackId')
-  console.log(`from db function:`, tracks)
+  // console.log(`from db function:`, tracks)
   return tracks
 }
 
