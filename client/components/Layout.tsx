@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
-import { useLocation, useOutletContext } from 'react-router-dom'
-import Login from './Login'
+import { useLocation } from 'react-router-dom'
+
 import LandingPage from './LandingPage'
 import { useState } from 'react'
 
@@ -26,8 +26,6 @@ function Layout() {
           />
         </>
       )}
-      {/* <Navbar /> */}
-      {/* <Outlet /> */}
     </div>
   )
 }

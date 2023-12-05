@@ -23,7 +23,7 @@ export async function getUserPlaylists(
     .where('user_id', spotifyId)
     .join('playlists', 'playlists_users.playlists_id', 'playlists.id')
     .select('playlists_id as playlistsId', 'playlists.name', 'token')
-  console.log(`from db function:`, playlists)
+ 
   return playlists
 }
 

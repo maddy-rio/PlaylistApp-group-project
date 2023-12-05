@@ -4,6 +4,7 @@ import { temp } from '../temp-json/getPlaylist.js'
 import { Welcome } from '../../models/temp'
 import { getSession } from '../functions/startSession'
 
+
 // const rootUrl = '/api/v1'
 
 export async function getPlaylist(): Promise<Welcome[]> {
@@ -20,7 +21,7 @@ export async function getUserDetails() {
   return response.body
 }
 
-export async function getUsersPlaylists(userId: string) {
+export async function getUsersPlaylists(userId: string |undefined) {
   // const token = getSession()
   console.log(userId)
   const responseArr = await request.get(`/api/v1/user/playlists/${userId}`)
@@ -33,13 +34,13 @@ export async function getUsersPlaylists(userId: string) {
 export async function addTrackToPlaylist(
   playlistId: string,
   trackId: string,
-  // userId: string,
+  userId: string ,
 ) {
-  console.log(playlistId, trackId)
+  console.log(playlistId, trackId, userId)
   // const token = getSession()
   const response = await request
-    .post(`'/api/v1/user/playlists/${playlistId}`)
-    .send({ trackId})
+    .post(`/api/v1/user/playlists/${playlistId}`)
+    .send({ trackId, userId})
 
   return response.body
 }

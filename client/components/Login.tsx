@@ -2,7 +2,7 @@ import { codeVerifier } from '../functions/generateRandomString'
 import { base64encode } from '../functions/base64encode'
 import { sha256 } from '../functions/sha'
 import { gatherUserTokenFromSpotify } from '../functions/getToken'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { getSession, startSession } from '../functions/startSession'
 import { getUserDetails } from '../apis/playlist'
 import PlaylistPage from './PlayList'
@@ -50,11 +50,12 @@ async function initiateSpotifyAuthentication() {
   window.location.href = authUrl.toString()
 }
 
-const fetchToken = async () => {
+const getToken = async () => {
   try {
     const urlParams = new URLSearchParams(window.location.search)
     const code = urlParams.get('code')
     const user_token = await gatherUserTokenFromSpotify(code, redirectUri)
+    console.log(user_token)
     startSession(user_token.access_token)
   } catch (err) {
     console.error(err)
@@ -67,25 +68,24 @@ function Login() {
   const code = urlParams.get('code')
 
   useEffect(() => {
-    if (code) {
-      // true if redirected from spotify auth
-      fetchToken()
-    } else if (getSession()) {
-      // already in session
-      const fecthUserDetails = async () => {
-        const data = await getUserDetails()
-        console.log(data)
-        changeUserDetails(data)
+    // already in session
+    const fecthUserDetails = async () => {
+      if (code) {
+        // true if redirected from spotify auth
+        await getToken()
+      } else if (!getSession()) {
+        await initiateSpotifyAuthentication()
       }
-      fecthUserDetails()
-    } else {
-      initiateSpotifyAuthentication()
+      const data = await getUserDetails()
+
+      changeUserDetails(data)
     }
+    fecthUserDetails()
   }, [code])
 
   console.log(userDetails)
   if (!userDetails) {
-    return <div>Login</div>
+    return <div>Loading user Info...</div>
   }
   return (
     <div>
@@ -93,11 +93,9 @@ function Login() {
         <h1>logged in with {userDetails.display_name}</h1>
         <p>{userDetails.country}</p>
         <p>{userDetails.email}</p>
-        <p>{userDetails.href}</p>
-        <p>{userDetails.id}</p>
-        <p>{userDetails.product}</p>
+
         <p>{userDetails.type}</p>
-        <p>{userDetails.uri}</p>
+
         {userDetails && <PlaylistPage />}
       </>
     </div>

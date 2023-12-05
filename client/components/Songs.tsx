@@ -1,6 +1,6 @@
-import React, { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useState } from 'react'
 
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { searchSongs } from '../apis/searchSongs'
 import TrackSearchResult from './TrackSearchResult'
 
@@ -9,10 +9,8 @@ interface Props {
   playlistId: string
 }
 
-const Songs = ({playlistId}:Props) => {
+const Songs = ({ playlistId }: Props) => {
   const accessToken = getSession() as string
- 
-  console.log(playlistId)
 
   const [searchInput, setSearchInput] = useState('')
 
@@ -30,7 +28,7 @@ const Songs = ({playlistId}:Props) => {
     searchMutation.mutate()
   }
 
-  console.log(searchResults)
+  
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -45,7 +43,11 @@ const Songs = ({playlistId}:Props) => {
       </form>
 
       <div className="flex-grow-1 my-2" style={{ overflowY: 'auto' }}>
-        <TrackSearchResult tracks={searchResults} playlistId={playlistId} />
+        <TrackSearchResult
+          tracks={searchResults}
+          playlistId={playlistId}
+          setTracks={() => setSearchResults([])}
+        />
       </div>
     </div>
   )
