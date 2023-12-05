@@ -2,12 +2,9 @@ import { codeVerifier } from '../functions/generateRandomString'
 import { base64encode } from '../functions/base64encode'
 import { sha256 } from '../functions/sha'
 import { gatherUserTokenFromSpotify } from '../functions/getToken'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { getSession, startSession } from '../functions/startSession'
 import { getUserDetails } from '../apis/playlist'
-import PlaylistPage from '../pages/PlayList'
-import { useOutletContext } from 'react-router-dom'
-import { ContextType } from '../../models/contextType'
 
 const SPOTIFY_CLIENT_ID = 'e6902475a4424e50813fb15d818401c6'
 const redirectUri = 'http://localhost:5173/login'
@@ -50,42 +47,76 @@ async function initiateSpotifyAuthentication() {
   window.location.href = authUrl.toString()
 }
 
-const getToken = async () => {
+const fetchToken = async () => {
   try {
     const urlParams = new URLSearchParams(window.location.search)
     const code = urlParams.get('code')
     const user_token = await gatherUserTokenFromSpotify(code, redirectUri)
-    console.log(user_token)
     startSession(user_token.access_token)
   } catch (err) {
     console.error(err)
   }
 }
 
+export interface Pokedex {
+  country: string
+  display_name: string
+  email: string
+  explicit_content: ExplicitContent
+  external_urls: ExternalUrls
+  followers: Followers
+  href: string
+  id: string
+  images: Image[]
+  product: string
+  type: string
+  uri: string
+}
+
+export interface ExplicitContent {
+  filter_enabled: boolean
+  filter_locked: boolean
+}
+
+export interface ExternalUrls {
+  spotify: string
+}
+
+export interface Followers {
+  href: string
+  total: number
+}
+
+export interface Image {
+  url: string
+  height: number
+  width: number
+}
+
 function Login() {
-  const { userDetails, changeUserDetails } = useOutletContext<ContextType>()
+  const [userDetails, setUserDetails] = useState<Pokedex | null>()
   const urlParams = new URLSearchParams(window.location.search)
   const code = urlParams.get('code')
 
   useEffect(() => {
-    // already in session
-    const fecthUserDetails = async () => {
-      if (code) {
-        // true if redirected from spotify auth
-        await getToken()
-      } else if (!getSession()) {
-        await initiateSpotifyAuthentication()
+    if (code) {
+      // true if redirected from spotify auth
+      fetchToken()
+    } else if (getSession()) {
+      // already in session
+      const fecthUserDetails = async () => {
+        const data = await getUserDetails()
+        setUserDetails(data.body)
       }
-      const data = await getUserDetails()
-
-      changeUserDetails(data)
+      console.log(getSession());
+      
+      fecthUserDetails()
+    } else {
+      initiateSpotifyAuthentication()
     }
-    fecthUserDetails()
-  }, [code])
-
-  console.log(userDetails)
+  })
   if (!userDetails) {
-    return <div>Loading user Info...</div>
+    return <div>Login</div>
   }
   return (
     <div>
@@ -93,10 +124,11 @@ function Login() {
         <h1>logged in with {userDetails.display_name}</h1>
         <p>{userDetails.country}</p>
         <p>{userDetails.email}</p>
-
+        <p>{userDetails.href}</p>
+        <p>{userDetails.id}</p>
+        <p>{userDetails.product}</p>
         <p>{userDetails.type}</p>
-
-        {userDetails && <PlaylistPage />}
+        <p>{userDetails.uri}</p>
       </>
     </div>
   )
