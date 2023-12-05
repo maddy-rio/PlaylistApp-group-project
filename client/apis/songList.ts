@@ -1,14 +1,12 @@
 import request from 'superagent'
-
+import {Album} from '../../models/song.ts'
 
 interface Item {
   trackId: string
 }
 
-interface playlistId{
-  playlistId: string
-}
-export const songList = async (playlistId :playlistId, token: string) => {
+
+export const songList = async (playlistId :string, token: string) => {
   console.log(playlistId)
   const responseArr = await request.get(
     `/api/v1/tracks/${playlistId}`,
@@ -24,5 +22,5 @@ export const songList = async (playlistId :playlistId, token: string) => {
     .set('Authorization', `Bearer ${token}`)
 
   console.log(result.body.tracks)
-  return result.body.tracks
+  return result.body.tracks  as Album[]
 }

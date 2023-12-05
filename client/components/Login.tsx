@@ -2,11 +2,11 @@ import { codeVerifier } from '../functions/generateRandomString'
 import { base64encode } from '../functions/base64encode'
 import { sha256 } from '../functions/sha'
 import { gatherUserTokenFromSpotify } from '../functions/getToken'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { getSession, startSession } from '../functions/startSession'
 import { getUserDetails } from '../apis/playlist'
 import PlaylistPage from './PlayList'
-import { useNavigate, useOutletContext } from 'react-router-dom'
+import { useOutletContext } from 'react-router-dom'
 import { ContextType } from '../../models/contextType'
 
 const SPOTIFY_CLIENT_ID = 'e6902475a4424e50813fb15d818401c6'
@@ -66,13 +66,8 @@ function Login() {
   const { userDetails, changeUserDetails } = useOutletContext<ContextType>()
   const urlParams = new URLSearchParams(window.location.search)
   const code = urlParams.get('code')
-  const navigate = useNavigate()
 
   useEffect(() => {
-    // async function fetchToken() {
-    //   await getToken()
-    // }
-
     // already in session
     const fecthUserDetails = async () => {
       if (code) {
@@ -82,7 +77,7 @@ function Login() {
         await initiateSpotifyAuthentication()
       }
       const data = await getUserDetails()
-      console.log(data)
+
       changeUserDetails(data)
     }
     fecthUserDetails()
@@ -90,7 +85,7 @@ function Login() {
 
   console.log(userDetails)
   if (!userDetails) {
-    return <div>Login</div>
+    return <div>Loading user Info...</div>
   }
   return (
     <div>
@@ -98,11 +93,9 @@ function Login() {
         <h1>logged in with {userDetails.display_name}</h1>
         <p>{userDetails.country}</p>
         <p>{userDetails.email}</p>
-        <p>{userDetails.href}</p>
-        <p>{userDetails.id}</p>
-        <p>{userDetails.product}</p>
+
         <p>{userDetails.type}</p>
-        <p>{userDetails.uri}</p>
+
         {userDetails && <PlaylistPage />}
       </>
     </div>

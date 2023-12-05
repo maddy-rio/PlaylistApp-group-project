@@ -19,13 +19,12 @@ router.get('/:userId', async (req, res) => {
 
 router.post('/:playlistId', async (req, res) => {
   try {
-    console.log('hi')
     const playlists_id = Number(req.params.playlistId)
-console.log(playlists_id)
-   const tracks_id = req.body.trackId
-   const users_id = req.body.userId
+
+    const tracks_id = req.body.trackId
+    const users_id = req.body.userId
     const result = await addSongToPlaylist(tracks_id, users_id, playlists_id)
-    console.log(result)
+
     res.json(result)
   } catch (err) {
     console.log(err)

@@ -1,10 +1,8 @@
-import { useState } from 'react'
-
 import { Link, useOutletContext } from 'react-router-dom'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { addTrackToPlaylist, getPlaylistItems } from '../apis/playlist'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { addTrackToPlaylist } from '../apis/playlist'
 import { Album } from '../../models/song'
-import {ContextType} from '../../models/contextType'
+import { ContextType } from '../../models/contextType'
 
 interface Props {
   tracks: Album[]
@@ -13,20 +11,24 @@ interface Props {
   setTracks: () => void
 }
 
-export default function TrackSearchResult({ tracks, playlistId, setTracks }:Props) {
-  const {userDetails} = useOutletContext<ContextType>()
-  const userId=userDetails?.id as string
+export default function TrackSearchResult({
+  tracks,
+  playlistId,
+  setTracks,
+}: Props) {
+  const { userDetails } = useOutletContext<ContextType>()
+  const userId = userDetails?.id as string
 
- 
   const queryClient = useQueryClient()
   const addPlayListMutation = useMutation({
-    mutationFn: async (trackId:string) => addTrackToPlaylist(playlistId, trackId, userId),
+    mutationFn: async (trackId: string) =>
+      addTrackToPlaylist(playlistId, trackId, userId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['songs'] })
     },
   })
 
-  function handleClick(id:string) {
+  function handleClick(id: string) {
     addPlayListMutation.mutate(id)
     setTracks()
   }
