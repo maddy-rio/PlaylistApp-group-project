@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import * as db from '../db/functions/database'
+import { addSongToPlaylist } from '../db/functions/addInfo'
 
 const router = Router()
 
@@ -16,18 +17,19 @@ router.get('/:userId', async (req, res) => {
   }
 })
 
-// router.post('/:playlistId', async (req, res) => {
-//   try {
-//     const playlistId = Number(req.params.playlistId)
-//     const trackId = Number(req.body.trackId)
-// const {userId, trackId}=req.body
-//     const result = await db.addSongToPlaylist({ playlistId, trackId , userId })
-//     console.log(result)
-//     res.json(result)
-//   } catch (err) {
-//     console.log(err)
-//     res.status(500).send('No songs sorry')
-//   }
-// })
+router.post('/:playlistId', async (req, res) => {
+  try {
+    const playlists_id = Number(req.params.playlistId)
+
+    const tracks_id = req.body.trackId
+    const users_id = req.body.userId
+    const result = await addSongToPlaylist(tracks_id, users_id, playlists_id)
+
+    res.json(result)
+  } catch (err) {
+    console.log(err)
+    res.status(500).send('No songs sorry')
+  }
+})
 
 export default router

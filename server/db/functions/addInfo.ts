@@ -5,7 +5,7 @@ import {
   Profile,
   PlaylistUsers,
   Track,
-  PlaylistTracks,
+ 
 } from '../../../models/addInfo'
 
 const db = connection
@@ -15,7 +15,7 @@ export function createPlaylist(data: Playlists) {
   return db.table('playlists').insert({ ...data })
 }
 
-/////////////////////////////
+
 
 // add a playlist to profile
 export async function NewUserPlaylist(data: UserID) {
@@ -40,10 +40,52 @@ export function newTrack(data: Track) {
   return db.table('tracks').insert({ ...data })
 }
 
-// add song to playlist
-export function addSongToPlaylist(data: PlaylistTracks) {
-  return db.table('playlists_tracks').insert({ ...data })
+interface PlaylistTracks {
+  tracks_id: string
+  users_id: string
+  playlists_id: number
 }
+
+// add song to playlist
+
+export async function createTrackId(track_id: string) {
+  const track = await db.table('tracks').select('*').where({ track_id }).first()
+  console.log(track)
+  if (track !== undefined) {
+    return track.id
+  }
+  const [newTrack] = await db.table('tracks').insert({ track_id })
+  return newTrack
+}
+
+export async function createUserId(user_id: string) {
+  const user = await db.table('users').select('*').where({ user_id }).first()
+  if (user!== undefined) {
+    return user.id
+  }
+  const [newUser] = await db.table('users').insert({ user_id })
+  return newUser
+}
+
+export async function addSongToPlaylist(
+  track_id: string,
+  users_id: string,
+  playlists_id: number,
+) {
+  const newTrackId = await createTrackId(track_id)
+  const newUserId = await createUserId(users_id)
+
+  const newSong = await db
+    .table('playlists_tracks')
+    .insert({
+      tracks_id: newTrackId,
+      users_id: newUserId,
+      playlists_id,
+    })
+  console.log(newSong)
+  return newSong
+// add song to playlist
+  }
 
 //add a new user to the database
 export function newUser(data: Profile) {
