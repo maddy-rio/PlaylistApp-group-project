@@ -37,9 +37,12 @@ const CurrentPlaylist = () => {
           <Heading as="h2" className="theme-h2 gradient-theme">
             <em>{todaysTheme}</em>
           </Heading>
+            <Songs playlistId={playlistId as string} /> 
           <div className='player-box'>
             <Heading as="h3" className='player-h3'>Currently Playing</Heading>
-            <div className='player'></div>
+            <div className='player'>
+              {/* <button href="google.com"></button> */}
+            </div>
           </div>
         </Flex>
         <div className='background'>
