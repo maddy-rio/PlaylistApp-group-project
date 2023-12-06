@@ -51,7 +51,7 @@ const Dashboard = () => {
             <Heading as="h1" className="dashboard-h1 gradient-text">Hi {userDetails?.display_name}! Here’s all the playlists you’re collaborating on:</Heading>
             <Flex className="playlist-preview" width="100%" px="8" gap="8" justify="center"wrap="wrap" >
             {playlists?.map((playlist: playlistProps, index: number) => (
-              <Link to={`/playlist/${playlist.playlistsId}`} key={index}>
+              <Link to={`/dashboard/${playlist.playlistsId}`} key={index}>
               <Card key={playlist.id} className='playlist-card'>
                   <Flex direction="column" gap="4" p="2">
                     <AspectRatio ratio="1/1">

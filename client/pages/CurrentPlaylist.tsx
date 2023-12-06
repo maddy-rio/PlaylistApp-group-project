@@ -1,6 +1,9 @@
-import { Flex, Button, Heading, Text } from '@radix-ui/themes'
+  import { Flex, Button, Heading, Text } from '@radix-ui/themes'
 import Navigation from '../components/Navigation'
 import Canvas from '../components/Canvas'
+
+import { useParams , useOutletContext} from 'react-router-dom'
+import { getPlaylistInfo } from '../apis/playlist'
 import { useOutletContext, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import Player from '../components/Player'

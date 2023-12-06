@@ -73,7 +73,7 @@ export default function TrackSearchResult({
         ))
       ) : (
         <Link
-          to={`/playlist/${playlistId}`}
+          to={`/dashboard/${playlistId}`}
           className="text-decoration-none"
         ></Link>
       )}
