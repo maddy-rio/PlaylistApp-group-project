@@ -69,6 +69,8 @@ function Login() {
   const { userDetails, changeUserDetails } = useOutletContext<ContextType>()
   const urlParams = new URLSearchParams(window.location.search)
   const code = urlParams.get('code')
+  
+  
 
   useEffect(() => {
     // already in session
@@ -86,7 +88,10 @@ function Login() {
     fetchUserDetails()
   }, [code])
 
-  console.log(userDetails)
+
+  console.log(userDetails?.id);
+
+  // console.log(userDetails)
   if (!userDetails) {
     return <div>Loading user Info...</div>
   }

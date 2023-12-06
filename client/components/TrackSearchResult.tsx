@@ -1,8 +1,14 @@
 import { Link, useOutletContext } from 'react-router-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { addTrackToPlaylist } from '../apis/playlist'
+import {
+  addTrackToPlaylist,
+  getUserDetails,
+  getUserInfoFromDb,
+} from '../apis/playlist'
 import { Album } from '../../models/song'
 import { ContextType } from '../../models/contextType'
+import { getSession } from '../functions/startSession'
+import { useEffect } from 'react'
 
 interface Props {
   tracks: Album[]
@@ -17,9 +23,19 @@ export default function TrackSearchResult({
   setTracks,
 }: Props) {
   const { userDetails } = useOutletContext<ContextType>()
-  const userId = userDetails?.id as string
 
+  // GET THE USER DATABASE ID HERE !!
+
+  async function getUserDatabaseId() {
+    // const userData = await getSession()
+    const data = await getUserDetails()
+    return await getUserInfoFromDb(data?.id).then(
+      (data) => data.body.data[0].id,
+    )
+  }
+  const userId = getUserDatabaseId()
   const queryClient = useQueryClient()
+
   const addPlayListMutation = useMutation({
     mutationFn: async (trackId: string) =>
       addTrackToPlaylist(playlistId, trackId, userId),

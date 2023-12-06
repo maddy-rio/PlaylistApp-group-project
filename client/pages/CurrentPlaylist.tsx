@@ -9,6 +9,7 @@ import { getSession } from '../functions/startSession'
 import { useState } from 'react'
 import { songList } from '../apis/songList'
 import { Album } from '../../models/song'
+import Songs from '../components/Songs'
 
 const CurrentPlaylist = () => {
   const { userDetails } = useOutletContext<ContextType>()
@@ -49,6 +50,8 @@ const CurrentPlaylist = () => {
             </Heading>
             <Heading as="h2" className="theme-h2 gradient-theme">
               <em>{todaysTheme}</em>
+              <Songs playlistId={playListId} />
+
             </Heading>
             {/* <Songs playlistId={playlistId as string} /> */}
             <div className="player-box">
