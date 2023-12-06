@@ -1,14 +1,13 @@
-import { Flex, Button, Heading, Text } from '@radix-ui/themes'
+import { Flex, Button, Heading } from '@radix-ui/themes'
 import { ArrowLeftIcon } from '@radix-ui/react-icons'
 
 import Navigation from '../components/Navigation'
 import Canvas from '../components/Canvas'
 
 import { useParams, useOutletContext } from 'react-router-dom'
-import { getPlaylistInfo } from '../apis/playlist'
+
 import { useQuery } from '@tanstack/react-query'
 
-import Track from '../components/Track'
 import Songs from '../components/Songs'
 import Player from '../components/Player'
 import { ContextType } from '../../models/contextType'
@@ -27,7 +26,7 @@ const CurrentPlaylist = () => {
   )
 
   const token = getSession() as string
-  const [playingTracks, setPlayingTracks] = useState('')
+
   const {
     data: songs,
     isError,
@@ -72,7 +71,7 @@ const CurrentPlaylist = () => {
           <Navigation />
           <Flex direction="column" justify="end" height="100%" m="7">
             <Heading as="h1" align="left" className="theme-h1">
-              Today's Theme:
+              Today&apos;s Theme:
             </Heading>
 
             <Heading as="h2" className="theme-h2 gradient-theme">

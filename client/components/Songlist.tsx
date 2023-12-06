@@ -6,7 +6,7 @@ import Player from './Player'
 import { getSession } from '../functions/startSession'
 import { useOutletContext, useParams } from 'react-router-dom'
 import Songs from './Songs'
-import { Album } from '../../models/song.ts'
+
 import { ContextType } from '../../models/contextType'
 
 const Songlist = () => {
