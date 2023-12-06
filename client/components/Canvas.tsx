@@ -59,10 +59,9 @@ const Canvas = () => {
 
   const resizeCanvas = () => {
     const canvas = canvasRef.current
-    // if (!canvas) {
-    //   console.log('Not Canvas')
-    //   return
-    // }
+    if (!canvas) {
+      return
+    }
     canvas.width = window.innerWidth // set width
     canvas.height = window.innerHeight // set height
     init()
@@ -71,16 +70,14 @@ const Canvas = () => {
   const animate = () => {
     requestAnimationFrame(animate)
     const canvas = canvasRef.current
-    // if (!canvas) {
-    //   console.log('Not Canvas')
-    //   return
-    // }
-    const context = canvas.getContext('2d')
-    // if (!context) {
-    //   console.log('No Context 2d')
-    //   return
-    // }
-    context.clearRect(0, 0, window.innerWidth, window.innerHeight) // clear
+    if (!canvas) {
+      return
+    }
+    const context = canvas?.getContext('2d')
+    if (!context) {
+      return
+    }
+    context?.clearRect(0, 0, window.innerWidth, window.innerHeight) // clear
     for (let i = 0; i < circleArrayRef.current.length; i++) {
       const circle = circleArrayRef.current[i]
       circle.update() // update
@@ -116,16 +113,9 @@ const Canvas = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current
-    // if (!canvas) {
-    //   console.log('Not Canvas')
-    //   return
-    // }
-
-    const context = canvas.getContext('2d')
-    // if (!context) {
-    //   console.log('No Context 2d')
-    //   return
-    // }
+    if (!canvas) {
+      return
+    }
 
     animate()
   }, []) // Dont add any dependencies as that brakes stuff 

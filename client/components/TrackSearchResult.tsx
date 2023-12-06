@@ -6,7 +6,10 @@ import {
   getUserInfoFromDb,
 } from '../apis/playlist'
 import { Album } from '../../models/song'
+import { Flex } from '@radix-ui/themes'
 import { ContextType } from '../../models/contextType'
+import { PlusCircledIcon } from '@radix-ui/react-icons'
+import { Text } from '@radix-ui/themes'
 import { getSession } from '../functions/startSession'
 import { useEffect } from 'react'
 
@@ -51,25 +54,30 @@ export default function TrackSearchResult({
 
   return (
     <>
+      <Flex direction="column" className='search-result-box'>
       {tracks ? (
         tracks.map((track) => (
-          <div key={track.id} className="d-flex m-2 align-items-center">
-            <img
-              src={track.album.images[2].url}
-              alt={track.album.name}
-              style={{ height: '64px', width: '64px' }}
-            />
-
-            <div className="ml-3">
-              <button
-                style={{ cursor: 'pointer', border: 'none' }}
-                onClick={() => handleClick(track.id)}
-              >
-                {track.name}
-              </button>
-              <p>{track.artists[0].name}</p>
-            </div>
-          </div>
+          <button
+              key={track.id}
+              className='search-result-button'
+              style={{ cursor: 'pointer', border: 'none' }}
+              onClick={() => handleClick(track.id)}
+            >
+            <Flex key={track.id} className="search-result">
+              <img
+                src={track.album.images[2].url}
+                alt={track.album.name}
+                style={{ height: '64px', width: '64px' }}
+              />
+              <Flex width="100%" className='search-text'>
+              <div className="ml-3 search-details">
+                 <Text> {track.name} </Text>
+                 <Text className='track-detail'>{track.artists[0].name}</Text>
+              </div>
+              <PlusCircledIcon width="28px" height="48px" />
+              </Flex>
+            </Flex>
+          </button>
         ))
       ) : (
         <Link
@@ -77,6 +85,7 @@ export default function TrackSearchResult({
           className="text-decoration-none"
         ></Link>
       )}
+      </Flex>
     </>
   )
 }
