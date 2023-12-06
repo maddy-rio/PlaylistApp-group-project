@@ -13,7 +13,7 @@ export const songList = async (playlistId :string, token: string) => {
   )
   const resultWithIds = responseArr.body.map((item: Item) => item.trackId)
 
-  console.log(resultWithIds)
+  console.log('resultWithIds', resultWithIds)
 
 
 

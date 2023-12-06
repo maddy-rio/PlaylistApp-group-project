@@ -1,9 +1,7 @@
 import request from 'superagent'
 import { getSession } from '../functions/startSession'
 
-
 // const rootUrl = '/api/v1'
-
 
 export async function getUserDetails() {
   const token = await getSession()
@@ -14,7 +12,7 @@ export async function getUserDetails() {
   return response.body
 }
 
-export async function getUsersPlaylists(userId: string |undefined) {
+export async function getUsersPlaylists(userId: string | undefined) {
   // const token = getSession()
   console.log(userId)
   const responseArr = await request.get(`/api/v1/user/playlists/${userId}`)
@@ -24,16 +22,20 @@ export async function getUsersPlaylists(userId: string |undefined) {
   return responseArr.body
 }
 
+export async function getUserInfoFromDb(spotifyUserId: string) {
+  return request.get(`/api/v1/user/playlists/getDbUserDetails/${spotifyUserId}`)
+}
+
 export async function addTrackToPlaylist(
   playlistId: string,
   trackId: string,
-  userId: string ,
+  userId: string,
 ) {
   console.log(playlistId, trackId, userId)
   // const token = getSession()
   const response = await request
     .post(`/api/v1/user/playlists/${playlistId}`)
-    .send({ trackId, userId})
+    .send({ trackId, userId })
 
   return response.body
 }

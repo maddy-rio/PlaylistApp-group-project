@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import * as db from '../db/functions/database'
 import { addSongToPlaylist } from '../db/functions/addInfo'
+import { getUserDetails } from '../db/functions/getInfo'
 
 const router = Router()
 
@@ -31,5 +32,18 @@ router.post('/:playlistId', async (req, res) => {
     res.status(500).send('No songs sorry')
   }
 })
+
+
+router.get('/getDbUserDetails/:userId', async (req, res) => {
+  try {
+    const spotifyId = req.params.userId
+    const result = await getUserDetails(spotifyId as string)
+    res.json({data: result})
+  } catch(err) {
+    console.log(err)
+    res.status(500).send('No songs sorry')    
+  }
+})
+
 
 export default router
