@@ -33,3 +33,6 @@ router.post('/:playlistId', async (req, res) => {
 })
 
 export default router
+
+
+// get userplaylist

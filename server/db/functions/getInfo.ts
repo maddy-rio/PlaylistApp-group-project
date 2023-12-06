@@ -35,4 +35,23 @@ export  async function getUserName( userId: number ): Promise<UserName[]> {
 }
 
 
+// match a token to a user id and return playlist id
+
+export async function getPlaylistByToken( token: string) {
+  const playlist = await db('playlists')
+    .where('token', token)
+    .select('id')
+    console.log(`from get function:`, playlist)
+    return playlist
+}
+
+
+// Adding playlist id and userid to join table 
+
+export async function addPlaylistToUser(playlistId: number, userId: number) {
+  const playlist = await db('playlists_users')
+    .insert({playlists_id: playlistId, users_id: userId})
+    console.log(`from add function:`, playlist)
+    return playlist
+}
 

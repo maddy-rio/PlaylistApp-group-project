@@ -4,11 +4,13 @@ import Navigation from '../components/Navigation'
 import gradient from '@privjs/gradients'
 // import CreatePlaylist from './CreatePlaylist'
 import { getUsersPlaylists } from '../apis/playlist'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { Link, useOutletContext } from 'react-router-dom'
 import { ContextType } from '../../models/contextType'
 import Canvas from '../components/Canvas'
+import { useState } from 'react'
+import { addPlaylistToUser } from '../../server/db/functions/getInfo'
 
 
 interface playlistProps {
@@ -19,6 +21,7 @@ interface playlistProps {
 
 const Dashboard = () => {
   const { userDetails } = useOutletContext<ContextType>() || {};
+  const [form, setForm] = useState({token: ''})
   const {
     data: playlists,
     error,
@@ -26,6 +29,12 @@ const Dashboard = () => {
   } = useQuery({
     queryKey: ['playlists'],
     queryFn: () => getUsersPlaylists(userDetails?.id),
+  })
+  const userMutation = useMutation({
+    mutationFn: addPlaylistToUser,
+    onSuccess: () => {
+       window.location.href = `/dashboard/{{playlists_id}}`
+    },
   })
 
   console.log(playlists)
@@ -35,7 +44,23 @@ const Dashboard = () => {
   if (error) {
     return <div>Error</div>
   }
+
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    // check later
+    e.preventDefault()
+    userMutation.mutate({ ...form, user_id: spotifyId })
+  }
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
   
+
+
+
+
+
   return (
     <>
     <Flex width="100%" height="100%" className='app'>
@@ -93,20 +118,24 @@ const Dashboard = () => {
                       </Dialog.Trigger>
 
                       <Dialog.Content style={{ maxWidth: 450 }}>
-                        <Dialog.Title>Add a playlist</Dialog.Title>
-                        <Dialog.Description size="2" mb="4">
-                          Instructions lorem ipsum.
-                        </Dialog.Description>
+                        <Heading as="h4">Join a playlist</Heading>
+                        <Text size="2" mb="4">
+                          Share tokens with friends to join their playlists.
+                        </Text>
 
                         <Flex direction="column" gap="3">
-                          <label>
-                            <Text as="div" size="2" mb="1" weight="bold">
-                              Playlist
-                            </Text>
-                            <TextField.Input
-                              placeholder="Enter playlist ID"
+                        <form onSubmit={handleSubmit}>
+                          <div>
+                            <label htmlFor="email">Token</label>
+                            <input
+                              type="token"
+                              name="token"
+                              value={form.token}
+                              onChange={handleChange}
                             />
-                          </label>
+                          </div>
+                          <button type="submit">Submit</button>
+                        </form>
                         </Flex>
                       </Dialog.Content>
                     </Dialog.Root>

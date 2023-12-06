@@ -7,6 +7,7 @@ import Canvas from '../components/Canvas'
 import { useParams } from 'react-router-dom'
 import { getPlaylistInfo } from '../apis/playlist'
 import { useQuery } from '@tanstack/react-query'
+import { getSession } from '../functions/startSession'
 
 import Track from '../components/Track'
 import Songs from '../components/Songs'
@@ -22,6 +23,8 @@ const CurrentPlaylist = () => {
     queryKey: ['single-playlist'],
     queryFn: () => getPlaylistInfo(playlistId),
   })
+
+  console.log(getSession())
 
 
   return (
@@ -42,6 +45,7 @@ const CurrentPlaylist = () => {
             <Heading as="h3" className='player-h3'>Currently Playing</Heading>
             <div className='player'>
               {/* <button href="google.com"></button> */}
+              {/* <Player token={getSession()} trackUri=''/> */}
             </div>
           </div>
         </Flex>

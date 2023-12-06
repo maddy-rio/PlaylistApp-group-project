@@ -91,17 +91,9 @@ function Login() {
     return <div>Loading user Info...</div>
   }
   return (
-    <div>
       <>
-        <h1>logged in with {userDetails.display_name}</h1>
-        <p>{userDetails.country}</p>
-        <p>{userDetails.email}</p>
-
-        <p>{userDetails.type}</p>
-
-        {userDetails && <Dashboard />}
+        <Dashboard />
       </>
-    </div>
   )
 }
 
