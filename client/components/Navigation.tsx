@@ -11,10 +11,12 @@ const Navigation = () => {
           VIBESVAULT
         </Text>
       </Link>
+      <Link to='/logout' >
       <Button variant="outline" size="2">
         Log out
         <ExitIcon />
       </Button>
+      </Link >
     </Flex>
   )
 }

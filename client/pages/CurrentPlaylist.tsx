@@ -24,9 +24,7 @@ const CurrentPlaylist = () => {
   )
 
   const token = getSession() as string
-  const [playingTracks, setPlayingTracks] = useState('')
-  // const playListId = useParams().playlistId as string
-  // const token = getSession() as string
+
   const {
     data: songs,
     isError,
@@ -72,7 +70,7 @@ const CurrentPlaylist = () => {
           <Navigation />
           <Flex direction="column" justify="end" height="100%" m="7">
             <Heading as="h1" align="left" className="theme-h1">
-              Today's Theme:
+              Today&apos;s Theme:
             </Heading>
 
             <Heading as="h2" className="theme-h2 gradient-theme">
