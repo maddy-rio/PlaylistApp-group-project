@@ -13,7 +13,14 @@ beforeEach(async () => {
 
 describe('getAllTasks', () => {
   it('gets all song ids connected to a playlist id', async () => {
-    const allWins = await db.getUserPlaylists(1)
+    const allWins = await db.getPlaylistByToken("ABC123")
+    expect(allWins).toHaveLength(1)
+  })
+})
+
+describe('addPlaylistToUser', () => {
+  it('adds playlist id and userid to join table', async () => {
+    const allWins = await db.addPlaylistToUser(1, 2)
     expect(allWins).toHaveLength(1)
   })
 })

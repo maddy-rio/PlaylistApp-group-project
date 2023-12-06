@@ -4,7 +4,7 @@ import { sha256 } from '../functions/sha'
 import { gatherUserTokenFromSpotify } from '../functions/getToken'
 import { useEffect } from 'react'
 import { getSession, startSession } from '../functions/startSession'
-import { getUserDetails } from '../apis/playlist'
+import { getUserDetails, getUserInfoFromDb } from '../apis/playlist'
 import Dashboard from '../pages/Dashboard'
 import { useOutletContext } from 'react-router-dom'
 import { ContextType } from '../../models/contextType'
@@ -74,14 +74,20 @@ function Login() {
     // already in session
     const fetchUserDetails = async () => {
       if (code) {
-        // true if redirected from spotify auth
         await getToken()
       } else if (!getSession()) {
         await initiateSpotifyAuthentication()
       }
       const data = await getUserDetails()
-
       changeUserDetails(data)
+      const user = await getUserInfoFromDb(data.id).then(
+        (data) => data.body.data[0]?.user_id,
+      )
+      if (user) {
+        window.location.href = '/dashboard'
+      } else {
+        window.location.href = '/newuser/' + data.id
+      }
     }
     fetchUserDetails()
   }, [code])
@@ -91,17 +97,9 @@ function Login() {
     return <div>Loading user Info...</div>
   }
   return (
-    <div>
-      <>
-        <h1>logged in with {userDetails.display_name}</h1>
-        <p>{userDetails.country}</p>
-        <p>{userDetails.email}</p>
-
-        <p>{userDetails.type}</p>
-
-        {userDetails && <Dashboard />}
-      </>
-    </div>
+    <>
+      <Dashboard />
+    </>
   )
 }
 
