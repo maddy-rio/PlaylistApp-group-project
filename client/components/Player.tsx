@@ -3,12 +3,12 @@ import SpotifyPlayer from 'react-spotify-web-playback'
 
 interface Props{
   token: string
-  trackUri: string
+  trackUri: string[]
 }
 
 export default function Player({ token, trackUri }: Props) {
   const [play, setPlay] = useState(false)
-
+console.log(trackUri)
   useEffect(() => setPlay(true), [trackUri])
 
   if (!token) return null
@@ -21,7 +21,7 @@ export default function Player({ token, trackUri }: Props) {
           if (!state.isPlaying) setPlay(false)
         }}
         play={play}
-        uris={trackUri ? [trackUri] : []}
+        uris={trackUri ? trackUri : []}
       />
     </div>
   )
