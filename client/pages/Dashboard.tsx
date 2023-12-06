@@ -13,7 +13,13 @@ import Navigation from '../components/Navigation'
 import gradient from '@privjs/gradients'
 // import CreatePlaylist from './CreatePlaylist'
 import { getUsersPlaylists } from '../apis/playlist'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  isLoading,
+  isError,
+} from '@tanstack/react-query'
 
 import { Link, useOutletContext, useNavigate } from 'react-router-dom'
 import { ContextType } from '../../models/contextType'
@@ -22,7 +28,7 @@ import { useState } from 'react'
 import { addPlaylistToUser } from '../../server/db/functions/getInfo'
 
 interface playlistProps {
-  playlistsId: string
+  playlistsId: number
   name: string
   id: string
 }
@@ -30,7 +36,11 @@ interface playlistProps {
 const Dashboard = () => {
   const { userDetails } = useOutletContext<ContextType>() || {}
   const navigate = useNavigate()
-  const [form, setForm] = useState({ token: '' })
+  const [form, setForm] = useState({
+    token: '',
+    playlistId: '',
+    userId: userDetails?.id,
+  })
 
   const {
     data: playlists,
@@ -40,12 +50,16 @@ const Dashboard = () => {
     queryKey: ['playlists'],
     queryFn: () => getUsersPlaylists(userDetails?.id),
   })
-  const userMutation = useMutation({
-    mutationFn: addPlaylistToUser,
-    onSuccess: (data) => {
-      navigate(`/dashboard/${data.playlistsId}`)
+
+  const mutation = useMutation(
+    () => addPlaylistToUser(form.playlistId, form.userId, form.token),
+    {
+      onSuccess: () => {
+        // Redirect the user to the new page upon successful addition
+        window.location.href = `/dashboard/playlists/${form.playlistId}`
+      },
     },
-  })
+  )
 
   console.log(playlists)
   if (isLoading) {
@@ -56,9 +70,17 @@ const Dashboard = () => {
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    // check later
     e.preventDefault()
-    userMutation.mutate({ ...form, token })
+
+    // Check if the playlist ID is not empty
+    if (form.playlistId.trim() === '') {
+      // Handle error or provide feedback to the user
+      console.error('Playlist ID is required')
+      return
+    }
+
+    // Trigger the mutation to add the playlist to the user
+    mutation.mutate()
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -175,6 +197,19 @@ const Dashboard = () => {
                                 name="token"
                                 value={form.token}
                                 onChange={handleChange}
+                              />
+                            </div>
+                            {/* COURTNEY I ADDED THIS */}
+                            <div>
+                              <label htmlFor="playlistId">Playlist ID</label>
+                              <input
+                                type="text"
+                                name="playlistId"
+                                value={
+                                  form.playlistId || playlists?.playlistId || ''
+                                }
+                                onChange={handleChange}
+                                readOnly // Make the input readonly
                               />
                             </div>
                             <button type="submit">Submit</button>
