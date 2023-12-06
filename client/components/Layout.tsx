@@ -15,7 +15,7 @@ function Layout() {
   function changeUserDetails(user: ContextType['userDetails']) {
     setUserDetails(user)
   }
-
+console.log('layout',userDetails)
   return (
     <div>
         <>

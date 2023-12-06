@@ -36,7 +36,11 @@ export async function getUserName(userId: number): Promise<UserName[]> {
   return name
 }
 
-// match a token to a user id and return playlist id
+export async function getUserDetails(spotifyId: string) {
+  const name = await db('users').where('users.user_id', spotifyId).select('*')
+  console.log(`from db function:`, name)
+  return name
+} // match a token to a user id and return playlist id
 
 export async function getPlaylistByToken(token: string) {
   const playlist = await db('playlists').where('token', token).select('id')

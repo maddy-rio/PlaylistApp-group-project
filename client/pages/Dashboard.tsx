@@ -69,7 +69,26 @@ const Dashboard = () => {
     },
   )
 
-  console.log(playlists)
+  const mutation = useMutation(
+    () => addPlaylistToUser(form.playlistId, form.userId, form.token),
+    {
+      onSuccess: () => {
+        // Redirect the user to the new page upon successful addition
+        window.location.href = `/dashboard/playlists/${form.playlistId}`
+      },
+    },
+  )
+
+  const mutation = useMutation(
+    () => addPlaylistToUser(form.playlistId, form.userId, form.token),
+    {
+      onSuccess: () => {
+        // Redirect the user to the new page upon successful addition
+        window.location.href = `/dashboard/playlists/${form.playlistId}`
+      },
+    },
+  )
+
   if (isLoading) {
     return <div>Loading...</div>
   }
