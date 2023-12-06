@@ -4,25 +4,49 @@ import { ArrowLeftIcon } from '@radix-ui/react-icons'
 import Navigation from '../components/Navigation'
 import Canvas from '../components/Canvas'
 
-import { useParams } from 'react-router-dom'
+import { useParams , useOutletContext} from 'react-router-dom'
 import { getPlaylistInfo } from '../apis/playlist'
 import { useQuery } from '@tanstack/react-query'
 
 import Track from '../components/Track'
 import Songs from '../components/Songs'
 import Player from '../components/Player'
+import { ContextType } from '../../models/contextType'
+import { getSession } from '../functions/startSession'
+import { useState } from 'react'
+import { songList } from '../apis/songList'
 
 
       
 const CurrentPlaylist = () => {
-  const todaysTheme = 'A song that tells a story'
-  const { playlistId } = useParams() 
+  const { userDetails } = useOutletContext<ContextType>()
+  console.log(userDetails)
+  const userImage = userDetails?.images[0] 
+  const playListId = useParams().playlistId as string
+  console.log(userImage)
 
-  const { data: playlistTracks } = useQuery({
-    queryKey: ['single-playlist'],
-    queryFn: () => getPlaylistInfo(playlistId),
+  const token = getSession() as string
+  const [playingTracks, setPlayingTracks] = useState('')
+  const {
+    data: songs,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: ['songs'],
+    queryFn: () => songList(playListId, token),
   })
 
+  if (isError) {
+    return <p>Error</p>
+  }
+  if (isLoading) {
+    return <p>Loading...</p>
+  }
+
+  function handleClick(item: Album) {
+    setPlayingTracks(item.uri)
+  }
+  const todaysTheme='A song tells the story of the day'
 
   return (
     <>
@@ -34,10 +58,11 @@ const CurrentPlaylist = () => {
           <Heading as="h1" align="left" className="theme-h1">
             Today's Theme:
           </Heading>
+          <Songs playlistId={playListId} />
           <Heading as="h2" className="theme-h2 gradient-theme">
             <em>{todaysTheme}</em>
           </Heading>
-            <Songs playlistId={playlistId as string} /> 
+            <Songs playlistId={playListId as string} /> 
           <div className='player-box'>
             <Heading as="h3" className='player-h3'>Currently Playing</Heading>
             <div className='player'>
@@ -66,6 +91,52 @@ const CurrentPlaylist = () => {
             <Heading as="h1" align="left" className="theme-h1">
               Playlist
             </Heading>
+            {songs.map((item, index) => (
+        <div
+          key={index}
+          className="track-single d-flex justify-content-between p-2 m-1 rounded container-sm"
+          onClick={() => handleClick(item)}
+          role="button"
+        >
+          <div className="track-single-details d-flex">
+            <img
+              src={item?.album.images[0]?.url}
+              alt={item.name}
+              className="track-image rounded"
+            />
+            <div className="track-artist ml-3">
+              <p>
+                <b>{item.name}</b>
+              </p>
+              <div className="">
+                <p className="inline">
+                  {item.explicit && '🅴 '}
+                  {item?.artists[0].name}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="track-single-user d-flex align-items-center">
+            {userImage? <img src={userImage.url} alt="user"  className="track-image track-image-profile rounded-circle mx-2" /> : 
+            <img
+              className="track-image track-image-profile rounded-circle mx-2"
+              src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"
+              alt=""
+            />}
+            <img
+              className="track-play-pause"
+              src={'/images/play-button.png'}
+              alt=""
+            />
+          </div>
+        </div>
+      ))}
+
+      {playingTracks && (
+        <div>
+          <Player trackUri={playingTracks} token={token} />
+        </div>
+      )}
           </Flex>
 
         </div>
