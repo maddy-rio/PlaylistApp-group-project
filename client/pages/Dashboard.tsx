@@ -24,10 +24,15 @@ const Dashboard = () => {
     isLoading,
   } = useQuery({
     queryKey: ['playlists'],
+    // queryFn: () => getUsersPlaylists('gorhgoe'),
     queryFn: () => getUsersPlaylists(userDetails?.id),
   })
 
-  console.log(playlists)
+  // console.log('userDetails', userDetails);
+  
+
+  // console.log(playlists)
+
   if (isLoading) {
     return <div>Loading...</div>
   }

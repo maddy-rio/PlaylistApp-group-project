@@ -34,5 +34,11 @@ export  async function getUserName( userId: number ): Promise<UserName[]> {
     return name
 }
 
-
+export async function getUserDetails (spotifyId: string) {
+  const name = await db('users')
+    .where('users.user_id', spotifyId)
+    .select('*')
+    console.log(`from db function:`, name)
+    return name
+}
 
