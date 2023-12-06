@@ -12,7 +12,11 @@ import { PlusCircledIcon } from '@radix-ui/react-icons'
 import Navigation from '../components/Navigation'
 import gradient from '@privjs/gradients'
 // import CreatePlaylist from './CreatePlaylist'
-import { getUsersPlaylists } from '../apis/playlist'
+import {
+  getUserDetails,
+  getUserInfoFromDb,
+  getUsersPlaylists,
+} from '../apis/playlist'
 import {
   useMutation,
   useQuery,
@@ -26,6 +30,7 @@ import Canvas from '../components/Canvas'
 import { useEffect, useState } from 'react'
 import { addPlaylistToUser } from '../apis/addInfo'
 import { getPlaylistByToken } from '../apis/addInfo'
+import { getSession } from '../functions/startSession'
 
 interface playlistProps {
   playlistsId: number
@@ -49,7 +54,7 @@ const Dashboard = () => {
   } = useQuery({
     queryKey: ['playlists', form.token],
     queryFn: async () => {
-      if (form.token) {
+        if (form.token) {
         return getUsersPlaylists(userDetails?.id)
       } else {
         return getPlaylistByToken(form.token)
@@ -58,8 +63,8 @@ const Dashboard = () => {
     enabled: form.token !== '',
   })
   const mutation = useMutation(
-    () => addPlaylistToUser(form.token),
-    // () => addPlaylistToUser(form.playlistId, form.userId, form.token),
+    // () => addPlaylistToUser(form.token),
+    () => addPlaylistToUser(form.playlistId, form.userId, form.token),
     {
       onSuccess: () => {
         // Redirect the user to the new page upon successful addition
@@ -68,9 +73,12 @@ const Dashboard = () => {
     },
   )
 
+  console.log(playlists);
+  
   if (error) {
     return <div>Error</div>
   }
+
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -82,10 +90,31 @@ const Dashboard = () => {
     //   return
     // }
     const token = form.token
-    const playlistId = await getPlaylistByToken(token)
-    console.log(playlistId)
+    const playlistId = await getPlaylistByToken(token).then(
+      (res) => res.data[0]?.id,
+    )
+    if (playlistId) {
+      const userId = await getUserDetails()
+        .then((res) => res.id)
+        .then((res) => getUserInfoFromDb(res))
+        .then((res) => res.body.data[0].id)
 
-    // setForm(playlistId: await getPlaylistByToken(token))
+      // sorry this was quite late at night*
+      const thisIsATemporarySolutionToALongTermProblem = {
+        playlistId: playlistId,
+        userId: userId,
+      }
+      console.log(thisIsATemporarySolutionToALongTermProblem)
+
+      await addPlaylistToUser({
+        ...thisIsATemporarySolutionToALongTermProblem,
+      })
+        .then((res) => res.body.data[0])
+        .then((res) => {
+          window.location.href = `/dashboard/${playlistId}`
+        })
+    }
+    // setForm(playlistId)
     // Trigger the mutation to add the playlist to the user
     // mutation.mutate()
   }
