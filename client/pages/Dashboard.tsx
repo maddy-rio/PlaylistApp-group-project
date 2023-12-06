@@ -2,7 +2,6 @@ import { Flex, Text, Button, Heading, Card, AspectRatio, Dialog, TextField } fro
 import { PlusCircledIcon } from '@radix-ui/react-icons'
 import Navigation from '../components/Navigation'
 import gradient from '@privjs/gradients'
-// import CreatePlaylist from './CreatePlaylist'
 import { getUsersPlaylists } from '../apis/playlist'
 import { useQuery } from '@tanstack/react-query'
 
@@ -49,7 +48,7 @@ const Dashboard = () => {
               <Link to={`/dashboard/${playlist.playlistsId}`} key={index}>
               <Card key={playlist.id} className='playlist-card'>
                   <Flex direction="column" gap="4" p="2">
-                    <AspectRatio ratio="1/1">
+                    <AspectRatio ratio={1/1}>
                       {/* TODO: Add conditional - if no album art, show below div... */}
                       <div className='album-art' style={{background: gradient(playlist.id) }}></div>
                       {/* ...otherwise show album art */}

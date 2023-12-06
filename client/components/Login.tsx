@@ -88,17 +88,12 @@ function Login() {
 
   console.log(userDetails)
   if (!userDetails) {
-    return <div>Loading user Info...</div>
+    console.error('No user details found.')
+    return <div className='transition'/>
   }
   return (
     <div>
       <>
-        <h1>logged in with {userDetails.display_name}</h1>
-        <p>{userDetails.country}</p>
-        <p>{userDetails.email}</p>
-
-        <p>{userDetails.type}</p>
-
         {userDetails && <Dashboard />}
       </>
     </div>
