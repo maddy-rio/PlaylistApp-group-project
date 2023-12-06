@@ -1,9 +1,39 @@
 import { Router } from 'express'
 import * as db from '../db/functions/database'
-import { addSongToPlaylist } from '../db/functions/addInfo'
-import { getUserDetails, getPlaylistName } from '../db/functions/getInfo'
+
+import { NewUserPlaylist, addSongToPlaylist } from '../db/functions/addInfo'
+import { getUserDetails, getPlaylistByToken, getPlaylistName } from '../db/functions/getInfo'
 
 const router = Router()
+
+router.post('/db-add-playlist-to-user', async (req, res) => {
+  try {
+    const { playlistId, userId } = req.body
+    console.log(playlistId, userId);
+    
+    const data = {
+      playlists_id: Number(playlistId),
+      users_id: Number(userId),
+    }
+    const data2 = await NewUserPlaylist(data)
+    res.json({ data: data2 })
+  } catch (err) {
+    console.log(err)
+    res.status(500).send('No songs sorry')
+  }
+})
+
+router.get('/token/get', async (req, res) => {
+  try {
+    const token = req.query.token
+    console.log(token)
+    const data = await getPlaylistByToken(token as string)
+    res.json({ data })
+  } catch (err) {
+    console.log(err)
+    res.status(500).send('No songs sorry')
+  }
+})
 
 router.get('/:userId', async (req, res) => {
   try {
@@ -46,17 +76,32 @@ router.post('/:playlistId', async (req, res) => {
   }
 })
 
-
-router.get('/getDbUserDetails/:userId', async (req, res) => {
+router.post('/:playlistId', async (req, res) => {
   try {
-    const spotifyId = req.params.userId
-    const result = await getUserDetails(spotifyId as string)
-    res.json({data: result})
-  } catch(err) {
+    const playlistId = Number(req.params.playlistId)
+
+    const playlistName = await getPlaylistName(playlistId)
+
+    res.json(playlistName)
+  } catch (err) {
     console.log(err)
-    res.status(500).send('No songs sorry')    
+    res.status(500).send('No playlist name found')
+  }
+})
+
+router.get('/getDbUserDetails/:spotifyUserId', async (req, res) => {
+  try {
+    const spotifyUserId = req.params.spotifyUserId
+    const data = await getUserDetails(spotifyUserId)
+    res.json({ data })
+  } catch (err) {
+    console.log(err)
+    res.status(500).send('No songs sorry')
   }
 })
 
 
+
 export default router
+
+// get userplaylist

@@ -2,6 +2,7 @@ import { Flex, Button, Heading, Text } from '@radix-ui/themes'
 import { ArrowLeftIcon } from '@radix-ui/react-icons'
 import Navigation from '../../components/Navigation'
 import Canvas from '../../components/Canvas'
+import Player from '../../components/Player'
 
 
 const CurrentPlaylist = () => {
@@ -29,7 +30,9 @@ const CurrentPlaylist = () => {
             </Heading>
             <div className='player-box'>
               <Heading as="h3" className='player-h3'>Currently Playing</Heading>
-              <div className='player'></div>
+              <div className='player'>
+                <Player token="" trackUri='' />
+              </div>
             </div>
 
         </Flex>
