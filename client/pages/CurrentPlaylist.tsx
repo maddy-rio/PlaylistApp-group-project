@@ -26,9 +26,7 @@ const CurrentPlaylist = () => {
   )
 
   const token = getSession() as string
-  const [playingTracks, setPlayingTracks] = useState('')
-  // const playListId = useParams().playlistId as string
-  // const token = getSession() as string
+
   const {
     data: songs,
     isError,

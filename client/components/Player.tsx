@@ -4,7 +4,7 @@ import { Card } from '@radix-ui/themes'
 
 interface Props{
   token: string
-  trackUri: string[]
+  trackUri: string[] | undefined
 }
 
 export default function Player({ token, trackUri }: Props) {
