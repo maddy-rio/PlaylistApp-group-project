@@ -8,14 +8,16 @@ export async function addProfile(newUser: Profile) {
 
 //Add token to playlist
 
-export async function addPlaylistToUser(
-  playlistId: number,
-  userId: number,
-  token: string,
-) {
+export async function addPlaylistToUser(token: string) {
+  // export async function addPlaylistToUser(
+  //   playlistId: number,
+  //   userId: number,
+  //   token: string,
+  // ) {
   const playlistToUser = await request
-    .post('/api/v1/')
-    .send({ playlistId, userId, token })
+    .post('/api/v1/user/playlists')
+    .send({ token })
+  // .send({ playlistId, userId, token })
   return playlistToUser
 }
 

@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import * as db from '../db/functions/database'
 import { addSongToPlaylist } from '../db/functions/addInfo'
-import { getUserDetails } from '../db/functions/getInfo'
+import { getPlaylistByToken } from '../db/functions/getInfo'
 
 const router = Router()
 
@@ -33,20 +33,20 @@ router.post('/:playlistId', async (req, res) => {
   }
 })
 
-
-router.get('/getDbUserDetails/:userId', async (req, res) => {
+router.post('/', async (res, req) => {
   try {
-    const spotifyId = req.params.userId
-    const result = await getUserDetails(spotifyId as string)
-    res.json({data: result})
-  } catch(err) {
+    const token = req.body.token
+    console.log(token)
+    const data = await getPlaylistByToken(token)
+    res.json({ data })
+  } catch (err) {
     console.log(err)
-    res.status(500).send('No songs sorry')    
+    res.status(500).send('No songs sorry')
   }
 })
 
+router.post('')
 
 export default router
-
 
 // get userplaylist

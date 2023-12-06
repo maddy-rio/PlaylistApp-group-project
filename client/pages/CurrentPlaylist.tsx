@@ -3,19 +3,15 @@ import Navigation from '../components/Navigation'
 import Canvas from '../components/Canvas'
 
 import { useParams, useOutletContext } from 'react-router-dom'
-import { getPlaylistInfo } from '../apis/playlist'
 import { useQuery } from '@tanstack/react-query'
 import { getSession } from '../functions/startSession'
 
-import Track from '../components/Track'
 import Songs from '../components/Songs'
 import Player from '../components/Player'
 import { ContextType } from '../../models/contextType'
-import { getSession } from '../functions/startSession'
 import { useState } from 'react'
 import { songList } from '../apis/songList'
 import { Album } from '../../models/song'
-import Songs from '../components/Songs'
 
 const CurrentPlaylist = () => {
   const { userDetails } = useOutletContext<ContextType>()

@@ -16,9 +16,7 @@ server.use(cors())
 
 server.use('/api/v1/tracks', tracksRoutes)
 server.use('/api/v1/user/playlists', userPlaylist)
-
 server.use('/api/v1/user', spotifyUser)
-
 server.use('/api/v1/newuser', addUserRouter)
 
 server.use(bodyParser.urlencoded({ extended: true }))
@@ -27,7 +25,6 @@ server.use(bodyParser.json())
 // Include your Spotify routes
 
 // server.use('/api/v1/playlist', playlistRoutes)
-
 
 if (process.env.NODE_ENV === 'production') {
   server.use(express.static(Path.resolve('public')))

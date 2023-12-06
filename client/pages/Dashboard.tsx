@@ -17,7 +17,6 @@ import {
   useMutation,
   useQuery,
   useQueryClient,
-  isLoading,
   isError,
 } from '@tanstack/react-query'
 
@@ -39,7 +38,7 @@ const Dashboard = () => {
   const navigate = useNavigate()
   const [form, setForm] = useState({
     token: '',
-    playlistId: '',
+    playlistId: 0,
     userId: userDetails?.id,
   })
 
@@ -51,63 +50,44 @@ const Dashboard = () => {
     queryKey: ['playlists', form.token],
     queryFn: async () => {
       if (form.token) {
-        return getPlaylistByToken(form.token)
-      } else {
         return getUsersPlaylists(userDetails?.id)
+      } else {
+        return getPlaylistByToken(form.token)
       }
     },
     enabled: form.token !== '',
   })
-
   const mutation = useMutation(
-    () => addPlaylistToUser(form.playlistId, form.userId, form.token),
+    () => addPlaylistToUser(form.token),
+    // () => addPlaylistToUser(form.playlistId, form.userId, form.token),
     {
       onSuccess: () => {
         // Redirect the user to the new page upon successful addition
-        window.location.href = `/dashboard/playlists/${form.playlistId}`
+        window.location.href = `/dashboard/${form.playlistId}`
       },
     },
   )
 
-  const mutation = useMutation(
-    () => addPlaylistToUser(form.playlistId, form.userId, form.token),
-    {
-      onSuccess: () => {
-        // Redirect the user to the new page upon successful addition
-        window.location.href = `/dashboard/playlists/${form.playlistId}`
-      },
-    },
-  )
-
-  const mutation = useMutation(
-    () => addPlaylistToUser(form.playlistId, form.userId, form.token),
-    {
-      onSuccess: () => {
-        // Redirect the user to the new page upon successful addition
-        window.location.href = `/dashboard/playlists/${form.playlistId}`
-      },
-    },
-  )
-
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
   if (error) {
     return <div>Error</div>
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
     // Check if the playlist ID is not empty
-    if (form.playlistId.trim() === '') {
-      // Handle error or provide feedback to the user
-      console.error('Playlist ID is required')
-      return
-    }
+    // if (form.playlistId === 0) {
+    //   // Handle error or provide feedback to the user
+    //   console.error('Playlist ID is required')
+    //   return
+    // }
+    const token = form.token
+    const playlistId = await getPlaylistByToken(token)
+    console.log(playlistId)
 
+    // setForm(playlistId: await getPlaylistByToken(token))
     // Trigger the mutation to add the playlist to the user
-    mutation.mutate()
+    // mutation.mutate()
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -148,7 +128,7 @@ const Dashboard = () => {
                   <Link to={`/playlist/${playlist.playlistsId}`} key={index}>
                     <Card key={playlist.id} className="playlist-card">
                       <Flex direction="column" gap="4" p="2">
-                        <AspectRatio ratio="1/1">
+                        <AspectRatio ratio={1 / 1}>
                           {/* TODO: Add conditional - if no album art, show below div... */}
                           <div
                             className="album-art"
@@ -232,7 +212,7 @@ const Dashboard = () => {
                               />
                             </div>
                             {/* COURTNEY I ADDED THIS */}
-                            <div>
+                            {/* <div>
                               <label htmlFor="playlistId">Playlist ID</label>
                               <input
                                 type="text"
@@ -243,7 +223,7 @@ const Dashboard = () => {
                                 onChange={handleChange}
                                 readOnly // Make the input readonly
                               />
-                            </div>
+                            </div> */}
                             <button type="submit">Submit</button>
                           </form>
                         </Flex>
