@@ -97,7 +97,7 @@ const Dashboard = () => {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    setForm((prevForm) => ({ ...prevForm, playlistId: parseInt(prevForm.playlistId, 10), || '', userId: userDetails?.id }))
+    setForm((prevForm) => ({ ...prevForm, userId: userDetails?.id || '' }))
   }, [userDetails])
 
   return (
