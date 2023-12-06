@@ -1,9 +1,7 @@
 import connection from '../connection'
-import {
-  PlaylistTrackIds,
-  UserPlaylists,
-  UserName,
-} from '../../../models/getInfo'
+import { PlaylistTrackIds, UserPlaylists, UserName } from '../../../models/getInfo'
+import { PlaylistName } from '../../../models/Playlist'
+import { Playlist } from '../../../models/PlaylistItems'
 
 const db = connection
 
@@ -79,4 +77,12 @@ export async function addPlaylistToUser(
     console.error(`Error adding playlist to user:`, error)
     throw error
   }
+}
+export async function getPlaylistName( playlistId: number ): Promise<PlaylistName> {
+  const name = await db('playlists')
+    .where('playlist.id', playlistId)
+    .select('name')
+    .first()
+    console.log(`playlist name found:`, name)
+    return name
 }

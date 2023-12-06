@@ -1,16 +1,18 @@
-import { Flex, Button, Heading, Text } from '@radix-ui/themes'
+import { Flex, Button, Heading, Text, Dialog } from '@radix-ui/themes'
 import Navigation from '../components/Navigation'
 import Canvas from '../components/Canvas'
+import { PlusCircledIcon, ArrowLeftIcon } from '@radix-ui/react-icons'
 
 import { useParams, useOutletContext } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getSession } from '../functions/startSession'
+import { useEffect, useState } from 'react'
 
 import Songs from '../components/Songs'
 import Player from '../components/Player'
 import { ContextType } from '../../models/contextType'
-import { useEffect, useState } from 'react'
 import { songList } from '../apis/songList'
+import { getPlaylistName } from '../apis/getInfo'
 import { Album } from '../../models/song'
 
 const CurrentPlaylist = () => {
@@ -19,7 +21,7 @@ const CurrentPlaylist = () => {
   const userImage = userDetails?.images[0]
   const playListId = useParams().playlistId as string
   const [tracksArray, setTrackArray] = useState<string[] | undefined>([])
-  const [redoeredTracks, setRedoerededTracks] = useState<string[] | undefined>(
+  const [reorderedTracks, setReorderedTracks] = useState<string[] | undefined>(
     [],
   )
 
@@ -51,38 +53,47 @@ const CurrentPlaylist = () => {
 
   function handleClick(index: number) {
     // setPlayingTracks(item.uri)
-    setRedoerededTracks(tracksArray)
+    setReorderedTracks(tracksArray)
     console.log(index)
     const reorderedLinks = [
       ...tracksArray.slice(index),
       ...tracksArray.slice(0, index),
     ]
-    setRedoerededTracks(reorderedLinks)
+    setReorderedTracks(reorderedLinks)
 
     // Update the state with the new order
   }
-  const todaysTheme = 'A song tells the story of the day'
+  const todaysTheme = 'A song that tells a story'
 
   return (
     <>
       <Flex width="100%" height="100%" className="app">
         <Flex direction="column" width="100%" mx="3" my="2">
           <Navigation />
-          <Flex direction="column" justify="end" height="100%" m="7">
-            <Heading as="h1" align="left" className="theme-h1">
-              Today&apos;s Theme:
+          <Flex>
+          <Button variant="ghost" size="3" style={{color: 'white'}}>
+            <ArrowLeftIcon width="20" height="20"/>
+            Back to Playlists
+          </Button>
+          </Flex>
+          <Flex direction="column" justify="end" height="100%" className="theme-box" m="7">
+            <Heading as="h1" align="left" className="playlist-h1">
+              Today's Theme
             </Heading>
 
             <Heading as="h2" className="theme-h2 gradient-theme">
               <em>{todaysTheme}</em>
             </Heading>
-            <Songs playlistId={playListId as string} />
             <div className="player-box">
               <Heading as="h3" className="player-h3">
                 Currently Playing
               </Heading>
               <div className="player">
-                {/* <button href="google.com"></button> */}
+              {tracksArray && (
+                <div>
+                  <Player trackUri={reorderedTracks} token={token} />
+                </div>
+              )}
               </div>
             </div>
           </Flex>
@@ -91,9 +102,9 @@ const CurrentPlaylist = () => {
           </div>
         </Flex>
 
-        <Flex direction="column" width="100%" mt="2" mr="2" mb="-3">
+        <Flex direction="column" width="100%" mt="2" mr="2" mb="-3" className='scroll-inside'>
           <div className="gradient-box">
-            <Flex align="center" justify="end" m="3">
+            {/* <Flex align="center" justify="end" m="3">
               <Button size="2" className="green-button">
                 <svg height="20" width="20" viewBox="0 0 24 24">
                   <path
@@ -103,16 +114,40 @@ const CurrentPlaylist = () => {
                 </svg>
                 Play on Spotify
               </Button>
-            </Flex>
+            </Flex> */}
 
-            <Flex direction="column" m="7">
-              <Heading as="h1" align="left" className="theme-h1">
+            <Flex direction="column" m="9">
+              <Heading as="h1" align="left" className="playlist-h1">
                 Playlist
               </Heading>
-              {songs.map((item, index) => (
+              <Heading as="h2" align="left" className="playlist-h2">
+                 Playlist name
+              </Heading>
+              <Text>Access token: 123456 </Text>
+              <Flex justify="between" className='filtering'>
+                <Text className="filter-today">Added today</Text>
+                <Text className="filter-none">All songs</Text>
+              </Flex>
+              <Flex direction='column' className="playlist-songs">
+
+                <Dialog.Root>
+                  <Dialog.Trigger>
+                    <Button size="3" className='add-song'>
+                      <PlusCircledIcon width="28px" height="28px"/>
+                      Add your song
+                    </Button>
+                  </Dialog.Trigger>
+
+                  <Dialog.Content style={{ maxWidth: 560 }}>
+                    <Dialog.Title>Add a</Dialog.Title>
+                    <Songs playlistId={playListId as string} />
+                  </Dialog.Content>
+                </Dialog.Root>
+                
+                {songs.map((item, index) => (
                 <div
                   key={index}
-                  className="track-single d-flex justify-content-between p-2 m-1 rounded container-sm"
+                  className="track-single d-flex justify-content-between p-2 rounded container-sm"
                   onClick={() => handleClick(index)}
                   role="button"
                 >
@@ -120,7 +155,7 @@ const CurrentPlaylist = () => {
                     <img
                       src={item?.album.images[0]?.url}
                       alt={item.name}
-                      className="track-image rounded"
+                      className="track-image"
                     />
                     <div className="track-artist ml-3">
                       <p>
@@ -135,7 +170,7 @@ const CurrentPlaylist = () => {
                     </div>
                   </div>
                   <div className="track-single-user d-flex align-items-center">
-                    {userImage ? (
+                    {/* {userImage ? (
                       <img
                         src={userImage.url}
                         alt="user"
@@ -147,22 +182,14 @@ const CurrentPlaylist = () => {
                         src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"
                         alt=""
                       />
-                    )}
-                    <img
-                      className="track-play-pause"
-                      src={'/images/play-button.png'}
-                      alt=""
-                    />
+                    )} */}
+                    <div className="circle-play">
+                    <svg height="24px" preserveAspectRatio="xMidYMid" viewBox="0 0 64 64" width="24px"><path d="M32 0c17.673 0 32 14.327 32 32 0 17.673-14.327 32-32 32C14.327 64 0 49.673 0 32 0 14.327 14.327 0 32 0Zm-7.61 18.188c-.435.251-.702.715-.701 1.216v25.194a1.402 1.402 0 0 0 2.104 1.214L47.61 33.214a1.402 1.402 0 0 0 0-2.428L25.793 18.188c-.435-.25-.97-.25-1.404 0Z" fill="currentColor"></path></svg>
+                    </div>
                   </div>
                 </div>
               ))}
-
-              {tracksArray && (
-                <div>
-                  {/* <Player trackUri={playingTracks} token={token} /> */}
-                  <Player trackUri={redoeredTracks} token={token} />
-                </div>
-              )}
+              </Flex>
             </Flex>
           </div>
         </Flex>

@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import * as db from '../db/functions/database'
+
 import { NewUserPlaylist, addSongToPlaylist } from '../db/functions/addInfo'
-import { getPlaylistByToken, getUserDetails } from '../db/functions/getInfo'
+import { getUserDetails, getPlaylistByToken, getPlaylistName } from '../db/functions/getInfo'
 
 const router = Router()
 
@@ -59,6 +60,32 @@ router.post('/:playlistId', async (req, res) => {
   } catch (err) {
     console.log(err)
     res.status(500).send('No songs sorry')
+  }
+})
+
+router.post('/:playlistId', async (req, res) => {
+  try {
+    const playlistId = Number(req.params.playlistId)
+
+    const playlistName = await getPlaylistName(playlistId)
+
+    res.json(playlistName)
+  } catch (err) {
+    console.log(err)
+    res.status(500).send('No playlist name found')
+  }
+})
+
+router.post('/:playlistId', async (req, res) => {
+  try {
+    const playlistId = Number(req.params.playlistId)
+
+    const playlistName = await getPlaylistName(playlistId)
+
+    res.json(playlistName)
+  } catch (err) {
+    console.log(err)
+    res.status(500).send('No playlist name found')
   }
 })
 

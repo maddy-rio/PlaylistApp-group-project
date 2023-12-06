@@ -7,11 +7,11 @@ import {
   AspectRatio,
   Dialog,
   TextField,
+  DialogTitle,
 } from '@radix-ui/themes'
-import { PlusCircledIcon } from '@radix-ui/react-icons'
+import { PlusCircledIcon, ArrowRightIcon } from '@radix-ui/react-icons'
 import Navigation from '../components/Navigation'
 import gradient from '@privjs/gradients'
-// import CreatePlaylist from './CreatePlaylist'
 import {
   getUserDetails,
   getUserInfoFromDb,
@@ -225,23 +225,26 @@ const Dashboard = () => {
                         </Button>
                       </Dialog.Trigger>
 
-                      <Dialog.Content style={{ maxWidth: 450 }}>
-                        <Heading as="h4">Join a playlist</Heading>
-                        <Text size="2" mb="4">
-                          Share tokens with friends to join their playlists.
-                        </Text>
+                      <Dialog.Content style={{ maxWidth: 520 }}>
+                        <DialogTitle>Join a playlist</DialogTitle>
 
                         <Flex direction="column" gap="3">
-                          <form onSubmit={handleSubmit}>
-                            <div>
-                              <label htmlFor="token">Token</label>
+                          <form onSubmit={handleSubmit} className='form-flex'>
+                              <label htmlFor="token" className='hide-label'>Access token</label>
+                              <Flex gap="4">
                               <input
                                 type="token"
                                 name="token"
+                                className='dialog-input'
+                                placeholder='Enter six-digit access token'
                                 value={form.token}
                                 onChange={handleChange}
                               />
-                            </div>
+                              <button type="submit" className='submit-button'>
+                                <ArrowRightIcon width="32px" height="32px" />
+                              </button>
+                              </Flex>
+                              <span className='fyi-text'>You can get this access token from someone who has already added the playlist to VibesVault.</span>
                             {/* COURTNEY I ADDED THIS */}
                             {/* <div>
                               <label htmlFor="playlistId">Playlist ID</label>
@@ -255,7 +258,6 @@ const Dashboard = () => {
                                 readOnly // Make the input readonly
                               />
                             </div> */}
-                            <button type="submit">Submit</button>
                           </form>
                         </Flex>
                       </Dialog.Content>
