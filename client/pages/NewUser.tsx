@@ -8,13 +8,20 @@ import Canvas from '../components/Canvas'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import { addProfile } from '../apis/addInfo'
 import { useState } from 'react'
+import { getSession } from '../functions/startSession';
+import { getUserDetails } from '../apis/playlist';
+import { useParams } from 'react-router-dom';
 
 interface Props {
   spotifyId: string
 }
 
-export default function NewUser({ spotifyId }: Props) {
-  const [form, setForm] = useState({ name: '' })
+
+
+
+export default function NewUser() {
+  const { spotifyId } = useParams()
+  const [form, setForm] = useState({ name: '', user_id: getSession() })
 
   const queryClient = useQueryClient()
 
@@ -25,10 +32,12 @@ export default function NewUser({ spotifyId }: Props) {
     },
   })
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     // check later
     e.preventDefault()
-    userMutation.mutate({ ...form, user_id: spotifyId })
+    const data = await getUserDetails()
+    userMutation.mutate({ ...form, user_id: data.id as string })
+    window.location.href = `/dashboard`
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
