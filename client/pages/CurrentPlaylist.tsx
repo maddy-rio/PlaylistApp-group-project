@@ -9,7 +9,7 @@ import { getSession } from '../functions/startSession'
 import Songs from '../components/Songs'
 import Player from '../components/Player'
 import { ContextType } from '../../models/contextType'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { songList } from '../apis/songList'
 import { Album } from '../../models/song'
 

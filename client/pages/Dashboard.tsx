@@ -40,6 +40,8 @@ interface playlistProps {
 
 const Dashboard = () => {
   const { userDetails } = useOutletContext<ContextType>() || {}
+  console.log(userDetails);
+  
   const navigate = useNavigate()
   const [form, setForm] = useState({
     token: '',
@@ -73,7 +75,7 @@ const Dashboard = () => {
     },
   )
 
-  console.log(playlists);
+  // console.log(playlists);
   
   if (error) {
     return <div>Error</div>
@@ -104,7 +106,7 @@ const Dashboard = () => {
         playlistId: playlistId,
         userId: userId,
       }
-      console.log(thisIsATemporarySolutionToALongTermProblem)
+      // console.log(thisIsATemporarySolutionToALongTermProblem)
 
       await addPlaylistToUser({
         ...thisIsATemporarySolutionToALongTermProblem,
