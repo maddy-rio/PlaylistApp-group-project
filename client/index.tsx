@@ -16,6 +16,6 @@ root.render(
   <Theme>
   <QueryClientProvider client={queryClient}>
     <RouterProvider router={router} />
-  </QueryClientProvider>,
+  </QueryClientProvider>
   </Theme>
 )

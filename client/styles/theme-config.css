@@ -257,18 +257,9 @@ a:visited, h1:visited, h2:visited, h3:visited, h4:visited, span:visited {
 .player-box {
   display: flex;
   flex-direction: column;
-  gap: 12px;
   margin-top: 32px;
+  gap: 16px;
   width: 100%;
-  border: 1px solid white;
-  border-radius: 8px;
-  padding: 16px;
-}
-
-.player {
-  width: 100%;
-  height: 56px;
-  background-color: white;
 }
 
 .player-h3, .playlist-h1 {
@@ -284,6 +275,15 @@ a:visited, h1:visited, h2:visited, h3:visited, h4:visited, span:visited {
   height: 100%;
 }
 
+.PlayerRSWP {
+  border-radius: 8px !important;
+  background: none !important;
+  margin: -12px !important;
+}
+
+._ContentWrapperRSWP a {
+  margin-top: -4px !important;
+}
 
 .track-single {
   background-color: rgb(30, 30, 30);

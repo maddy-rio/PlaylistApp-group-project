@@ -1,4 +1,4 @@
-  import { Flex, Button, Heading, Text } from '@radix-ui/themes'
+import { Flex, Button, Heading, Text } from '@radix-ui/themes'
 import Navigation from '../components/Navigation'
 import Canvas from '../components/Canvas'
 
@@ -10,6 +10,7 @@ import { ContextType } from '../../models/contextType'
 import { getSession } from '../functions/startSession'
 import { useEffect, useState } from 'react'
 import { songList } from '../apis/songList'
+import { getPlaylistName } from '../apis/getInfo'
 import { Album } from '../../models/song'
 import Songs from '../components/Songs'
 
@@ -19,9 +20,19 @@ const CurrentPlaylist = () => {
   const userImage = userDetails?.images[0]
   const playListId = useParams().playlistId as string
   const [tracksArray, setTrackArray] = useState<string[] | undefined>([])
-  const [redoeredTracks, setRedoerededTracks] = useState<string[] | undefined>(
+  const [reorderedTracks, setReorderedTracks] = useState<string[] | undefined>(
     [],
   )
+
+  async function fetchPlaylistName() {
+    const playlistName = await fetchPlaylistName();
+    console.log('playlist name', playlistName);
+}
+
+getPlaylistName();
+  getPlaylistName().then(playlistName => {
+    console.log('playlist name', playlistName);
+})
 
   const token = getSession() as string
   const [playingTracks, setPlayingTracks] = useState('')
@@ -52,13 +63,13 @@ const CurrentPlaylist = () => {
 
   function handleClick(index: number) {
     // setPlayingTracks(item.uri)
-    setRedoerededTracks(tracksArray)
+    setReorderedTracks(tracksArray)
     console.log(index)
     const reorderedLinks = [
       ...tracksArray.slice(index),
       ...tracksArray.slice(0, index),
     ]
-    setRedoerededTracks(reorderedLinks)
+    setReorderedTracks(reorderedLinks)
 
     // Update the state with the new order
   }
@@ -83,7 +94,11 @@ const CurrentPlaylist = () => {
                 Currently Playing
               </Heading>
               <div className="player">
-                {/* <button href="google.com"></button> */}
+              {tracksArray && (
+                <div>
+                  <Player trackUri={reorderedTracks} token={token} />
+                </div>
+              )}
               </div>
             </div>
           </Flex>
@@ -107,8 +122,10 @@ const CurrentPlaylist = () => {
             </Flex>
 
             <Flex direction="column" m="7">
-              <Heading as="h1" align="left" className="theme-h1">
+              <Heading as="h1" align="left" className="playlist-h1">
                 Playlist
+              </Heading>
+              <Heading as="h2" align="left" className="playlist-h2">
               </Heading>
               {songs.map((item, index) => (
                 <div
@@ -121,7 +138,7 @@ const CurrentPlaylist = () => {
                     <img
                       src={item?.album.images[0]?.url}
                       alt={item.name}
-                      className="track-image rounded"
+                      className="track-image"
                     />
                     <div className="track-artist ml-3">
                       <p>
@@ -157,13 +174,6 @@ const CurrentPlaylist = () => {
                   </div>
                 </div>
               ))}
-
-              {tracksArray && (
-                <div>
-                  {/* <Player trackUri={playingTracks} token={token} /> */}
-                  <Player trackUri={redoeredTracks} token={token} />
-                </div>
-              )}
             </Flex>
           </div>
         </Flex>

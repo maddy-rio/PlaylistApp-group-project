@@ -53,3 +53,7 @@ export interface Tracks {
   href: string
   total: number
 }
+
+export interface PlaylistName {
+  name: string
+}
