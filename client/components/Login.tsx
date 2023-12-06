@@ -92,7 +92,15 @@ function Login() {
     fetchUserDetails()
   }, [code])
 
-  return <div>Loading user Info...</div>
+  console.log(userDetails)
+  if (!userDetails) {
+    return <div>Loading user Info...</div>
+  }
+  return (
+    <>
+      <Dashboard />
+    </>
+  )
 }
 
 export default Login

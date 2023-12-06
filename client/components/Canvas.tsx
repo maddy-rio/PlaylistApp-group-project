@@ -59,10 +59,10 @@ const Canvas = () => {
 
   const resizeCanvas = () => {
     const canvas = canvasRef.current
-    if (!canvas) {
-      console.log('Not Canvas')
-      return
-    }
+    // if (!canvas) {
+    //   console.log('Not Canvas')
+    //   return
+    // }
     canvas.width = window.innerWidth // set width
     canvas.height = window.innerHeight // set height
     init()
@@ -71,10 +71,10 @@ const Canvas = () => {
   const animate = () => {
     requestAnimationFrame(animate)
     const canvas = canvasRef.current
-    if (!canvas) {
-      console.log('Not Canvas')
-      return
-    }
+    // if (!canvas) {
+    //   console.log('Not Canvas')
+    //   return
+    // }
     const context = canvas.getContext('2d')
     if (!context) {
       console.log('No Context 2d')
@@ -116,10 +116,10 @@ const Canvas = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current
-    if (!canvas) {
-      console.log('Not Canvas')
-      return
-    }
+    // if (!canvas) {
+    //   console.log('Not Canvas')
+    //   return
+    // }
 
     const context = canvas.getContext('2d')
     if (!context) {

@@ -17,7 +17,6 @@ export const routes = createRoutesFromElements(
       <Route path="/newuser/:spotifyId" element={<NewUser />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/dashboard/:playlistId" element={<CurrentPlaylist />} />
-      <Route path="/playlist" element={<PlaylistPageTemp />} />
 
       <Route path="/login" element={<Login />} />
       <Route path="/auth/spotify" element={<Login />} />
