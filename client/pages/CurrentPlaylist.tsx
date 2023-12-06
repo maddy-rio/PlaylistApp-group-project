@@ -51,7 +51,6 @@ const CurrentPlaylist = () => {
             <Heading as="h2" className="theme-h2 gradient-theme">
               <em>{todaysTheme}</em>
               <Songs playlistId={playListId} />
-
             </Heading>
             {/* <Songs playlistId={playlistId as string} /> */}
             <div className="player-box">

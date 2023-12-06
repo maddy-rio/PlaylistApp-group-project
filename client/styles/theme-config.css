@@ -2,6 +2,7 @@
 :root {
   --gradient-fill: linear-gradient(45deg, #ffeaab, #ffd491, #ffbd7c, #ffa46e, #ff8867, #ff6b68, #fc4a6f, #f11f7b, #de008c, #c3009e, #9b00b2, #5c00c5);
   --subtitle-color: #A5A5A5;
+  --playlist-height: 3rem;
 }
 
 
@@ -261,4 +262,22 @@
   font-size: 18px;
   line-height: 20px;
   text-transform: uppercase;
+}
+
+
+.track-single {
+  background-color: rgb(30, 30, 30);
+}
+
+.track-single p {
+  font-size: 16px;
+  margin: 0px;
+}
+
+.track-image { 
+  height: var(--playlist-height);
+}
+
+.track-play-pause {
+  height: var(--playlist-height);
 }
