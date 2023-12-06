@@ -4,7 +4,7 @@ import { sha256 } from '../functions/sha'
 import { gatherUserTokenFromSpotify } from '../functions/getToken'
 import { useEffect } from 'react'
 import { getSession, startSession } from '../functions/startSession'
-import { getUserDetails } from '../apis/playlist'
+import { getUserDetails, getUserInfoFromDb } from '../apis/playlist'
 import Dashboard from '../pages/Dashboard'
 import { useOutletContext } from 'react-router-dom'
 import { ContextType } from '../../models/contextType'
@@ -70,7 +70,10 @@ function Login() {
   const urlParams = new URLSearchParams(window.location.search)
   const code = urlParams.get('code')
   
-  
+  const redirectToNewUser = async () => {
+    console.log(userDetails?.id);
+    // const isUser = await getUserInfoFromDb(userDetails?.id)
+  }
 
   useEffect(() => {
     // already in session
@@ -78,16 +81,35 @@ function Login() {
       if (code) {
         // true if redirected from spotify auth
         await getToken()
+        // run comparison with the database ids to see if the spotify user id exists on the database
+        // redirectToNewUser()
+        try {
+          const data = await getUserDetails()
+          const user = await getUserInfoFromDb(data.id).then((data) => data.body.data[0]?.user_id)
+          console.log(user.body.data[0]?.user_id)
+          window.location.href = '/dashboard'
+          } catch(err) {
+            const data = await getUserDetails()
+            window.location.href = `/newuser/${data.id}`
+        }
+  
+
+
+        // window.location.href = '/'
       } else if (!getSession()) {
         await initiateSpotifyAuthentication()
       }
       const data = await getUserDetails()
+      console.log(data);
+      
 
       changeUserDetails(data)
     }
     fetchUserDetails()
   }, [code])
 
+
+  
 
   console.log(userDetails?.id);
 
