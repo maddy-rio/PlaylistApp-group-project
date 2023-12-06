@@ -22,6 +22,7 @@ export const routes = createRoutesFromElements(
 
       <Route path="/login" element={<Login />} />
       <Route path="/auth/spotify" element={<Login />} />
+      <Route path="/logout" element={<LandingPage />} />
       
       {/* <Route path="login/callback" element={<App />} />
       <Route path="/playlist" element={<CurrentPlaylist />} /> */}
