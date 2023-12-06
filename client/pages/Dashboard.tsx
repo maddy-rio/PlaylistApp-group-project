@@ -24,8 +24,9 @@ import {
 import { Link, useOutletContext, useNavigate } from 'react-router-dom'
 import { ContextType } from '../../models/contextType'
 import Canvas from '../components/Canvas'
-import { useState } from 'react'
-import { addPlaylistToUser } from '../../server/db/functions/getInfo'
+import { useEffect, useState } from 'react'
+import { addPlaylistToUser } from '../apis/addInfo'
+import { getPlaylistByToken } from '../apis/addInfo'
 
 interface playlistProps {
   playlistsId: number
@@ -47,8 +48,15 @@ const Dashboard = () => {
     error,
     isLoading,
   } = useQuery({
-    queryKey: ['playlists'],
-    queryFn: () => getUsersPlaylists(userDetails?.id),
+    queryKey: ['playlists', form.token],
+    queryFn: async () => {
+      if (form.token) {
+        return getPlaylistByToken(form.token)
+      } else {
+        return getUsersPlaylists(userDetails?.id)
+      }
+    },
+    enabled: form.token !== '',
   })
 
   const mutation = useMutation(
@@ -86,6 +94,11 @@ const Dashboard = () => {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    setForm((prevForm) => ({ ...prevForm, playlistId: parseInt(prevForm.playlistId, 10), || '', userId: userDetails?.id }))
+  }, [userDetails])
 
   return (
     <>
@@ -191,7 +204,7 @@ const Dashboard = () => {
                         <Flex direction="column" gap="3">
                           <form onSubmit={handleSubmit}>
                             <div>
-                              <label htmlFor="email">Token</label>
+                              <label htmlFor="token">Token</label>
                               <input
                                 type="token"
                                 name="token"
