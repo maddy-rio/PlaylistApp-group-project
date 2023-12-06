@@ -15,9 +15,18 @@ import { Album } from '../../models/song'
 
 const CurrentPlaylist = () => {
   const { userDetails } = useOutletContext<ContextType>()
-  const [playingTracks, setPlayingTracks] = useState('')
+
+  const userImage = userDetails?.images[0]
   const playListId = useParams().playlistId as string
+  const [tracksArray, setTrackArray] = useState<string[] | undefined>([])
+  const [redoeredTracks, setRedoerededTracks] = useState<string[] | undefined>(
+    [],
+  )
+
   const token = getSession() as string
+  const [playingTracks, setPlayingTracks] = useState('')
+  // const playListId = useParams().playlistId as string
+  // const token = getSession() as string
   const {
     data: songs,
     isError,
@@ -27,12 +36,12 @@ const CurrentPlaylist = () => {
     queryFn: () => songList(playListId, token),
   })
 
-  function handleClick(item: Album) {
-    setPlayingTracks(item.uri)
-  }
-
-  const userImage = userDetails?.images[0]
-  const todaysTheme = 'A song that tells a story'
+  useEffect(() => {
+    if (songs) {
+      const trackUriArray = songs.map((item) => item.uri)
+      setTrackArray(trackUriArray)
+    }
+  }, [songs])
 
   if (isError) {
     return <p>Error</p>
@@ -41,6 +50,20 @@ const CurrentPlaylist = () => {
     return <p>Loading...</p>
   }
   console.log(getSession())
+
+  function handleClick(index: number) {
+    // setPlayingTracks(item.uri)
+    setRedoerededTracks(tracksArray)
+    console.log(index)
+    const reorderedLinks = [
+      ...tracksArray.slice(index),
+      ...tracksArray.slice(0, index),
+    ]
+    setRedoerededTracks(reorderedLinks)
+
+    // Update the state with the new order
+  }
+  const todaysTheme = 'A song tells the story of the day'
 
   return (
     <>
@@ -51,17 +74,17 @@ const CurrentPlaylist = () => {
             <Heading as="h1" align="left" className="theme-h1">
               Today's Theme:
             </Heading>
+
             <Heading as="h2" className="theme-h2 gradient-theme">
               <em>{todaysTheme}</em>
-              <Songs playlistId={playListId} />
             </Heading>
-            {/* <Songs playlistId={playlistId as string} /> */}
+            <Songs playlistId={playListId as string} />
             <div className="player-box">
               <Heading as="h3" className="player-h3">
                 Currently Playing
               </Heading>
               <div className="player">
-                <Player trackUri={playingTracks} token={token} />
+                {/* <button href="google.com"></button> */}
               </div>
             </div>
           </Flex>
@@ -87,54 +110,61 @@ const CurrentPlaylist = () => {
             <Flex direction="column" m="7">
               <Heading as="h1" align="left" className="theme-h1">
                 Playlist
-                {songs.map((item, index) => (
-                  <div
-                    key={index}
-                    className="track-single d-flex justify-content-between p-2 m-1 rounded container-sm"
-                    onClick={() => handleClick(item)}
-                    role="button"
-                  >
-                    <div className="track-single-details d-flex">
-                      <img
-                        src={item?.album.images[0]?.url}
-                        alt={item.name}
-                        className="track-image rounded"
-                      />
-                      <div className="track-artist ml-3">
-                        <p>
-                          <b>{item.name}</b>
+              </Heading>
+              {songs.map((item, index) => (
+                <div
+                  key={index}
+                  className="track-single d-flex justify-content-between p-2 m-1 rounded container-sm"
+                  onClick={() => handleClick(index)}
+                  role="button"
+                >
+                  <div className="track-single-details d-flex">
+                    <img
+                      src={item?.album.images[0]?.url}
+                      alt={item.name}
+                      className="track-image rounded"
+                    />
+                    <div className="track-artist ml-3">
+                      <p>
+                        <b>{item.name}</b>
+                      </p>
+                      <div className="">
+                        <p className="inline">
+                          {item.explicit && '🅴 '}
+                          {item?.artists[0].name}
                         </p>
-                        <div className="">
-                          <p className="inline">
-                            {item.explicit && '🅴 '}
-                            {item?.artists[0].name}
-                          </p>
-                        </div>
                       </div>
                     </div>
-                    <div className="track-single-user d-flex align-items-center">
-                      {userImage ? (
-                        <img
-                          src={userImage.url}
-                          alt="user"
-                          className="track-image track-image-profile rounded-circle mx-2"
-                        />
-                      ) : (
-                        <img
-                          className="track-image track-image-profile rounded-circle mx-2"
-                          src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"
-                          alt=""
-                        />
-                      )}
+                  </div>
+                  <div className="track-single-user d-flex align-items-center">
+                    {userImage ? (
                       <img
-                        className="track-play-pause"
-                        src={'/images/play-button.png'}
+                        src={userImage.url}
+                        alt="user"
+                        className="track-image track-image-profile rounded-circle mx-2"
+                      />
+                    ) : (
+                      <img
+                        className="track-image track-image-profile rounded-circle mx-2"
+                        src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"
                         alt=""
                       />
-                    </div>
+                    )}
+                    <img
+                      className="track-play-pause"
+                      src={'/images/play-button.png'}
+                      alt=""
+                    />
                   </div>
-                ))}
-              </Heading>
+                </div>
+              ))}
+
+              {tracksArray && (
+                <div>
+                  {/* <Player trackUri={playingTracks} token={token} /> */}
+                  <Player trackUri={redoeredTracks} token={token} />
+                </div>
+              )}
             </Flex>
           </div>
         </Flex>

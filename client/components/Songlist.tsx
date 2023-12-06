@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { songList } from '../apis/songList'
 import Player from './Player'
 import { getSession } from '../functions/startSession'
@@ -11,13 +11,15 @@ import { ContextType } from '../../models/contextType'
 
 const Songlist = () => {
   const { userDetails } = useOutletContext<ContextType>()
-  console.log(userDetails)
-  const userImage = userDetails?.images[0] 
+
+  const userImage = userDetails?.images[0]
   const playListId = useParams().playlistId as string
-  console.log(userImage)
 
   const token = getSession() as string
-  const [playingTracks, setPlayingTracks] = useState('')
+  // const [playingTracks, setPlayingTracks] = useState('')
+  const [tracksArray, setTrackArray] = useState<string[] | undefined>([])
+  const [redoeredTracks,setRedoerededTracks] = useState<string[] | undefined>([])
+
   const {
     data: songs,
     isError,
@@ -26,6 +28,13 @@ const Songlist = () => {
     queryKey: ['songs'],
     queryFn: () => songList(playListId, token),
   })
+  useEffect(()=>{
+
+    if(songs){
+      const trackUriArray =songs.map((item) => item.uri)
+      setTrackArray(trackUriArray)
+    }
+  },[songs])
 
   if (isError) {
     return <p>Error</p>
@@ -33,12 +42,22 @@ const Songlist = () => {
   if (isLoading) {
     return <p>Loading...</p>
   }
+  
 
-  function handleClick(item: Album) {
-    setPlayingTracks(item.uri)
+  function handleClick(index: number) {
+    // setPlayingTracks(item.uri)
+    setRedoerededTracks(tracksArray)
+    console.log(index)
+    const reorderedLinks = [
+      ...tracksArray.slice(index),
+      ...tracksArray.slice(0, index),
+    ]
+    setRedoerededTracks(reorderedLinks)
+
+    // Update the state with the new order
   }
 
-  console.log(songs)
+  console.log(tracksArray)
   return (
     <div>
       <h4>Today&apos;s recommend PlayList</h4>
@@ -48,7 +67,7 @@ const Songlist = () => {
         <div
           key={index}
           className="track-single d-flex justify-content-between p-2 m-1 rounded container-sm"
-          onClick={() => handleClick(item)}
+          onClick={() => handleClick(index)}
           role="button"
         >
           <div className="track-single-details d-flex">
@@ -70,12 +89,19 @@ const Songlist = () => {
             </div>
           </div>
           <div className="track-single-user d-flex align-items-center">
-            {userImage? <img src={userImage.url} alt="user"  className="track-image track-image-profile rounded-circle mx-2" /> : 
-            <img
-              className="track-image track-image-profile rounded-circle mx-2"
-              src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"
-              alt=""
-            />}
+            {userImage ? (
+              <img
+                src={userImage.url}
+                alt="user"
+                className="track-image track-image-profile rounded-circle mx-2"
+              />
+            ) : (
+              <img
+                className="track-image track-image-profile rounded-circle mx-2"
+                src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"
+                alt=""
+              />
+            )}
             <img
               className="track-play-pause"
               src={'/images/play-button.png'}
@@ -85,9 +111,10 @@ const Songlist = () => {
         </div>
       ))}
 
-      {playingTracks && (
+      {tracksArray && (
         <div>
-          <Player trackUri={playingTracks} token={token} />
+          {/* <Player trackUri={playingTracks} token={token} /> */}
+          <Player trackUri={redoeredTracks} token={token} />
         </div>
       )}
     </div>
