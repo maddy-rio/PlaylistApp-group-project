@@ -40,8 +40,8 @@ interface playlistProps {
 
 const Dashboard = () => {
   const { userDetails } = useOutletContext<ContextType>() || {}
-  console.log(userDetails);
-  
+  console.log(userDetails)
+
   const navigate = useNavigate()
   const [form, setForm] = useState({
     token: '',
@@ -56,7 +56,7 @@ const Dashboard = () => {
   } = useQuery({
     queryKey: ['playlists', form.token],
     queryFn: async () => {
-        if (form.token) {
+      if (form.token) {
         return getUsersPlaylists(userDetails?.id)
       } else {
         return getPlaylistByToken(form.token)
@@ -76,11 +76,10 @@ const Dashboard = () => {
   )
 
   // console.log(playlists);
-  
+
   if (error) {
     return <div>Error</div>
   }
-
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -92,28 +91,37 @@ const Dashboard = () => {
     //   return
     // }
     const token = form.token
-    const playlistId = await getPlaylistByToken(token).then(
+    const playlistId = await getPlaylistByToken('ABC123').then(
       (res) => res.data[0]?.id,
     )
     if (playlistId) {
       const userId = await getUserDetails()
         .then((res) => res.id)
         .then((res) => getUserInfoFromDb(res))
-        .then((res) => res.body.data[0].id)
 
       // sorry this was quite late at night*
       const thisIsATemporarySolutionToALongTermProblem = {
         playlistId: playlistId,
         userId: userId,
       }
-      // console.log(thisIsATemporarySolutionToALongTermProblem)
+      console.log(thisIsATemporarySolutionToALongTermProblem)
 
-      await addPlaylistToUser({
-        ...thisIsATemporarySolutionToALongTermProblem,
-      })
+      await addPlaylistToUser(
+        thisIsATemporarySolutionToALongTermProblem.playlistId,
+        thisIsATemporarySolutionToALongTermProblem.userId,
+      )
         .then((res) => res.body.data[0])
         .then((res) => {
-          window.location.href = `/dashboard/${playlistId}`
+          // const playlistIdFromResponse = res && res.id
+
+          if (playlistId) {
+            window.location.href = `/dashboard/${playlistId}`
+          } else {
+            console.error('Playlist ID not found in the response.')
+          }
+        })
+        .catch((error) => {
+          console.error('Error adding playlist:', error)
         })
     }
     // setForm(playlistId)
@@ -229,22 +237,27 @@ const Dashboard = () => {
                         <DialogTitle>Join a playlist</DialogTitle>
 
                         <Flex direction="column" gap="3">
-                          <form onSubmit={handleSubmit} className='form-flex'>
-                              <label htmlFor="token" className='hide-label'>Access token</label>
-                              <Flex gap="4">
+                          <form onSubmit={handleSubmit} className="form-flex">
+                            <label htmlFor="token" className="hide-label">
+                              Access token
+                            </label>
+                            <Flex gap="4">
                               <input
                                 type="token"
                                 name="token"
-                                className='dialog-input'
-                                placeholder='Enter six-digit access token'
+                                className="dialog-input"
+                                placeholder="Enter six-digit access token"
                                 value={form.token}
                                 onChange={handleChange}
                               />
-                              <button type="submit" className='submit-button'>
+                              <button type="submit" className="submit-button">
                                 <ArrowRightIcon width="32px" height="32px" />
                               </button>
-                              </Flex>
-                              <span className='fyi-text'>You can get this access token from someone who has already added the playlist to VibesVault.</span>
+                            </Flex>
+                            <span className="fyi-text">
+                              You can get this access token from someone who has
+                              already added the playlist to VibesVault.
+                            </span>
                             {/* COURTNEY I ADDED THIS */}
                             {/* <div>
                               <label htmlFor="playlistId">Playlist ID</label>
