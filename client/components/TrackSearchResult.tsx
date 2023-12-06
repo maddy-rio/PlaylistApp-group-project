@@ -17,8 +17,9 @@ export default function TrackSearchResult({
   setTracks,
 }: Props) {
   const { userDetails } = useOutletContext<ContextType>()
+  console.log(userDetails)
   const userId = userDetails?.id as string
-
+console.log(userId)
   const queryClient = useQueryClient()
   const addPlayListMutation = useMutation({
     mutationFn: async (trackId: string) =>
@@ -57,7 +58,7 @@ export default function TrackSearchResult({
         ))
       ) : (
         <Link
-          to={`/playlist/${playlistId}`}
+          to={`/dashboard/${playlistId}`}
           className="text-decoration-none"
         ></Link>
       )}
