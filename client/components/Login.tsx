@@ -69,67 +69,30 @@ function Login() {
   const { userDetails, changeUserDetails } = useOutletContext<ContextType>()
   const urlParams = new URLSearchParams(window.location.search)
   const code = urlParams.get('code')
-  
-  const redirectToNewUser = async () => {
-    console.log(userDetails?.id);
-    // const isUser = await getUserInfoFromDb(userDetails?.id)
-  }
 
   useEffect(() => {
     // already in session
     const fetchUserDetails = async () => {
       if (code) {
-        // true if redirected from spotify auth
         await getToken()
-        // run comparison with the database ids to see if the spotify user id exists on the database
-        // redirectToNewUser()
-        try {
-          const data = await getUserDetails()
-          const user = await getUserInfoFromDb(data.id).then((data) => data.body.data[0]?.user_id)
-          console.log(user.body.data[0]?.user_id)
-          window.location.href = '/dashboard'
-          } catch(err) {
-            const data = await getUserDetails()
-            window.location.href = `/newuser/${data.id}`
-        }
-  
-
-
-        // window.location.href = '/'
       } else if (!getSession()) {
         await initiateSpotifyAuthentication()
       }
       const data = await getUserDetails()
-      console.log(data);
-      
-
       changeUserDetails(data)
+      const user = await getUserInfoFromDb(data.id).then(
+        (data) => data.body.data[0]?.user_id,
+      )
+      if (user) {
+        window.location.href = '/dashboard'
+      } else {
+        window.location.href = '/newuser/' + data.id
+      }
     }
     fetchUserDetails()
   }, [code])
 
-
-  
-
-  console.log(userDetails?.id);
-
-  // console.log(userDetails)
-  if (!userDetails) {
-    return <div>Loading user Info...</div>
-  }
-  return (
-    <div>
-      <>
-        <h1>logged in with {userDetails.display_name}</h1>
-        <p>{userDetails.country}</p>
-        <p>{userDetails.email}</p>
-
-        <p>{userDetails.type}</p>
-
-        {userDetails && <Dashboard />}
-      </>
-    </div>
-  )
+  return <div>Loading user Info...</div>
 }
 
 export default Login

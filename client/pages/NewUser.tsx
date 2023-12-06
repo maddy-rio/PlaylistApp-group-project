@@ -36,7 +36,7 @@ export default function NewUser() {
     // check later
     e.preventDefault()
     const data = await getUserDetails()
-    userMutation.mutate({ ...form, user_id: spotifyId as string })
+    userMutation.mutate({ ...form, user_id: data.id as string })
     window.location.href = `/dashboard`
   }
 
