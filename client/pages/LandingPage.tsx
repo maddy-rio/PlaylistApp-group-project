@@ -10,8 +10,8 @@ const LandingPage = () => {
     <Flex width="100%" height="100%" className='app'>
       <Flex direction="column" width="100%" mx="3" my="2" className='fill-height'>
         <Navigation />
-        <Flex height="100%" m="7">
-          <div className="landing">
+        <Flex height="100%" m="7" className="desktop-box">
+          <div className="landing desktop-size">
             <Heading as="h1" className="landing-h1 gradient-text">
               Daily Themes,
               <br></br>

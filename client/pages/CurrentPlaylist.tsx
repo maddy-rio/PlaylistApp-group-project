@@ -82,7 +82,7 @@ const CurrentPlaylist = () => {
             </Heading>
 
             <Heading as="h2" className="theme-h2 gradient-theme">
-              <em>{todaysTheme}</em>
+              <em>Your favourite Pippin song</em>
             </Heading>
             <div className="player-box">
               <Heading as="h3" className="player-h3">
@@ -139,7 +139,7 @@ const CurrentPlaylist = () => {
                   </Dialog.Trigger>
 
                   <Dialog.Content style={{ maxWidth: 560 }}>
-                    <Dialog.Title>Add a</Dialog.Title>
+                    <Dialog.Title>Add a song</Dialog.Title>
                     <Songs playlistId={playListId as string} />
                   </Dialog.Content>
                 </Dialog.Root>

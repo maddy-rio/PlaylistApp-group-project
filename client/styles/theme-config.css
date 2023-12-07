@@ -109,6 +109,7 @@ a:visited, h1:visited, h2:visited, h3:visited, h4:visited, span:visited {
 .dashboard-h1 {
   font-size: 72px;
   line-height: 80px;
+  width: 1400px;
 }
 
 .dashboard-h2,
@@ -149,11 +150,11 @@ a:visited, h1:visited, h2:visited, h3:visited, h4:visited, span:visited {
 
 .theme-h2 {
   font-weight: 600;
-  font-size: 72px;
-  line-height: 80px;
+  font-size: 80px;
+  line-height: 88px;
   padding: 4px;
   margin-top: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 40px;
 }
 
 .scroll-inside {
@@ -414,4 +415,20 @@ a:visited, h1:visited, h2:visited, h3:visited, h4:visited, span:visited {
   border-radius: 4px;
   border: none;
   margin-top: 8px;
+}
+
+.desktop-box {
+  justify-content: center;
+}
+
+.desktop-size {
+  width: 960px;
+}
+
+.fill-gap {
+  height: 100%;
+}
+
+.fill-width {
+  width: 160px;
 }
