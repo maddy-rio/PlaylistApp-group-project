@@ -41,7 +41,11 @@ interface playlistProps {
 const Dashboard = () => {
   const { userDetails } = useOutletContext<ContextType>() || {}
   console.log(userDetails);
-  
+  const cards = [
+    {name: 'Work Jams', src: "art1.png"},
+    {name: 'Family Feud', src: "art2.png"},
+    {name: 'Dev Team', src: "art3.png"}
+  ]
   const navigate = useNavigate()
   const [form, setForm] = useState({
     token: '',
@@ -141,10 +145,10 @@ const Dashboard = () => {
           className="fill-height"
         >
           <Navigation />
-          <Flex height="100%" m="7">
+          <Flex height="100%" m="7" className='desktop-box'>
             <div className="dashboard">
               <Heading as="h1" className="dashboard-h1 gradient-text">
-                Hi {userDetails?.display_name}! Here’s all the playlists you’re
+                Hi {userDetails ? userDetails.display_name : `there`}! Here’s all the playlists you’re
                 collaborating on:
               </Heading>
               <Flex
@@ -155,6 +159,33 @@ const Dashboard = () => {
                 justify="center"
                 wrap="wrap"
               >
+
+              {cards.map((card) => (
+                <Card key={card} className='playlist-card'>
+                  <Flex direction="column" gap="4" p="2" className='fill-gap'>
+                    <AspectRatio ratio={1/1}>
+                      {/* TODO: Add conditional - if no album art, show below div... */}
+                      <div className='album-art'style={{backgroundImage: `url(/images/${card.src})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}></div>
+                      {/* ...otherwise show album art */}
+                    </AspectRatio>
+                    <Flex direction="column" gap="2" className='fill-gap'>
+                    <svg height="24" width="24" viewBox="0 0 24 24">
+                      <path className="svg-icon-white" d="m11,0C4.92,0,0,4.92,0,11s4.92,11,11,11,11-4.92,11-11S17.08,0,11,0Zm5.04,15.87c-.2.32-.62.43-.94.23-2.58-1.58-5.83-1.94-9.66-1.06-.37.08-.74-.15-.82-.52-.08-.37.15-.74.52-.82,4.19-.96,7.78-.55,10.68,1.23.32.2.43.62.23.94Zm1.35-3c-.25.4-.78.53-1.18.28-2.96-1.82-7.46-2.34-10.96-1.28-.45.14-.93-.12-1.07-.57-.14-.45.12-.93.57-1.07,4-1.21,8.96-.63,12.36,1.46.4.25.53.78.28,1.18Zm.12-3.12c-3.55-2.11-9.39-2.3-12.78-1.27-.54.16-1.12-.14-1.28-.69-.16-.54.14-1.12.69-1.28,3.89-1.18,10.34-.95,14.43,1.47.49.29.65.92.36,1.41-.29.49-.92.65-1.41.36Z"/>
+                    </svg>
+                    <Heading as="h2" className='dashboard-h2'>{card.name}</Heading>
+                    {/* <Text className="dashboard-subtitle">Collaborating with: string of users</Text> */}
+                    </Flex>
+                    <Link to={`/dashboard/4`} className='fill-width'>
+                    <Button variant="outline" size="2" className='fill-width'>
+                      <PlusCircledIcon />
+                      Add a song
+                      </Button>
+                    </Link>
+                  </Flex>
+                </Card>
+              ))}
+
+
                 {playlists?.map((playlist: playlistProps, index: number) => (
                   <Link to={`/playlist/${playlist.playlistsId}`} key={index}>
                     <Card key={playlist.id} className="playlist-card">
@@ -177,9 +208,9 @@ const Dashboard = () => {
                           <Heading as="h2" className="dashboard-h2">
                             {playlist.name}
                           </Heading>
-                          <Text className="dashboard-subtitle">
+                          {/* <Text className="dashboard-subtitle">
                             Collaborating with: string of users
-                          </Text>
+                          </Text> */}
                         </Flex>
                         <Button variant="outline" size="2">
                           <PlusCircledIcon />
@@ -244,7 +275,7 @@ const Dashboard = () => {
                                 <ArrowRightIcon width="32px" height="32px" />
                               </button>
                               </Flex>
-                              <span className='fyi-text'>You can get this access token from someone who has already added the playlist to VibesVault.</span>
+                              <span className='fyi-text'>You can get this access token from someone who has already added the playlist to their vault.</span>
                             {/* COURTNEY I ADDED THIS */}
                             {/* <div>
                               <label htmlFor="playlistId">Playlist ID</label>
